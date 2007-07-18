@@ -1,6 +1,94 @@
 <?php
 // $Id$
 
+define('VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY', 5000);
+define('VIEWS_SLIDESHOW_SORT_FORWARD', 1);
+define('VIEWS_SLIDESHOW_SORT_RANDOM', 0);
+define('VIEWS_SLIDESHOW_SORT_REVERSE', -1);
+define('VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER', VIEWS_SLIDESHOW_SORT_FORWARD);
+define('VIEWS_SLIDESHOW_FADE_SPEED_SLOW', 'slow');
+define('VIEWS_SLIDESHOW_FADE_SPEED_NORMAL', 'normal');
+define('VIEWS_SLIDESHOW_FADE_SPEED_FAST', 'fast');
+define('VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED', VIEWS_SLIDESHOW_FADE_SPEED_SLOW);
+define('VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE', 0.25);
+define('VIEWS_SLIDESHOW_DEFAULT_FADE', true);
+
+/**
+ * Implement hook_menu
+ */
+function views_slideshow_menu($may_cache) {
+  $items = array();
+  if ($may_cache) {
+    $items[] = array(
+      'path' => 'admin/build/views/views_slideshow',
+      'title' => t('Views slideshow configuration'),
+      'description' => t('Configure Views Slideshow: Set global options for slideshow views.'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => 'views_slideshow_settings',
+      'access' => user_access('administer site configuration'));
+  }
+  return $items;
+}
+
+/**
+ * Implement hook_settings
+ */
+function views_slideshow_settings() {
+  $form = array();
+
+    variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
+    variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
+    variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE);
+    $fade = $fade ? 'true' : 'false';
+    variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
+    variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
+
+  $form['views_slideshow_default_timer_delay'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Global slideshow timer delay'),
+    '#default_value' => variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY),
+    '#description' => t('Set this to the number of miliseconds you wish each slide to delay before showing the next slide of a view.'),
+  );
+  $form['views_slideshow_default_sort_order'] = array(
+    '#type' => 'select',
+    '#title' => t('Global slideshow sort order'),
+    '#default_value' => variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER),
+    '#options' => array('-1' => t('reverse'), '0' => t('random'), '1' => t('forward')),
+    '#description' => t('This determines the order that selected nodes of a view will be displayed in the slideshow.'),
+  );
+  $form['views_slideshow_default_fade'] = array(
+    '#type' => 'select',
+    '#title' => t('Global slideshow fade'),
+    '#default_value' => variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE),
+    '#options' => array('1' => t('true'), '0' => t('false')),
+    '#description' => t('If true, then slides will fade into the next slide of the view. Otherwise, they will transition instantly, and the following values will be ignored.'),
+  );
+  $form['views_slideshow_default_fade_speed'] = array(
+    '#type' => 'select',
+    '#title' => t('Global slideshow fade speed'),
+    '#default_value' => variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED),
+    '#options' => array('slow' => t('slow'), 'normal' => t('normal'), 'fast' => t('fast')),
+    '#description' => t('This determines how quickly a slide fades into the next slide.'),
+  );
+  $form['views_slideshow_default_fade_value'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Global slideshow fade value'),
+    '#default_value' => variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE),
+    '#description' => t('Set this to a decimal between 0 and 1. Slides will fade to this opacity before fading into the next slide.'),
+  );
+  $form['helpfield'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Individual view slideshow configuration'),
+    '#collapsible' => true,
+    '#collapsed' => true,
+  );
+  $form['helpfield']['help'] = array(
+    '#type' => 'item',
+    '#value' => t('Currently, there is no way in the Views UI administration screens to set the previous options for a certain view. Until Views 2.0 is released, if you wish to override a global setting for a particular view slideshow, you\'ll need to manually set the value(s) in the Argument Handling Code of the Arguments section of the view. For instance, you might specify $view->slideshow[\'sort_order\'] = -1 for a random slideshow, $view->slideshow[\'fade_value\'] = 0.5 to fade out nodes half-way, or $view->slideshow[\'timer_delay\'] = 2000 for a delay of two seconds. Allowed values: <ul><li>$view->slideshow[\'timer_delay\']<ul><li>This value should be between 0 and the number of miliseconds you wish to delay.</ul><li>$view->slideshow[\'sort_order\']<ul><li>-1: reverse order<li>0: random order<li>1: forward order</ul><li>$view->slideshow[\'fade\']<ul><li>true or false: if false, the slideshow will change instantly, and the following values will be ignored.</ul><li>$view->slideshow[\'fade_speed\']<ul><li>\'slow\'<li>\'normal\'<li>\'fast\'</ul><li>$view->slideshow[\'fade_value\']<ul><li>a decimal value between 0 and 1, to determine how much to fade a slide.</ul></ul>'),
+  );
+  return system_settings_form($form);
+}
+
 /**
  * Slideshow View style plugins. Implementation of hook_views_style_plugins()
  */
@@ -50,7 +138,7 @@ function theme_views_slideshow_view_list($view, $nodes, $type) {
     }
     $items[] = "<div class='view-item ". views_css_safe('view-item-'. $view->name) ."'>$item</div>\n"; // l($node->title, "node/$node->nid");
   }
-  return theme('views_slideshow_slideshow', $items);
+  return theme('views_slideshow_slideshow', $view, $nodes, $type, $items);
 }
 
 /**
@@ -69,27 +157,30 @@ function theme_views_slideshow_view_nodes($view, $nodes, $type, $teasers = false
     $node = node_load($n->nid);
     $items[] = node_view($node, $teasers, false, $links);
   }
-  return theme('views_slideshow_slideshow', $items);
+  return theme('views_slideshow_slideshow', $view, $nodes, $type, $items);
 }
 
 /**
  * Display the slideshow items in a div w/ jquery
  */
-function theme_views_slideshow_slideshow($items) {
+function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
   static $div = 0;
   $output = '';
   if (is_array($items) && !(empty($items))) {
     if (!$div) {
-      $timer_delay = variable_get('views_slideshow_default_timer_delay', 5000);
       $js_start = '
 
 // store the timer and current div data
 slideshow_data = new Array();
 
-function views_slideshow_data(divs) {
+function views_slideshow_data(divs, timer_delay, sort_order, fade, fade_speed, fade_value) {
   this._divs = divs;
+  this._timer_delay = timer_delay;
+  this._sort_order = sort_order;
+  this._fade = fade;
+  this._fade_speed = fade_speed;
+  this._fade_value = fade_value;
   this._current_div = 0;
-  this._timer_delay = ' . $timer_delay . ';
 }
 
 // set the timer on or off
@@ -106,20 +197,34 @@ function views_slideshow_timer(slideshow_main, slideshow_status) {
 // fade out
 function views_slideshow_switch(slideshow_main) {
   _main_div = "#views_slideshow_main_" + slideshow_main;
-  $(_main_div).fadeTo("slow", 0.25, function() { views_slideshow_set_div(slideshow_main); });
+  if (slideshow_data[slideshow_main]._fade) {
+    $(_main_div).fadeTo(slideshow_data[slideshow_main]._fade_speed, slideshow_data[slideshow_main]._fade_value, function() { views_slideshow_set_div(slideshow_main); });
+  }
+  else {
+    views_slideshow_set_div(slideshow_main);
+  }
 }
 
 // fade into the next node
 function views_slideshow_set_div(slideshow_main) {
   _main_div = "#views_slideshow_main_" + slideshow_main;
-  slideshow_data[slideshow_main]._current_div++;
-  if (slideshow_data[slideshow_main]._current_div >= slideshow_data[slideshow_main]._divs.length) {
-    slideshow_data[slideshow_main]._current_div = 0;
+  if (slideshow_data[slideshow_main]._sort_order) {
+    slideshow_data[slideshow_main]._current_div += slideshow_data[slideshow_main]._sort_order;
+    if (slideshow_data[slideshow_main]._current_div >= slideshow_data[slideshow_main]._divs.length) {
+      slideshow_data[slideshow_main]._current_div = 0;
+    }
+    else if (slideshow_data[slideshow_main]._current_div < 0) {
+      slideshow_data[slideshow_main]._current_div = slideshow_data[slideshow_main]._divs.length - 1;
+    }
+  }
+  else {
+    slideshow_data[slideshow_main]._current_div = Math.floor(Math.random() * slideshow_data[slideshow_main]._divs.length);
   }
   _new_div = "#views_slideshow_div_" + slideshow_main + "_" + slideshow_data[slideshow_main]._divs[slideshow_data[slideshow_main]._current_div];
   $(_main_div).html($(_new_div).html());
   $(_main_div).fadeTo("slow", 1, function() { views_slideshow_timer(slideshow_main, true); });
 }
+
 ';
       drupal_add_js($js_start, 'inline');
     }
@@ -133,12 +238,17 @@ function views_slideshow_set_div(slideshow_main) {
       $output .= '  </div><!--close views_slideshow_div_' . $div . '_' . $count . '-->' . "\n\n";
     }
     $divs = '"' . implode('", "', array_keys($items)) . '"';
+    $timer_delay = isset($view->slideshow['timer_delay']) ? $view->slideshow['timer_delay'] : variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
+    $sort = isset($view->slideshow['sort_order']) ? $view->slideshow['sort_order'] : variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
+    $fade = isset($view->slideshow['fade']) ? $view->slideshow['fade'] : variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE);
+    $fade = $fade ? 'true' : 'false';
+    $fade_speed = isset($view->slideshow['fade_speed']) ? $view->slideshow['fade_speed'] : variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
+    $fade_value = isset($view->slideshow['fade_value']) ? $view->slideshow['fade_value'] : variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
 
     $js = '
-
-// set the timer data for this view slideshow
+// set the timer data for a view slideshow
 $(document).ready(function() {
-  slideshow_data["' . $div . '"] = new views_slideshow_data(new Array(' . $divs . '));
+  slideshow_data["' . $div . '"] = new views_slideshow_data(new Array(' . $divs . '), ' . $timer_delay . ', ' . $sort . ', ' . $fade . ', "' . $fade_speed . '", ' . $fade_value . ');
   views_slideshow_timer("' . $div . '", true);
   $("#views_slideshow_main_' . $div . '").mouseover(function() {
     views_slideshow_timer("' . $div . '", false);
@@ -147,6 +257,7 @@ $(document).ready(function() {
     views_slideshow_timer("' . $div . '", true);
   });
 })
+
 ';
     drupal_add_js($js, 'inline');
   }

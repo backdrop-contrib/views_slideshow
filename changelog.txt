@@ -1,4 +1,5 @@
 // $Id$
 
 2007-07-18
+added global settings & instructions to override
 began project for views slideshow
