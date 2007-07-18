@@ -1,0 +1,5 @@
+; $Id$
+name = Views Slideshow
+description = Provides a View type that displays nodes as a jquery slideshow in a single div.
+dependencies = views
+package = Views

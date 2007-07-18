@@ -1,0 +1,4 @@
+// $Id$
+
+2007-07-18
+began project for views slideshow

@@ -1,0 +1,154 @@
+<?php
+// $Id$
+
+/**
+ * Slideshow View style plugins. Implementation of hook_views_style_plugins()
+ */
+function views_slideshow_views_style_plugins() {
+  return array(
+    'views_slideshow_list' => array(
+      'name' => t('Slideshow List'),
+      'theme' => 'views_slideshow_view_list',
+      'validate' => 'views_slideshow_plugin_validate_list',
+      'needs_fields' => true,
+    ),
+    'views_slideshow_teaser' => array(
+      'name' => t('Slideshow Teasers'),
+      'theme' => 'views_slideshow_view_teasers',
+    ),
+    'views_slideshow_node' => array(
+      'name' => t('Slideshow Full Nodes'),
+      'theme' => 'views_slideshow_view_nodes',
+    ),
+  );
+}
+
+/**
+ * Validate a view with type: slideshow list.
+ */
+function views_slideshow_plugin_validate_list($type, $view, $form) {
+  // pass thru to list
+  return module_invoke('views_ui', 'plugin_validate_list', $type, $view, $form);
+}
+
+/**
+ * Display the nodes of a view as a list.
+ */
+function theme_views_slideshow_view_list($view, $nodes, $type) {
+  $fields = _views_get_fields();
+  $items = array();
+
+  foreach ($nodes as $node) {
+    $item = '';
+    foreach ($view->field as $field) {
+      if ($fields[$field['id']]['visible'] !== FALSE) {
+        if ($field['label']) {
+          $item .= "<div class='view-label ". views_css_safe('view-label-'. $field['queryname']) ."'>" . $field['label'] . "</div>";
+        }
+        $item .= "<div class='view-field ". views_css_safe('view-data-'. $field['queryname']) ."'>" . views_theme_field('views_handle_field', $field['queryname'], $fields, $field, $node, $view) . "</div>";
+      }
+    }
+    $items[] = "<div class='view-item ". views_css_safe('view-item-'. $view->name) ."'>$item</div>\n"; // l($node->title, "node/$node->nid");
+  }
+  return theme('views_slideshow_slideshow', $items);
+}
+
+/**
+ * Display the nodes of a view as teasers.
+ */
+function theme_views_slideshow_view_teasers($view, $nodes, $type) {
+  return views_theme('views_slideshow_view_nodes', $view, $nodes, $type, true);
+}
+
+/**
+ * Display the nodes of a view as plain nodes.
+ */
+function theme_views_slideshow_view_nodes($view, $nodes, $type, $teasers = false, $links = true) {
+  $items = array();
+  foreach ($nodes as $n) {
+    $node = node_load($n->nid);
+    $items[] = node_view($node, $teasers, false, $links);
+  }
+  return theme('views_slideshow_slideshow', $items);
+}
+
+/**
+ * Display the slideshow items in a div w/ jquery
+ */
+function theme_views_slideshow_slideshow($items) {
+  static $div = 0;
+  $output = '';
+  if (is_array($items) && !(empty($items))) {
+    if (!$div) {
+      $timer_delay = variable_get('views_slideshow_default_timer_delay', 5000);
+      $js_start = '
+
+// store the timer and current div data
+slideshow_data = new Array();
+
+function views_slideshow_data(divs) {
+  this._divs = divs;
+  this._current_div = 0;
+  this._timer_delay = ' . $timer_delay . ';
+}
+
+// set the timer on or off
+function views_slideshow_timer(slideshow_main, slideshow_status) {
+  _main_div = "#views_slideshow_main_" + slideshow_main;
+  if (slideshow_status) {
+    slideshow_data[slideshow_main]._timer_id = setTimeout("views_slideshow_switch(' . "'" . '" + slideshow_main + "' . "'" . ')", slideshow_data[slideshow_main]._timer_delay);
+  }
+  else {
+    clearTimeout(slideshow_data[slideshow_main]._timer_id);
+  }
+}
+
+// fade out
+function views_slideshow_switch(slideshow_main) {
+  _main_div = "#views_slideshow_main_" + slideshow_main;
+  $(_main_div).fadeTo("slow", 0.25, function() { views_slideshow_set_div(slideshow_main); });
+}
+
+// fade into the next node
+function views_slideshow_set_div(slideshow_main) {
+  _main_div = "#views_slideshow_main_" + slideshow_main;
+  slideshow_data[slideshow_main]._current_div++;
+  if (slideshow_data[slideshow_main]._current_div >= slideshow_data[slideshow_main]._divs.length) {
+    slideshow_data[slideshow_main]._current_div = 0;
+  }
+  _new_div = "#views_slideshow_div_" + slideshow_main + "_" + slideshow_data[slideshow_main]._divs[slideshow_data[slideshow_main]._current_div];
+  $(_main_div).html($(_new_div).html());
+  $(_main_div).fadeTo("slow", 1, function() { views_slideshow_timer(slideshow_main, true); });
+}
+';
+      drupal_add_js($js_start, 'inline');
+    }
+    $div++;
+    $output .= "\n\n" . '<div id="views_slideshow_main_' . $div . '">' . "\n";
+    $output .= $items[0] . "\n";
+    $output .= '</div><!--close views_slideshow_main_' . $div . "-->\n\n";
+    foreach ($items as $count => $item) {
+      $output .= '  <div id="views_slideshow_div_' . $div . '_' . $count . '" style="display: none;">' . "\n  ";
+      $output .= $item . "\n";
+      $output .= '  </div><!--close views_slideshow_div_' . $div . '_' . $count . '-->' . "\n\n";
+    }
+    $divs = '"' . implode('", "', array_keys($items)) . '"';
+
+    $js = '
+
+// set the timer data for this view slideshow
+$(document).ready(function() {
+  slideshow_data["' . $div . '"] = new views_slideshow_data(new Array(' . $divs . '));
+  views_slideshow_timer("' . $div . '", true);
+  $("#views_slideshow_main_' . $div . '").mouseover(function() {
+    views_slideshow_timer("' . $div . '", false);
+  });
+  $("#views_slideshow_main_' . $div . '").mouseout(function() {
+    views_slideshow_timer("' . $div . '", true);
+  });
+})
+';
+    drupal_add_js($js, 'inline');
+  }
+  return $output;
+}
