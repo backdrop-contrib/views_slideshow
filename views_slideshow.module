@@ -1,16 +1,30 @@
 <?php
 // $Id$
 
+define('VIEWS_SLIDESHOW_MODE_SINGLE_FRAME', 'single_frame');  // this will rotate through all slideshows in a single div element
+define('VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER', 'thumbnail_hover');  // this will create thumbnails of all the node teasers, with a mouse-over triggering a larger div full node view
+define('VIEWS_SLIDESHOW_DEFAULT_MODE', VIEWS_SLIDESHOW_MODE_SINGLE_FRAME);
+
+define('VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER', 'teaser');  // this will cause the breakout element of the 'thumbnail_hover' mode to display the larger element as a teaser. it is ignored by 'single_frame' mode.
+define('VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL', 'full');  // this will cause the breakout element of the 'thumbnail_hover' mode to display the larger element as a full node. it is ignored by 'single_frame' mode.
+define('VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT', VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER);
+
+define('VIEWS_SLIDESHOW_DEFAULT_CONTROL_DISPLAY', false);
+
 define('VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY', 5000);
+
 define('VIEWS_SLIDESHOW_SORT_FORWARD', 1);
 define('VIEWS_SLIDESHOW_SORT_RANDOM', 0);
 define('VIEWS_SLIDESHOW_SORT_REVERSE', -1);
 define('VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER', VIEWS_SLIDESHOW_SORT_FORWARD);
+
 define('VIEWS_SLIDESHOW_FADE_SPEED_SLOW', 'slow');
 define('VIEWS_SLIDESHOW_FADE_SPEED_NORMAL', 'normal');
 define('VIEWS_SLIDESHOW_FADE_SPEED_FAST', 'fast');
 define('VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED', VIEWS_SLIDESHOW_FADE_SPEED_SLOW);
+
 define('VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE', 0.25);
+
 define('VIEWS_SLIDESHOW_DEFAULT_FADE', true);
 
 /**
@@ -35,14 +49,20 @@ function views_slideshow_menu($may_cache) {
  */
 function views_slideshow_settings() {
   $form = array();
-
-    variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
-    variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
-    variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE);
-    $fade = $fade ? 'true' : 'false';
-    variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
-    variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
-
+  $form['views_slideshow_default_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Global slideshow mode'),
+    '#default_value' => variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE),
+    '#options' => array(VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => 'single frame', VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER => 'thumbnail hover'),
+    '#description' => t('This will set the type of slideshow to display for views. When set as \'single frame\', a single element will be displayed, with node teasers fading and and out to the next node in order. When set as \'thumbnail hover\', all the teasers will be displayed in a list, followed by a larger element displaying the full node view -- the slideshow will either rotate through the elements using the timer, and/or with a mouse-over event.'),
+  );
+  $form['views_slideshow_default_hover_breakout'] = array(
+    '#type' => 'select',
+    '#title' => t('Global hover breakout'),
+    '#default_value' => variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT),
+    '#options' => array(VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER => 'teaser', VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL => 'full node'),
+    '#description' => t('When using the \'thumbnail hover\' mode, a larger element will be created below a list of nodes, to display the node currently in focus (either by rotation or mouse-over). This option will select whether those nodes will be displayed as a teaser or full node in this element. It is ignored when in \'single frame\' mode.'),
+  );
   $form['views_slideshow_default_timer_delay'] = array(
     '#type' => 'textfield',
     '#title' => t('Global slideshow timer delay'),
@@ -53,7 +73,7 @@ function views_slideshow_settings() {
     '#type' => 'select',
     '#title' => t('Global slideshow sort order'),
     '#default_value' => variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER),
-    '#options' => array('-1' => t('reverse'), '0' => t('random'), '1' => t('forward')),
+    '#options' => array(VIEWS_SLIDESHOW_SORT_REVERSE => t('reverse'), VIEWS_SLIDESHOW_SORT_RANDOM => t('random'), VIEWS_SLIDESHOW_SORT_FORWARD => t('forward')),
     '#description' => t('This determines the order that selected nodes of a view will be displayed in the slideshow.'),
   );
   $form['views_slideshow_default_fade'] = array(
@@ -67,7 +87,7 @@ function views_slideshow_settings() {
     '#type' => 'select',
     '#title' => t('Global slideshow fade speed'),
     '#default_value' => variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED),
-    '#options' => array('slow' => t('slow'), 'normal' => t('normal'), 'fast' => t('fast')),
+    '#options' => array(VIEWS_SLIDESHOW_FADE_SPEED_SLOW => t('slow'), VIEWS_SLIDESHOW_FADE_SPEED_NORMAL => t('normal'), VIEWS_SLIDESHOW_FADE_SPEED_FAST => t('fast')),
     '#description' => t('This determines how quickly a slide fades into the next slide.'),
   );
   $form['views_slideshow_default_fade_value'] = array(
@@ -84,7 +104,7 @@ function views_slideshow_settings() {
   );
   $form['helpfield']['help'] = array(
     '#type' => 'item',
-    '#value' => t('Currently, there is no way in the Views UI administration screens to set the previous options for a certain view. Until Views 2.0 is released, if you wish to override a global setting for a particular view slideshow, you\'ll need to manually set the value(s) in the Argument Handling Code of the Arguments section of the view. For instance, you might specify $view->slideshow[\'sort_order\'] = -1 for a random slideshow, $view->slideshow[\'fade_value\'] = 0.5 to fade out nodes half-way, or $view->slideshow[\'timer_delay\'] = 2000 for a delay of two seconds. Allowed values: <ul><li>$view->slideshow[\'timer_delay\']<ul><li>This value should be between 0 and the number of miliseconds you wish to delay.</ul><li>$view->slideshow[\'sort_order\']<ul><li>-1: reverse order<li>0: random order<li>1: forward order</ul><li>$view->slideshow[\'fade\']<ul><li>true or false: if false, the slideshow will change instantly, and the following values will be ignored.</ul><li>$view->slideshow[\'fade_speed\']<ul><li>\'slow\'<li>\'normal\'<li>\'fast\'</ul><li>$view->slideshow[\'fade_value\']<ul><li>a decimal value between 0 and 1, to determine how much to fade a slide.</ul></ul>'),
+    '#value' => t('Currently, there is no way in the Views UI administration screens to set the previous options for a certain view. Until Views 2.0 is released, if you wish to override a global setting for a particular view slideshow, you\'ll need to manually set the value(s) in the Argument Handling Code of the Arguments section of the view. For instance, you might specify $view->slideshow[\'sort_order\'] = VIEWS_SLIDESHOW_SORT_RANDOM for a random slideshow, $view->slideshow[\'fade_value\'] = 0.5 to fade out nodes half-way, or $view->slideshow[\'timer_delay\'] = 2000 for a delay of two seconds. Allowed values: <ul><li>$view->slideshow[\'mode\']<ul><li>VIEWS_SLIDESHOW_MODE_SINGLE_FRAME (\'' . VIEWS_SLIDESHOW_MODE_SINGLE_FRAME . '\'): the slideshow will be displayed in single frame mode<li>VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER (\'' . VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER . '\'): the slideshow will be displayed in thumbnail hover mode</ul><li>$view->slideshow[\'timer_delay\']<ul><li>This value should be between 0 and the number of miliseconds you wish to delay.</ul><li>$view->slideshow[\'sort_order\']<ul><li>VIEWS_SLIDESHOW_SORT_REVERSE (' . VIEWS_SLIDESHOW_SORT_REVERSE . '): reverse order<li>VIEWS_SLIDESHOW_SORT_RANDOM (' . VIEWS_SLIDESHOW_SORT_RANDOM . '): random order<li>VIEWS_SLIDESHOW_SORT_FORWARD (' . VIEWS_SLIDESHOW_SORT_FORWARD . '): forward order</ul><li>$view->slideshow[\'fade\']<ul><li>true or false: if false, the slideshow will change instantly, and the values for fade_speed and fade_value will be ignored.</ul><li>$view->slideshow[\'fade_speed\']<ul><li>VIEWS_SLIDESHOW_FADE_SPEED_SLOW (\'' . VIEWS_SLIDESHOW_FADE_SPEED_SLOW . '\')<li>VIEWS_SLIDESHOW_FADE_SPEED_NORMAL (\'' . VIEWS_SLIDESHOW_FADE_SPEED_NORMAL . '\')<li>VIEWS_SLIDESHOW_FADE_SPEED_FAST (\'' . VIEWS_SLIDESHOW_FADE_SPEED_FAST . '\')</ul><li>$view->slideshow[\'fade_value\']<ul><li>a decimal value between 0 and 1, to determine how much to fade a slide.</ul></ul>'),
   );
   return system_settings_form($form);
 }
@@ -145,7 +165,7 @@ function theme_views_slideshow_view_list($view, $nodes, $type) {
  * Display the nodes of a view as teasers.
  */
 function theme_views_slideshow_view_teasers($view, $nodes, $type) {
-  return views_theme('views_slideshow_view_nodes', $view, $nodes, $type, true);
+  return theme('views_slideshow_view_nodes', $view, $nodes, $type, true);
 }
 
 /**
@@ -167,99 +187,156 @@ function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
   static $div = 0;
   $output = '';
   if (is_array($items) && !(empty($items))) {
+    // only add the js file the first time a slideshow is presented. if multiple slideshows are displayed, they all use the same js.
     if (!$div) {
-      $js_start = '
-
-// store the timer and current div data
-slideshow_data = new Array();
-
-function views_slideshow_data(divs, timer_delay, sort_order, fade, fade_speed, fade_value) {
-  this._divs = divs;
-  this._timer_delay = timer_delay;
-  this._sort_order = sort_order;
-  this._fade = fade;
-  this._fade_speed = fade_speed;
-  this._fade_value = fade_value;
-  this._current_div = 0;
-}
-
-// set the timer on or off
-function views_slideshow_timer(slideshow_main, slideshow_status) {
-  _main_div = "#views_slideshow_main_" + slideshow_main;
-  if (slideshow_status) {
-    slideshow_data[slideshow_main]._timer_id = setTimeout("views_slideshow_switch(' . "'" . '" + slideshow_main + "' . "'" . ')", slideshow_data[slideshow_main]._timer_delay);
-  }
-  else {
-    clearTimeout(slideshow_data[slideshow_main]._timer_id);
-  }
-}
-
-// fade out
-function views_slideshow_switch(slideshow_main) {
-  _main_div = "#views_slideshow_main_" + slideshow_main;
-  if (slideshow_data[slideshow_main]._fade) {
-    $(_main_div).fadeTo(slideshow_data[slideshow_main]._fade_speed, slideshow_data[slideshow_main]._fade_value, function() { views_slideshow_set_div(slideshow_main); });
-  }
-  else {
-    views_slideshow_set_div(slideshow_main);
-  }
-}
-
-// fade into the next node
-function views_slideshow_set_div(slideshow_main) {
-  _main_div = "#views_slideshow_main_" + slideshow_main;
-  if (slideshow_data[slideshow_main]._sort_order) {
-    slideshow_data[slideshow_main]._current_div += slideshow_data[slideshow_main]._sort_order;
-    if (slideshow_data[slideshow_main]._current_div >= slideshow_data[slideshow_main]._divs.length) {
-      slideshow_data[slideshow_main]._current_div = 0;
+      $base = drupal_get_path('module', 'views_slideshow');
+      drupal_add_js($base . '/views_slideshow.js', 'module');
+      drupal_add_css($base . '/views_slideshow.css', 'module');
     }
-    else if (slideshow_data[slideshow_main]._current_div < 0) {
-      slideshow_data[slideshow_main]._current_div = slideshow_data[slideshow_main]._divs.length - 1;
-    }
-  }
-  else {
-    slideshow_data[slideshow_main]._current_div = Math.floor(Math.random() * slideshow_data[slideshow_main]._divs.length);
-  }
-  _new_div = "#views_slideshow_div_" + slideshow_main + "_" + slideshow_data[slideshow_main]._divs[slideshow_data[slideshow_main]._current_div];
-  $(_main_div).html($(_new_div).html());
-  $(_main_div).fadeTo("slow", 1, function() { views_slideshow_timer(slideshow_main, true); });
-}
 
-';
-      drupal_add_js($js_start, 'inline');
-    }
     $div++;
-    $output .= "\n\n" . '<div id="views_slideshow_main_' . $div . '">' . "\n";
-    $output .= $items[0] . "\n";
-    $output .= '</div><!--close views_slideshow_main_' . $div . "-->\n\n";
-    foreach ($items as $count => $item) {
-      $output .= '  <div id="views_slideshow_div_' . $div . '_' . $count . '" style="display: none;">' . "\n  ";
-      $output .= $item . "\n";
-      $output .= '  </div><!--close views_slideshow_div_' . $div . '_' . $count . '-->' . "\n\n";
-    }
-    $divs = '"' . implode('", "', array_keys($items)) . '"';
-    $timer_delay = isset($view->slideshow['timer_delay']) ? $view->slideshow['timer_delay'] : variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
-    $sort = isset($view->slideshow['sort_order']) ? $view->slideshow['sort_order'] : variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
-    $fade = isset($view->slideshow['fade']) ? $view->slideshow['fade'] : variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE);
-    $fade = $fade ? 'true' : 'false';
-    $fade_speed = isset($view->slideshow['fade_speed']) ? $view->slideshow['fade_speed'] : variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
-    $fade_value = isset($view->slideshow['fade_value']) ? $view->slideshow['fade_value'] : variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
+    $js = theme('views_slideshow_div_js', $view, $nodes, $type, $items, $div);
+    drupal_add_js($js, 'inline');
 
-    $js = '
+    $mode = isset($view->slideshow['mode']) ? $view->slideshow['mode'] : variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE);
+    $hover_breakout = isset($view->slideshow['hover_breakout']) ? $view->slideshow['hover_breakout'] : variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT);
+    $teaser = ($hover_breakout == VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER ? TRUE : FALSE);
+
+    if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
+      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, node_view(node_load($nodes[0]->nid), $teaser, FALSE, FALSE), $div);
+    }
+    else {
+      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, $items[0], $div);
+    }
+
+    // these are hidden elements, used to cycle through the main div
+    $output .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
+
+    // if we're using the 'thumbnail hover' mode, then we need to display all the view thumbnails
+    if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
+      $output .= theme('views_slideshow_breakout_teasers', $view, $nodes, $type, $items, $div);
+    }
+
+  }
+  return $output;
+}
+
+/**
+ *  this inline js sets up the timer for this slideshow
+ */
+function theme_views_slideshow_div_js($view, $nodes, $type, $items, $div) {
+  $divs = '"' . implode('", "', array_keys($items)) . '"';
+  $num_divs = sizeof($items);
+  $timer_delay = isset($view->slideshow['timer_delay']) ? $view->slideshow['timer_delay'] : variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
+  $sort = isset($view->slideshow['sort_order']) ? $view->slideshow['sort_order'] : variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
+  $fade = isset($view->slideshow['fade']) ? $view->slideshow['fade'] : variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE);
+  $fade = $fade ? 'true' : 'false';
+  $fade_speed = isset($view->slideshow['fade_speed']) ? $view->slideshow['fade_speed'] : variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
+  $fade_value = isset($view->slideshow['fade_value']) ? $view->slideshow['fade_value'] : variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
+
+  $js = '
 // set the timer data for a view slideshow
 $(document).ready(function() {
-  slideshow_data["' . $div . '"] = new views_slideshow_data(new Array(' . $divs . '), ' . $timer_delay . ', ' . $sort . ', ' . $fade . ', "' . $fade_speed . '", ' . $fade_value . ');
+  // these are the divs containing the elements to be displayed in the main div in rotation or mouseover
+  slideshow_data["' . $div . '"] = new views_slideshow_data(' . $num_divs . ', ' . $timer_delay . ', ' . $sort . ', ' . $fade . ', "' . $fade_speed . '", ' . $fade_value . ');
+
+  // this turns on the timer
   views_slideshow_timer("' . $div . '", true);
+
+  // this sets up the mouseover & mouseout to pause on the main element
   $("#views_slideshow_main_' . $div . '").mouseover(function() {
-    views_slideshow_timer("' . $div . '", false);
+    views_slideshow_pause("' . $div . '");
   });
   $("#views_slideshow_main_' . $div . '").mouseout(function() {
-    views_slideshow_timer("' . $div . '", true);
+    views_slideshow_resume("' . $div . '");
   });
 })
 
 ';
-    drupal_add_js($js, 'inline');
+  return $js;
+}
+
+/**
+ *  this displays the main element, where the current slide is shown
+ */
+function theme_views_slideshow_main_section($view, $nodes, $type, $items, $item, $div) {
+  $output .= "\n\n" . '<div id="views_slideshow_main_' . $div . '" class="views_slideshow_main">' . "\n  ";
+  $output .= $item . "\n";
+  $output .= '</div><!--close views_slideshow_main_' . $div . "-->\n\n";
+  return $output;
+}
+
+/**
+ *  these are the slideshow elements themselves; not actually displayed, but used to give the html to the main element
+ */
+function theme_views_slideshow_no_display_section($view, $nodes, $type, $items, $div, $mode, $teaser = TRUE) {
+  $output .= '<div id="views_slideshow_no_display_' . $div . '" class="views_slideshow_no_display">' . "\n";
+  if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
+    foreach ($nodes as $count => $node) {
+      $output .= theme('views_slideshow_no_display_teaser', node_view(node_load($node->nid), $teaser, FALSE, FALSE), $div, $count);
+    }
   }
+  else {
+    foreach ($items as $count => $item) {
+      $output .= theme('views_slideshow_no_display_teaser', $item, $div, $count);
+    }
+  }
+  $output .= "</div><!--close views_slideshow_no_display-->\n\n";
+  return $output;
+}
+
+/**
+ *  the html that will be placed into the element in its turn during its frame
+ */
+function theme_views_slideshow_no_display_teaser($item, $div, $count) {
+  $output .= '  <div id="views_slideshow_div_' . $div . '_' . $count . '" class="views_slideshow_hidden">' . "\n  ";
+  $output .= $item . "\n";
+  $output .= '  </div><!--close views_slideshow_div_' . $div . '_' . $count . '-->' . "\n\n";
+  return $output;
+}
+
+/**
+ *  these are teasers that may be pointed at with a mouse to change the element directly
+ */
+function theme_views_slideshow_breakout_teasers($view, $nodes, $type, $items, $div) {
+  $output .= '<div id="views_slideshow_breakout_teasers_' . $div . '" class="views_slideshow_breakout_teasers">' . "\n";
+  $js = "$(document).ready(function() {\n";
+  foreach ($items as $count => $item) {
+    $output .= theme('views_slideshow_breakout_teaser', $item, $div, $count);
+    $js .= theme('views_slideshow_breakout_teaser_js', $div, $count);
+  }
+  $js .= "})\n";
+  drupal_add_js($js, 'inline');
+
+  $output .= "</div><!--close views_slideshow_breakout_teasers-->\n\n";
+
+  return $output;
+}
+
+/**
+ *  the mouseover event code for each breakout teaser
+ */
+function theme_views_slideshow_breakout_teaser_js($div, $count) {
+  // js to set the main div to this teaser's element
+  $js .= '
+  $("#views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '").mouseover(function() {
+    views_slideshow_switch("' . $div . '", ' . $count . ');
+    views_slideshow_pause("' . $div . '");
+  });
+  $("#views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '").mouseout(function() {
+    views_slideshow_resume("' . $div . '");
+//    slideshow_data[' . $div . ']._debug = true;
+  });
+';
+  return $js;
+}
+
+/**
+ *  an individual breakout teaser
+ */
+function theme_views_slideshow_breakout_teaser($item, $div, $count) {
+  $output .= '  <div id="views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '" class="views_slideshow_div_breakout_teaser">' . "\n  ";
+  $output .= $item . "\n";
+  $output .= '  </div><!--close views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '-->' . "\n\n";
   return $output;
 }

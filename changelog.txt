@@ -1,5 +1,12 @@
 // $Id$
 
+2007-09-23
+added functionality for 'multi-thumbnail hover' mode slideshows
+
+2007-09-22
+separated theme functions
+cleaned up & documented code
+
 2007-07-18
 added global settings & instructions to override
 began project for views slideshow
