@@ -49,7 +49,7 @@ function views_slideshow_menu($may_cache) {
  */
 function views_slideshow_settings() {
   $form = array();
-  $form['views_slideshow_default_type'] = array(
+  $form['views_slideshow_default_mode'] = array(
     '#type' => 'select',
     '#title' => t('Global slideshow mode'),
     '#default_value' => variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE),
@@ -335,7 +335,8 @@ function theme_views_slideshow_breakout_teaser_js($div, $count) {
  *  an individual breakout teaser
  */
 function theme_views_slideshow_breakout_teaser($item, $div, $count) {
-  $output .= '  <div id="views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '" class="views_slideshow_div_breakout_teaser">' . "\n  ";
+  $class = $count ? '' : ' views_slideshow_active_teaser';
+  $output .= '  <div id="views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '" class="views_slideshow_div_breakout_teaser' . $class . '">' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '-->' . "\n\n";
   return $output;
