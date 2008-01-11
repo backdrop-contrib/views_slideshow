@@ -9,7 +9,7 @@ define('VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER', 'teaser');  // this will cause t
 define('VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL', 'full');  // this will cause the breakout element of the 'thumbnail_hover' mode to display the larger element as a full node. it is ignored by 'single_frame' mode.
 define('VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT', VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER);
 
-define('VIEWS_SLIDESHOW_DEFAULT_CONTROL_DISPLAY', false);
+define('VIEWS_SLIDESHOW_DEFAULT_CONTROL_DISPLAY', FALSE);
 
 define('VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY', 5000);
 
@@ -25,7 +25,9 @@ define('VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED', VIEWS_SLIDESHOW_FADE_SPEED_SLOW);
 
 define('VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE', 0.25);
 
-define('VIEWS_SLIDESHOW_DEFAULT_FADE', true);
+define('VIEWS_SLIDESHOW_DEFAULT_FADE', TRUE);
+
+define('VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST', TRUE); // when the mode is thumbnail hover, this determines whether to print the teasers first or second
 
 /**
  * Implement hook_menu
@@ -62,6 +64,12 @@ function views_slideshow_settings() {
     '#default_value' => variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT),
     '#options' => array(VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER => 'teaser', VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL => 'full node'),
     '#description' => t('When using the \'thumbnail hover\' mode, a larger element will be created below a list of nodes, to display the node currently in focus (either by rotation or mouse-over). This option will select whether those nodes will be displayed as a teaser or full node in this element. It is ignored when in \'single frame\' mode.'),
+  );
+  $form['views_slideshow_default_teasers_last'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Global teaser placed last in hover breakout mode'),
+    '#default_value' => variable_get('views_slideshow_default_teasers_last', VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST),
+    '#description' => t('If checked, then when a slideshow is in the Hover Breakout mode, the teasers will be displayed after the main image. Otherwise, they will appear first.'),
   );
   $form['views_slideshow_default_timer_delay'] = array(
     '#type' => 'textfield',
@@ -104,7 +112,50 @@ function views_slideshow_settings() {
   );
   $form['helpfield']['help'] = array(
     '#type' => 'item',
-    '#value' => t('Currently, there is no way in the Views UI administration screens to set the previous options for a certain view. Until Views 2.0 is released, if you wish to override a global setting for a particular view slideshow, you\'ll need to manually set the value(s) in the Argument Handling Code of the Arguments section of the view. For instance, you might specify $view->slideshow[\'sort_order\'] = VIEWS_SLIDESHOW_SORT_RANDOM for a random slideshow, $view->slideshow[\'fade_value\'] = 0.5 to fade out nodes half-way, or $view->slideshow[\'timer_delay\'] = 2000 for a delay of two seconds. Allowed values: <ul><li>$view->slideshow[\'mode\']<ul><li>VIEWS_SLIDESHOW_MODE_SINGLE_FRAME (\'' . VIEWS_SLIDESHOW_MODE_SINGLE_FRAME . '\'): the slideshow will be displayed in single frame mode<li>VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER (\'' . VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER . '\'): the slideshow will be displayed in thumbnail hover mode</ul><li>$view->slideshow[\'timer_delay\']<ul><li>This value should be between 0 and the number of miliseconds you wish to delay.</ul><li>$view->slideshow[\'sort_order\']<ul><li>VIEWS_SLIDESHOW_SORT_REVERSE (' . VIEWS_SLIDESHOW_SORT_REVERSE . '): reverse order<li>VIEWS_SLIDESHOW_SORT_RANDOM (' . VIEWS_SLIDESHOW_SORT_RANDOM . '): random order<li>VIEWS_SLIDESHOW_SORT_FORWARD (' . VIEWS_SLIDESHOW_SORT_FORWARD . '): forward order</ul><li>$view->slideshow[\'fade\']<ul><li>true or false: if false, the slideshow will change instantly, and the values for fade_speed and fade_value will be ignored.</ul><li>$view->slideshow[\'fade_speed\']<ul><li>VIEWS_SLIDESHOW_FADE_SPEED_SLOW (\'' . VIEWS_SLIDESHOW_FADE_SPEED_SLOW . '\')<li>VIEWS_SLIDESHOW_FADE_SPEED_NORMAL (\'' . VIEWS_SLIDESHOW_FADE_SPEED_NORMAL . '\')<li>VIEWS_SLIDESHOW_FADE_SPEED_FAST (\'' . VIEWS_SLIDESHOW_FADE_SPEED_FAST . '\')</ul><li>$view->slideshow[\'fade_value\']<ul><li>a decimal value between 0 and 1, to determine how much to fade a slide.</ul></ul>'),
+    '#value' => t('Currently, there is no way in the Views UI administration screens to set the previous options for a certain view.
+      Until Views 2.0 is released, if you wish to override a global setting for a particular view slideshow, you\'ll need to manually
+      set the value(s) in the Argument Handling Code of the Arguments section of the view.
+      For instance, you might specify $view->slideshow[\'sort_order\'] = VIEWS_SLIDESHOW_SORT_RANDOM for a random slideshow,
+      $view->slideshow[\'fade_value\'] = 0.5 to fade out nodes half-way, or $view->slideshow[\'timer_delay\'] = 2000 for a delay of two seconds.
+      Allowed values:
+      <ul>
+        <li>$view->slideshow[\'mode\']
+        <ul>
+          <li>VIEWS_SLIDESHOW_MODE_SINGLE_FRAME (\'' . VIEWS_SLIDESHOW_MODE_SINGLE_FRAME . '\'):
+            the slideshow will be displayed in single frame mode
+          <li>VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER (\'' . VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER . '\'):
+            the slideshow will be displayed in thumbnail hover mode
+        </ul>
+        <li>$view->slideshow[\'teasers_last\']
+        <ul>
+          <li>TRUE or FALSE; Only applies when the mode is VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER.
+            If TRUE, then teasers will be displayed before the main image. Otherwise, they will appear later in the HTML.
+        </ul>
+        <li>$view->slideshow[\'timer_delay\']
+        <ul>
+          <li>This value should be between 0 and the number of miliseconds you wish to delay.
+        </ul>
+        <li>$view->slideshow[\'sort_order\']
+        <ul>
+          <li>VIEWS_SLIDESHOW_SORT_REVERSE (' . VIEWS_SLIDESHOW_SORT_REVERSE . '): reverse order
+          <li>VIEWS_SLIDESHOW_SORT_RANDOM (' . VIEWS_SLIDESHOW_SORT_RANDOM . '): random order
+          <li>VIEWS_SLIDESHOW_SORT_FORWARD (' . VIEWS_SLIDESHOW_SORT_FORWARD . '): forward order
+        </ul>
+        <li>$view->slideshow[\'fade\']
+        <ul>
+          <li>true or false: if false, the slideshow will change instantly, and the values for fade_speed and fade_value will be ignored.
+        </ul>
+        <li>$view->slideshow[\'fade_speed\']
+        <ul>
+          <li>VIEWS_SLIDESHOW_FADE_SPEED_SLOW (\'' . VIEWS_SLIDESHOW_FADE_SPEED_SLOW . '\')
+          <li>VIEWS_SLIDESHOW_FADE_SPEED_NORMAL (\'' . VIEWS_SLIDESHOW_FADE_SPEED_NORMAL . '\')
+          <li>VIEWS_SLIDESHOW_FADE_SPEED_FAST (\'' . VIEWS_SLIDESHOW_FADE_SPEED_FAST . '\')
+        </ul>
+        <li>$view->slideshow[\'fade_value\']
+        <ul>
+          <li>a decimal value between 0 and 1, to determine how much to fade a slide.
+        </ul>
+      </ul>'),
   );
   return system_settings_form($form);
 }
@@ -202,6 +253,15 @@ function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
     $hover_breakout = isset($view->slideshow['hover_breakout']) ? $view->slideshow['hover_breakout'] : variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT);
     $teaser = ($hover_breakout == VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER ? TRUE : FALSE);
 
+    // if we're using the 'thumbnail hover' mode, then we need to display all the view thumbnails
+    if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
+      $view_teasers = theme('views_slideshow_breakout_teasers', $view, $nodes, $type, $items, $div);
+      $teasers_last = isset($view->slideshow['teasers_last']) ? $view->slideshow['teasers_last'] : variable_get('views_slideshow_default_teasers_last', VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST);
+      if (!$teasers_last) {
+        $output .= $view_teasers;
+      }
+    }
+
     if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
       $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, node_view(node_load($nodes[0]->nid), $teaser, FALSE, FALSE), $div);
     }
@@ -212,9 +272,8 @@ function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
     // these are hidden elements, used to cycle through the main div
     $output .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
 
-    // if we're using the 'thumbnail hover' mode, then we need to display all the view thumbnails
-    if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
-      $output .= theme('views_slideshow_breakout_teasers', $view, $nodes, $type, $items, $div);
+    if ($view_teasers && $teasers_last) {
+      $output .= $view_teasers;
     }
 
   }

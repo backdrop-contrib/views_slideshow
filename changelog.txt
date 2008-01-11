@@ -1,5 +1,8 @@
 // $Id$
 
+2008-01-10
+allow change of placement of teasers in breakout hover mode
+
 2007-09-23
 added functionality for 'multi-thumbnail hover' mode slideshows
 
