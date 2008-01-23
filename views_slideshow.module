@@ -3,7 +3,12 @@
 
 define('VIEWS_SLIDESHOW_MODE_SINGLE_FRAME', 'single_frame');  // this will rotate through all slideshows in a single div element
 define('VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER', 'thumbnail_hover');  // this will create thumbnails of all the node teasers, with a mouse-over triggering a larger div full node view
+define('VIEWS_SLIDESHOW_MODE_JCAROUSEL', 'jcarousel');  // this uses the jcarousel jquery plugin, if the jcarousel module is installed
 define('VIEWS_SLIDESHOW_DEFAULT_MODE', VIEWS_SLIDESHOW_MODE_SINGLE_FRAME);
+
+define('VIEWS_SLIDESHOW_JCAROUSEL_SKIN_TANGO', 'tango'); // the tango skin is included, and is a css class used on the list
+define('VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_TANGO);
+define('VIEWS_SLIDESHOW_JCAROUSEL_VERTICAL_DEFAULT', FALSE);
 
 define('VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER', 'teaser');  // this will cause the breakout element of the 'thumbnail_hover' mode to display the larger element as a teaser. it is ignored by 'single_frame' mode.
 define('VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL', 'full');  // this will cause the breakout element of the 'thumbnail_hover' mode to display the larger element as a full node. it is ignored by 'single_frame' mode.
@@ -55,9 +60,39 @@ function views_slideshow_settings() {
     '#type' => 'select',
     '#title' => t('Global slideshow mode'),
     '#default_value' => variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE),
-    '#options' => array(VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => 'single frame', VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER => 'thumbnail hover'),
+    '#options' => array(VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => t('single frame'), VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER => t('thumbnail hover')),
     '#description' => t('This will set the type of slideshow to display for views. When set as \'single frame\', a single element will be displayed, with node teasers fading and and out to the next node in order. When set as \'thumbnail hover\', all the teasers will be displayed in a list, followed by a larger element displaying the full node view -- the slideshow will either rotate through the elements using the timer, and/or with a mouse-over event.'),
   );
+  if (module_exists('jcarousel')) {
+    $form['views_slideshow_default_mode']['#options'][VIEWS_SLIDESHOW_MODE_JCAROUSEL] = t('jcarousel');
+    $form['views_slideshow_default_mode']['#description'] .= t(' Jcarousel.');
+    $form['jcarousel'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('jCarousel options'),
+      '#collapsible' => TRUE,
+    );
+    $form['jcarousel']['views_slideshow_jcarousel_skin'] = array(
+      '#type' => 'textfield',
+      '#title' => t('jCarousel skin'),
+      '#default_value' => variable_get('views_slideshow_jcarousel_skin', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT),
+      '#description' => t('This is the skin to use when using jCarousel. If it is any other than the default of %tango, you\'ll need to create your own %skin file in a directory of that name in the %directory folder. It would need to designate a class of %class to apply to the created list, such as %sample-class in %skin in the %sample-dir folder.', array('%tango' => VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT, '%skin' => 'skin.css', '%directory' => drupal_get_path('module', 'jcarousel') ."/skins/[SKIN]", '%class' => '.jcarousel-skin-[SKIN]', '%sample-class' => '.jcarousel-skin-tango', '%sample-dir' => drupal_get_path('module', 'jcarousel') ."/skins/tango")),
+    );
+    $form['jcarousel']['views_slideshow_jcarousel_vertical'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('jCarousel vertical slideshow'),
+      '#default_value' => variable_get('views_slideshow_jcarousel_vertical', VIEWS_SLIDESHOW_JCAROUSEL_VERTICAL_DEFAULT),
+      '#description' => t('If checked, a slideshow will be shown vertically, when using jCarousel.'),
+    );
+  }
+  else {
+    $form['jcarousel'] = array(
+      '#type' => 'item',
+      '#title' => t('jCarousel slideshow'),
+      '#description' => t('If you have the !jcarousel module installed, you will have more slideshow options available, such as buttons, vertical slideshows, and skins. All these options are available anyway, although may require some customization. The !jcarousel module simply offers more functionality out of the box.', array('!jcarousel' => l(t('jCarousel'), 'http://drupal.org/project/jcarousel'))),
+    );
+  }
+  // TODO: remove this when/if jcarousel support is added. also add instructions to developer
+  unset($form['jcarousel']);
   $form['views_slideshow_default_hover_breakout'] = array(
     '#type' => 'select',
     '#title' => t('Global hover breakout'),
@@ -165,17 +200,17 @@ function views_slideshow_settings() {
  */
 function views_slideshow_views_style_plugins() {
   return array(
-    'views_slideshow_list' => array(
+    'slideshow_list' => array(
       'name' => t('Slideshow List'),
       'theme' => 'views_slideshow_view_list',
       'validate' => 'views_slideshow_plugin_validate_list',
       'needs_fields' => true,
     ),
-    'views_slideshow_teaser' => array(
+    'slideshow_teaser' => array(
       'name' => t('Slideshow Teasers'),
       'theme' => 'views_slideshow_view_teasers',
     ),
-    'views_slideshow_node' => array(
+    'slideshow_node' => array(
       'name' => t('Slideshow Full Nodes'),
       'theme' => 'views_slideshow_view_nodes',
     ),
@@ -236,20 +271,33 @@ function theme_views_slideshow_view_nodes($view, $nodes, $type, $teasers = false
  */
 function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
   static $div = 0;
+  static $added_js = FALSE;
+
   $output = '';
   if (is_array($items) && !(empty($items))) {
+    $mode = isset($view->slideshow['mode']) ? $view->slideshow['mode'] : variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE);
+
+    if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
+      $skin = isset($view->slideshow['skin']) ? $view->slideshow['skin'] : variable_get('views_slideshow_jcarousel_skin', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT);
+      jcarousel_add($skin);
+    }
     // only add the js file the first time a slideshow is presented. if multiple slideshows are displayed, they all use the same js.
-    if (!$div) {
+    else if (!$added_js) {
       $base = drupal_get_path('module', 'views_slideshow');
       drupal_add_js($base . '/views_slideshow.js', 'module');
       drupal_add_css($base . '/views_slideshow.css', 'module');
+      $added_js = TRUE;
     }
 
     $div++;
-    $js = theme('views_slideshow_div_js', $view, $nodes, $type, $items, $div);
+    if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
+      $js = theme('views_slideshow_jcarousel_js', $div);
+    }
+    else {
+      $js = theme('views_slideshow_div_js', $view, $nodes, $type, $items, $div);
+    }
     drupal_add_js($js, 'inline');
 
-    $mode = isset($view->slideshow['mode']) ? $view->slideshow['mode'] : variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE);
     $hover_breakout = isset($view->slideshow['hover_breakout']) ? $view->slideshow['hover_breakout'] : variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT);
     $teaser = ($hover_breakout == VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER ? TRUE : FALSE);
 
@@ -265,12 +313,17 @@ function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
     if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
       $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, node_view(node_load($nodes[0]->nid), $teaser, FALSE, FALSE), $div);
     }
+    else if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
+      $output .= theme('views_slideshow_jcarousel', $items, $div, $skin);
+    }
     else {
       $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, $items[0], $div);
     }
 
     // these are hidden elements, used to cycle through the main div
-    $output .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
+    if ($mode != VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
+      $output .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
+    }
 
     if ($view_teasers && $teasers_last) {
       $output .= $view_teasers;
@@ -399,4 +452,25 @@ function theme_views_slideshow_breakout_teaser($item, $div, $count) {
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '-->' . "\n\n";
   return $output;
+}
+
+function theme_views_slideshow_jcarousel($items, $div = '', $skin = NULL) {
+  if (sizeof($items)) {
+    if (!isset($skin)) {
+      $skin = variable_get('views_slideshow_jcarousel_skin', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT);
+    }
+    $output .= "\n" . '<ul id="views_slideshow_jcarousel_' . $div . '" class="jcarousel-skin-' . $skin . '">' . "\n";
+    $output .= '  <li>';
+    $output .= implode("</li>\n\n  <li>", $items);
+    $output .= "</li></ul>\n";
+  }
+  return $output;
+}
+
+// TODO :add other jcarousel options...
+function theme_views_slideshow_jcarousel_js($div) {
+  $js = "$(document).ready(function() {\n";
+  $js .= "$('#views_slideshow_jcarousel_$div').jcarousel();\n";
+  $js .= "})\n";
+  return $js;
 }

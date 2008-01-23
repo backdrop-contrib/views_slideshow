@@ -71,14 +71,20 @@ function views_slideshow_set_div(slideshow_main, new_div_number) {
     new_div_number = slideshow_data[slideshow_main]._num_divs - 1;
   }
 
-  // set the current_div number to the new node
-  slideshow_data[slideshow_main]._current_div = new_div_number;
+  _old_breakout = "#views_slideshow_div_breakout_teaser_" + slideshow_main + "_" + slideshow_data[slideshow_main]._current_div;
+  _new_breakout = "#views_slideshow_div_breakout_teaser_" + slideshow_main + "_" + new_div_number;
+
 
   // get the div with the html we need
   _new_div = "#views_slideshow_div_" + slideshow_main + "_" + new_div_number;
 
+  // set the current_div number to the new node
+  slideshow_data[slideshow_main]._current_div = new_div_number;
+
   // set the html of the new div
   $(_main_div).html($(_new_div).html());
+  $(_old_breakout).removeClass('views_slideshow_active_teaser');
+  $(_new_breakout).addClass('views_slideshow_active_teaser');
 
   // check to see if we fade or not
   if (slideshow_data[slideshow_main]._fade) {

@@ -1,5 +1,8 @@
 // $Id$
 
+2008-01-23
+allow teasers in slideshow
+
 2008-01-10
 allow change of placement of teasers in breakout hover mode
 
