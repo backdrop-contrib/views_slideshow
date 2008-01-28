@@ -1,5 +1,8 @@
 // $Id$
 
+2008-01-28
+smoother hovers if hoverintent is installed
+
 2008-01-23
 allow teasers in slideshow
 

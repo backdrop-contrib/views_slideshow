@@ -55,6 +55,9 @@ function views_slideshow_menu($may_cache) {
  * Implement hook_settings
  */
 function views_slideshow_settings() {
+  if (!module_exists('hoverintent')) {
+    drupal_set_message(t('You may experience better performance with your slide shows if you install the !hoverintent module.', array('!hoverintent' => l(t('hoverIntent'), 'http://drupal.org/project/hoverintent'))));
+  }
   $form = array();
   $form['views_slideshow_default_mode'] = array(
     '#type' => 'select',
@@ -345,7 +348,7 @@ function theme_views_slideshow_div_js($view, $nodes, $type, $items, $div) {
   $fade = $fade ? 'true' : 'false';
   $fade_speed = isset($view->slideshow['fade_speed']) ? $view->slideshow['fade_speed'] : variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
   $fade_value = isset($view->slideshow['fade_value']) ? $view->slideshow['fade_value'] : variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
-
+  $hover = (module_invoke('jq', 'add', 'hoverIntent')) ? 'hoverIntent' : 'hover';
   $js = '
 // set the timer data for a view slideshow
 $(document).ready(function() {
@@ -356,14 +359,14 @@ $(document).ready(function() {
   views_slideshow_timer("' . $div . '", true);
 
   // this sets up the mouseover & mouseout to pause on the main element
-  $("#views_slideshow_main_' . $div . '").mouseover(function() {
-    views_slideshow_pause("' . $div . '");
-  });
-  $("#views_slideshow_main_' . $div . '").mouseout(function() {
-    views_slideshow_resume("' . $div . '");
-  });
-})
-
+  $("#views_slideshow_main_' . $div . '").' . $hover . '(
+    function() {
+      views_slideshow_pause("' . $div . '");
+    },
+    function() {
+      views_slideshow_resume("' . $div . '");
+    });
+});
 ';
   return $js;
 }
@@ -430,15 +433,17 @@ function theme_views_slideshow_breakout_teasers($view, $nodes, $type, $items, $d
  */
 function theme_views_slideshow_breakout_teaser_js($div, $count) {
   // js to set the main div to this teaser's element
+  $hover = (module_invoke('jq', 'add', 'hoverIntent')) ? 'hoverIntent' : 'hover';
+
   $js .= '
-  $("#views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '").mouseover(function() {
-    views_slideshow_switch("' . $div . '", ' . $count . ');
-    views_slideshow_pause("' . $div . '");
-  });
-  $("#views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '").mouseout(function() {
-    views_slideshow_resume("' . $div . '");
-//    slideshow_data[' . $div . ']._debug = true;
-  });
+  $("#views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '").' . $hover . '(
+    function() {
+      views_slideshow_switch("' . $div . '", ' . $count . ');
+      views_slideshow_pause("' . $div . '");
+    },
+    function() {
+      views_slideshow_resume("' . $div . '");
+   });
 ';
   return $js;
 }
