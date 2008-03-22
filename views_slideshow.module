@@ -95,7 +95,7 @@ function views_slideshow_settings() {
     );
   }
   // TODO: remove this when/if jcarousel support is added. also add instructions to developer
-  unset($form['jcarousel']);
+//   unset($form['jcarousel']);
   $form['views_slideshow_default_hover_breakout'] = array(
     '#type' => 'select',
     '#title' => t('Global hover breakout'),
@@ -313,19 +313,19 @@ function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
       }
     }
 
+    // these are hidden elements, used to cycle through the main div
+    if ($mode != VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
+      $hidden_elements .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
+    }
+
     if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
-      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, node_view(node_load($nodes[0]->nid), $teaser, FALSE, FALSE), $div);
+      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, node_view(node_load($nodes[0]->nid), $teaser, FALSE, FALSE), $div, $hidden_elements);
     }
     else if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
       $output .= theme('views_slideshow_jcarousel', $items, $div, $skin);
     }
     else {
-      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, $items[0], $div);
-    }
-
-    // these are hidden elements, used to cycle through the main div
-    if ($mode != VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
-      $output .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
+      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, $items[0], $div, $hidden_elements);
     }
 
     if ($view_teasers && $teasers_last) {
@@ -374,9 +374,10 @@ $(document).ready(function() {
 /**
  *  this displays the main element, where the current slide is shown
  */
-function theme_views_slideshow_main_section($view, $nodes, $type, $items, $item, $div) {
+function theme_views_slideshow_main_section($view, $nodes, $type, $items, $item, $div, $hidden_elements) {
   $output .= "\n\n" . '<div id="views_slideshow_main_' . $div . '" class="views_slideshow_main">' . "\n  ";
-  $output .= $item . "\n";
+//   $output .= $item . "\n";
+  $output .= $hidden_elements;
   $output .= '</div><!--close views_slideshow_main_' . $div . "-->\n\n";
   return $output;
 }
@@ -385,7 +386,7 @@ function theme_views_slideshow_main_section($view, $nodes, $type, $items, $item,
  *  these are the slideshow elements themselves; not actually displayed, but used to give the html to the main element
  */
 function theme_views_slideshow_no_display_section($view, $nodes, $type, $items, $div, $mode, $teaser = TRUE) {
-  $output .= '<div id="views_slideshow_no_display_' . $div . '" class="views_slideshow_no_display">' . "\n";
+  $output .= '<div id="views_slideshow_teaser_section_' . $div . '" class="views_slideshow_teaser_section">' . "\n";
   if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
     foreach ($nodes as $count => $node) {
       $output .= theme('views_slideshow_no_display_teaser', node_view(node_load($node->nid), $teaser, FALSE, FALSE), $div, $count);
@@ -404,7 +405,8 @@ function theme_views_slideshow_no_display_section($view, $nodes, $type, $items, 
  *  the html that will be placed into the element in its turn during its frame
  */
 function theme_views_slideshow_no_display_teaser($item, $div, $count) {
-  $output .= '  <div id="views_slideshow_div_' . $div . '_' . $count . '" class="views_slideshow_hidden">' . "\n  ";
+  $hidden = $count ? 'class="views_slideshow_hidden"' : '';
+  $output .= '  <div id="views_slideshow_div_' . $div . '_' . $count . '" '. $hidden .'>' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_div_' . $div . '_' . $count . '-->' . "\n\n";
   return $output;

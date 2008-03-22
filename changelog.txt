@@ -1,5 +1,8 @@
 // $Id$
 
+2008-03-22
+#237259 fix endless upload of images in xp/ff
+
 2008-01-28
 smoother hovers if hoverintent is installed
 
