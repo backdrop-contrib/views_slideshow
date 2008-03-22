@@ -95,7 +95,7 @@ function views_slideshow_settings() {
     );
   }
   // TODO: remove this when/if jcarousel support is added. also add instructions to developer
-//   unset($form['jcarousel']);
+  unset($form['jcarousel']);
   $form['views_slideshow_default_hover_breakout'] = array(
     '#type' => 'select',
     '#title' => t('Global hover breakout'),
