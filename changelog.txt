@@ -1,5 +1,8 @@
 // $Id$
 
+2008-03-25
+move js to /js folder
+
 2008-03-22
 #237259 fix endless upload of images in xp/ff
 
