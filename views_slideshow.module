@@ -1,6 +1,11 @@
 <?php
 // $Id$
 
+/**
+ *  @file
+ *  Provides Slideshow style options for Views.
+ */
+
 define('VIEWS_SLIDESHOW_MODE_SINGLE_FRAME', 'single_frame');  // this will rotate through all slideshows in a single div element
 define('VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER', 'thumbnail_hover');  // this will create thumbnails of all the node teasers, with a mouse-over triggering a larger div full node view
 define('VIEWS_SLIDESHOW_MODE_JCAROUSEL', 'jcarousel');  // this uses the jcarousel jquery plugin, if the jcarousel module is installed
@@ -35,449 +40,46 @@ define('VIEWS_SLIDESHOW_DEFAULT_FADE', TRUE);
 define('VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST', TRUE); // when the mode is thumbnail hover, this determines whether to print the teasers first or second
 
 /**
- * Implement hook_menu
+ *  Implement hook_theme().
  */
-function views_slideshow_menu($may_cache) {
-  $items = array();
-  if ($may_cache) {
-    $items[] = array(
-      'path' => 'admin/build/views/views_slideshow',
-      'title' => t('Views slideshow configuration'),
-      'description' => t('Configure Views Slideshow: Set global options for slideshow views.'),
-      'callback' => 'drupal_get_form',
-      'callback arguments' => 'views_slideshow_settings',
-      'access' => user_access('administer site configuration'));
-  }
-  return $items;
-}
-
-/**
- * Implement hook_settings
- */
-function views_slideshow_settings() {
-  if (!module_exists('hoverintent')) {
-    drupal_set_message(t('You may experience better performance with your slide shows if you install the !hoverintent module.', array('!hoverintent' => l(t('hoverIntent'), 'http://drupal.org/project/hoverintent'))));
-  }
-  $form = array();
-  $form['views_slideshow_default_mode'] = array(
-    '#type' => 'select',
-    '#title' => t('Global slideshow mode'),
-    '#default_value' => variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE),
-    '#options' => array(VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => t('single frame'), VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER => t('thumbnail hover')),
-    '#description' => t('This will set the type of slideshow to display for views. When set as \'single frame\', a single element will be displayed, with node teasers fading and and out to the next node in order. When set as \'thumbnail hover\', all the teasers will be displayed in a list, followed by a larger element displaying the full node view -- the slideshow will either rotate through the elements using the timer, and/or with a mouse-over event.'),
-  );
-  if (module_exists('jcarousel')) {
-    $form['views_slideshow_default_mode']['#options'][VIEWS_SLIDESHOW_MODE_JCAROUSEL] = t('jcarousel');
-    $form['views_slideshow_default_mode']['#description'] .= t(' Jcarousel.');
-    $form['jcarousel'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('jCarousel options'),
-      '#collapsible' => TRUE,
-    );
-    $form['jcarousel']['views_slideshow_jcarousel_skin'] = array(
-      '#type' => 'textfield',
-      '#title' => t('jCarousel skin'),
-      '#default_value' => variable_get('views_slideshow_jcarousel_skin', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT),
-      '#description' => t('This is the skin to use when using jCarousel. If it is any other than the default of %tango, you\'ll need to create your own %skin file in a directory of that name in the %directory folder. It would need to designate a class of %class to apply to the created list, such as %sample-class in %skin in the %sample-dir folder.', array('%tango' => VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT, '%skin' => 'skin.css', '%directory' => drupal_get_path('module', 'jcarousel') ."/skins/[SKIN]", '%class' => '.jcarousel-skin-[SKIN]', '%sample-class' => '.jcarousel-skin-tango', '%sample-dir' => drupal_get_path('module', 'jcarousel') ."/skins/tango")),
-    );
-    $form['jcarousel']['views_slideshow_jcarousel_vertical'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('jCarousel vertical slideshow'),
-      '#default_value' => variable_get('views_slideshow_jcarousel_vertical', VIEWS_SLIDESHOW_JCAROUSEL_VERTICAL_DEFAULT),
-      '#description' => t('If checked, a slideshow will be shown vertically, when using jCarousel.'),
-    );
-  }
-  else {
-    $form['jcarousel'] = array(
-      '#type' => 'item',
-      '#title' => t('jCarousel slideshow'),
-      '#description' => t('If you have the !jcarousel module installed, you will have more slideshow options available, such as buttons, vertical slideshows, and skins. All these options are available anyway, although may require some customization. The !jcarousel module simply offers more functionality out of the box.', array('!jcarousel' => l(t('jCarousel'), 'http://drupal.org/project/jcarousel'))),
-    );
-  }
-  // TODO: remove this when/if jcarousel support is added. also add instructions to developer
-  unset($form['jcarousel']);
-  $form['views_slideshow_default_hover_breakout'] = array(
-    '#type' => 'select',
-    '#title' => t('Global hover breakout'),
-    '#default_value' => variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT),
-    '#options' => array(VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER => 'teaser', VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL => 'full node'),
-    '#description' => t('When using the \'thumbnail hover\' mode, a larger element will be created below a list of nodes, to display the node currently in focus (either by rotation or mouse-over). This option will select whether those nodes will be displayed as a teaser or full node in this element. It is ignored when in \'single frame\' mode.'),
-  );
-  $form['views_slideshow_default_teasers_last'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Global teaser placed last in hover breakout mode'),
-    '#default_value' => variable_get('views_slideshow_default_teasers_last', VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST),
-    '#description' => t('If checked, then when a slideshow is in the Hover Breakout mode, the teasers will be displayed after the main image. Otherwise, they will appear first.'),
-  );
-  $form['views_slideshow_default_timer_delay'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Global slideshow timer delay'),
-    '#default_value' => variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY),
-    '#description' => t('Set this to the number of miliseconds you wish each slide to delay before showing the next slide of a view.'),
-  );
-  $form['views_slideshow_default_sort_order'] = array(
-    '#type' => 'select',
-    '#title' => t('Global slideshow sort order'),
-    '#default_value' => variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER),
-    '#options' => array(VIEWS_SLIDESHOW_SORT_REVERSE => t('reverse'), VIEWS_SLIDESHOW_SORT_RANDOM => t('random'), VIEWS_SLIDESHOW_SORT_FORWARD => t('forward')),
-    '#description' => t('This determines the order that selected nodes of a view will be displayed in the slideshow.'),
-  );
-  $form['views_slideshow_default_fade'] = array(
-    '#type' => 'select',
-    '#title' => t('Global slideshow fade'),
-    '#default_value' => variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE),
-    '#options' => array('1' => t('true'), '0' => t('false')),
-    '#description' => t('If true, then slides will fade into the next slide of the view. Otherwise, they will transition instantly, and the following values will be ignored.'),
-  );
-  $form['views_slideshow_default_fade_speed'] = array(
-    '#type' => 'select',
-    '#title' => t('Global slideshow fade speed'),
-    '#default_value' => variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED),
-    '#options' => array(VIEWS_SLIDESHOW_FADE_SPEED_SLOW => t('slow'), VIEWS_SLIDESHOW_FADE_SPEED_NORMAL => t('normal'), VIEWS_SLIDESHOW_FADE_SPEED_FAST => t('fast')),
-    '#description' => t('This determines how quickly a slide fades into the next slide.'),
-  );
-  $form['views_slideshow_default_fade_value'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Global slideshow fade value'),
-    '#default_value' => variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE),
-    '#description' => t('Set this to a decimal between 0 and 1. Slides will fade to this opacity before fading into the next slide.'),
-  );
-  $form['helpfield'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Individual view slideshow configuration'),
-    '#collapsible' => true,
-    '#collapsed' => true,
-  );
-  $form['helpfield']['help'] = array(
-    '#type' => 'item',
-    '#value' => t('Currently, there is no way in the Views UI administration screens to set the previous options for a certain view.
-      Until Views 2.0 is released, if you wish to override a global setting for a particular view slideshow, you\'ll need to manually
-      set the value(s) in the Argument Handling Code of the Arguments section of the view.
-      For instance, you might specify $view->slideshow[\'sort_order\'] = VIEWS_SLIDESHOW_SORT_RANDOM for a random slideshow,
-      $view->slideshow[\'fade_value\'] = 0.5 to fade out nodes half-way, or $view->slideshow[\'timer_delay\'] = 2000 for a delay of two seconds.
-      Allowed values:
-      <ul>
-        <li>$view->slideshow[\'mode\']
-        <ul>
-          <li>VIEWS_SLIDESHOW_MODE_SINGLE_FRAME (\'' . VIEWS_SLIDESHOW_MODE_SINGLE_FRAME . '\'):
-            the slideshow will be displayed in single frame mode
-          <li>VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER (\'' . VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER . '\'):
-            the slideshow will be displayed in thumbnail hover mode
-        </ul>
-        <li>$view->slideshow[\'teasers_last\']
-        <ul>
-          <li>TRUE or FALSE; Only applies when the mode is VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER.
-            If TRUE, then teasers will be displayed before the main image. Otherwise, they will appear later in the HTML.
-        </ul>
-        <li>$view->slideshow[\'timer_delay\']
-        <ul>
-          <li>This value should be between 0 and the number of miliseconds you wish to delay.
-        </ul>
-        <li>$view->slideshow[\'sort_order\']
-        <ul>
-          <li>VIEWS_SLIDESHOW_SORT_REVERSE (' . VIEWS_SLIDESHOW_SORT_REVERSE . '): reverse order
-          <li>VIEWS_SLIDESHOW_SORT_RANDOM (' . VIEWS_SLIDESHOW_SORT_RANDOM . '): random order
-          <li>VIEWS_SLIDESHOW_SORT_FORWARD (' . VIEWS_SLIDESHOW_SORT_FORWARD . '): forward order
-        </ul>
-        <li>$view->slideshow[\'fade\']
-        <ul>
-          <li>true or false: if false, the slideshow will change instantly, and the values for fade_speed and fade_value will be ignored.
-        </ul>
-        <li>$view->slideshow[\'fade_speed\']
-        <ul>
-          <li>VIEWS_SLIDESHOW_FADE_SPEED_SLOW (\'' . VIEWS_SLIDESHOW_FADE_SPEED_SLOW . '\')
-          <li>VIEWS_SLIDESHOW_FADE_SPEED_NORMAL (\'' . VIEWS_SLIDESHOW_FADE_SPEED_NORMAL . '\')
-          <li>VIEWS_SLIDESHOW_FADE_SPEED_FAST (\'' . VIEWS_SLIDESHOW_FADE_SPEED_FAST . '\')
-        </ul>
-        <li>$view->slideshow[\'fade_value\']
-        <ul>
-          <li>a decimal value between 0 and 1, to determine how much to fade a slide.
-        </ul>
-      </ul>'),
-  );
-  return system_settings_form($form);
-}
-
-/**
- * Slideshow View style plugins. Implementation of hook_views_style_plugins()
- */
-function views_slideshow_views_style_plugins() {
+function views_slideshow_theme($existing, $type, $theme, $path) {
   return array(
-    'slideshow_list' => array(
-      'name' => t('Slideshow List'),
-      'theme' => 'views_slideshow_view_list',
-      'validate' => 'views_slideshow_plugin_validate_list',
-      'needs_fields' => true,
+    'views_slideshow_div_js' => array(
+      'arguments' => array('rows' => NULL, 'options' => NULL, 'id' => NULL),
+      'file' => 'views_slideshow.theme.inc',
     ),
-    'slideshow_teaser' => array(
-      'name' => t('Slideshow Teasers'),
-      'theme' => 'views_slideshow_view_teasers',
+    'views_slideshow_breakout_teaser_js' => array(
+      'arguments' => array('id' => NULL, 'count' => NULL),
+      'file' => 'views_slideshow.theme.inc',
     ),
-    'slideshow_node' => array(
-      'name' => t('Slideshow Full Nodes'),
-      'theme' => 'views_slideshow_view_nodes',
+    'views_slideshow_main_section' => array(
+      'arguments' => array('id' => NULL, 'hidden_elements' => NULL),
+      'file' => 'views_slideshow.theme.inc',
+    ),
+    'views_slideshow_breakout_teaser' => array(
+      'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
+      'file' => 'views_slideshow.theme.inc',
+    ),
+    'views_slideshow_no_display_section' => array(
+      'arguments' => array('view' => NULL, 'rows' => NULL, 'id' => NULL, 'mode' => NULL, 'teaser' => TRUE),
+      'file' => 'views_slideshow.theme.inc',
+    ),
+    'views_slideshow_no_display_teaser' => array(
+      'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
+      'file' => 'views_slideshow.theme.inc',
+    ),
+    'views_slideshow_breakout_teasers' => array(
+      'arguments' => array('items' => NULL, 'id' => NULL),
+      'file' => 'views_slideshow.theme.inc',
     ),
   );
 }
 
 /**
- * Validate a view with type: slideshow list.
+ *  Implements hook_views_api().
  */
-function views_slideshow_plugin_validate_list($type, $view, $form) {
-  // pass thru to list
-  return module_invoke('views_ui', 'plugin_validate_list', $type, $view, $form);
-}
-
-/**
- * Display the nodes of a view as a list.
- */
-function theme_views_slideshow_view_list($view, $nodes, $type) {
-  $fields = _views_get_fields();
-  $items = array();
-
-  foreach ($nodes as $node) {
-    $item = '';
-    foreach ($view->field as $field) {
-      if ($fields[$field['id']]['visible'] !== FALSE) {
-        if ($field['label']) {
-          $item .= "<div class='view-label ". views_css_safe('view-label-'. $field['queryname']) ."'>" . $field['label'] . "</div>";
-        }
-        $item .= "<div class='view-field ". views_css_safe('view-data-'. $field['queryname']) ."'>" . views_theme_field('views_handle_field', $field['queryname'], $fields, $field, $node, $view) . "</div>";
-      }
-    }
-    $items[] = "<div class='view-item ". views_css_safe('view-item-'. $view->name) ."'>$item</div>\n"; // l($node->title, "node/$node->nid");
-  }
-  return theme('views_slideshow_slideshow', $view, $nodes, $type, $items);
-}
-
-/**
- * Display the nodes of a view as teasers.
- */
-function theme_views_slideshow_view_teasers($view, $nodes, $type) {
-  return theme('views_slideshow_view_nodes', $view, $nodes, $type, true);
-}
-
-/**
- * Display the nodes of a view as plain nodes.
- */
-function theme_views_slideshow_view_nodes($view, $nodes, $type, $teasers = false, $links = true) {
-  $items = array();
-  foreach ($nodes as $n) {
-    $node = node_load($n->nid);
-    $items[] = node_view($node, $teasers, false, $links);
-  }
-  return theme('views_slideshow_slideshow', $view, $nodes, $type, $items);
-}
-
-/**
- * Display the slideshow items in a div w/ jquery
- */
-function theme_views_slideshow_slideshow($view, $nodes, $type, $items) {
-  static $div = 0;
-  static $added_js = FALSE;
-
-  $output = '';
-  if (is_array($items) && !(empty($items))) {
-    $mode = isset($view->slideshow['mode']) ? $view->slideshow['mode'] : variable_get('views_slideshow_default_mode', VIEWS_SLIDESHOW_DEFAULT_MODE);
-
-    if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
-      $skin = isset($view->slideshow['skin']) ? $view->slideshow['skin'] : variable_get('views_slideshow_jcarousel_skin', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT);
-      jcarousel_add($skin);
-    }
-    // only add the js file the first time a slideshow is presented. if multiple slideshows are displayed, they all use the same js.
-    else if (!$added_js) {
-      $base = drupal_get_path('module', 'views_slideshow');
-      drupal_add_js($base . '/js/views_slideshow.js', 'module');
-      drupal_add_css($base . '/views_slideshow.css', 'module');
-      $added_js = TRUE;
-    }
-
-    $div++;
-    if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
-      $js = theme('views_slideshow_jcarousel_js', $div);
-    }
-    else {
-      $js = theme('views_slideshow_div_js', $view, $nodes, $type, $items, $div);
-    }
-    drupal_add_js($js, 'inline');
-
-    $hover_breakout = isset($view->slideshow['hover_breakout']) ? $view->slideshow['hover_breakout'] : variable_get('views_slideshow_default_hover_breakout', VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT);
-    $teaser = ($hover_breakout == VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER ? TRUE : FALSE);
-
-    // if we're using the 'thumbnail hover' mode, then we need to display all the view thumbnails
-    if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
-      $view_teasers = theme('views_slideshow_breakout_teasers', $view, $nodes, $type, $items, $div);
-      $teasers_last = isset($view->slideshow['teasers_last']) ? $view->slideshow['teasers_last'] : variable_get('views_slideshow_default_teasers_last', VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST);
-      if (!$teasers_last) {
-        $output .= $view_teasers;
-      }
-    }
-
-    // these are hidden elements, used to cycle through the main div
-    if ($mode != VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
-      $hidden_elements .= theme('views_slideshow_no_display_section', $view, $nodes, $type, $items, $div, $mode, $teaser);
-    }
-
-    if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
-      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, node_view(node_load($nodes[0]->nid), $teaser, FALSE, FALSE), $div, $hidden_elements);
-    }
-    else if ($mode == VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
-      $output .= theme('views_slideshow_jcarousel', $items, $div, $skin);
-    }
-    else {
-      $output .= theme('views_slideshow_main_section', $view, $nodes, $type, $items, $items[0], $div, $hidden_elements);
-    }
-
-    if ($view_teasers && $teasers_last) {
-      $output .= $view_teasers;
-    }
-
-  }
-  return $output;
-}
-
-/**
- *  this inline js sets up the timer for this slideshow
- */
-function theme_views_slideshow_div_js($view, $nodes, $type, $items, $div) {
-  $divs = '"' . implode('", "', array_keys($items)) . '"';
-  $num_divs = sizeof($items);
-  $timer_delay = isset($view->slideshow['timer_delay']) ? $view->slideshow['timer_delay'] : variable_get('views_slideshow_default_timer_delay', VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
-  $sort = isset($view->slideshow['sort_order']) ? $view->slideshow['sort_order'] : variable_get('views_slideshow_default_sort_order', VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
-  $fade = isset($view->slideshow['fade']) ? $view->slideshow['fade'] : variable_get('views_slideshow_default_fade', VIEWS_SLIDESHOW_DEFAULT_FADE);
-  $fade = $fade ? 'true' : 'false';
-  $fade_speed = isset($view->slideshow['fade_speed']) ? $view->slideshow['fade_speed'] : variable_get('views_slideshow_default_fade_speed', VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
-  $fade_value = isset($view->slideshow['fade_value']) ? $view->slideshow['fade_value'] : variable_get('views_slideshow_default_fade_value', VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
-  $hover = (module_invoke('jq', 'add', 'hoverIntent')) ? 'hoverIntent' : 'hover';
-  $js = '
-// set the timer data for a view slideshow
-$(document).ready(function() {
-  // these are the divs containing the elements to be displayed in the main div in rotation or mouseover
-  slideshow_data["' . $div . '"] = new views_slideshow_data(' . $num_divs . ', ' . $timer_delay . ', ' . $sort . ', ' . $fade . ', "' . $fade_speed . '", ' . $fade_value . ');
-
-  // this turns on the timer
-  views_slideshow_timer("' . $div . '", true);
-
-  // this sets up the mouseover & mouseout to pause on the main element
-  $("#views_slideshow_main_' . $div . '").' . $hover . '(
-    function() {
-      views_slideshow_pause("' . $div . '");
-    },
-    function() {
-      views_slideshow_resume("' . $div . '");
-    });
-});
-';
-  return $js;
-}
-
-/**
- *  this displays the main element, where the current slide is shown
- */
-function theme_views_slideshow_main_section($view, $nodes, $type, $items, $item, $div, $hidden_elements) {
-  $output .= "\n\n" . '<div id="views_slideshow_main_' . $div . '" class="views_slideshow_main">' . "\n  ";
-//   $output .= $item . "\n";
-  $output .= $hidden_elements;
-  $output .= '</div><!--close views_slideshow_main_' . $div . "-->\n\n";
-  return $output;
-}
-
-/**
- *  these are the slideshow elements themselves; not actually displayed, but used to give the html to the main element
- */
-function theme_views_slideshow_no_display_section($view, $nodes, $type, $items, $div, $mode, $teaser = TRUE) {
-  $output .= '<div id="views_slideshow_teaser_section_' . $div . '" class="views_slideshow_teaser_section">' . "\n";
-  if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
-    foreach ($nodes as $count => $node) {
-      $output .= theme('views_slideshow_no_display_teaser', node_view(node_load($node->nid), $teaser, FALSE, FALSE), $div, $count);
-    }
-  }
-  else {
-    foreach ($items as $count => $item) {
-      $output .= theme('views_slideshow_no_display_teaser', $item, $div, $count);
-    }
-  }
-  $output .= "</div><!--close views_slideshow_no_display-->\n\n";
-  return $output;
-}
-
-/**
- *  the html that will be placed into the element in its turn during its frame
- */
-function theme_views_slideshow_no_display_teaser($item, $div, $count) {
-  $hidden = $count ? 'class="views_slideshow_hidden"' : '';
-  $output .= '  <div id="views_slideshow_div_' . $div . '_' . $count . '" '. $hidden .'>' . "\n  ";
-  $output .= $item . "\n";
-  $output .= '  </div><!--close views_slideshow_div_' . $div . '_' . $count . '-->' . "\n\n";
-  return $output;
-}
-
-/**
- *  these are teasers that may be pointed at with a mouse to change the element directly
- */
-function theme_views_slideshow_breakout_teasers($view, $nodes, $type, $items, $div) {
-  $output .= '<div id="views_slideshow_breakout_teasers_' . $div . '" class="views_slideshow_breakout_teasers">' . "\n";
-  $js = "$(document).ready(function() {\n";
-  foreach ($items as $count => $item) {
-    $output .= theme('views_slideshow_breakout_teaser', $item, $div, $count);
-    $js .= theme('views_slideshow_breakout_teaser_js', $div, $count);
-  }
-  $js .= "})\n";
-  drupal_add_js($js, 'inline');
-
-  $output .= "</div><!--close views_slideshow_breakout_teasers-->\n\n";
-
-  return $output;
-}
-
-/**
- *  the mouseover event code for each breakout teaser
- */
-function theme_views_slideshow_breakout_teaser_js($div, $count) {
-  // js to set the main div to this teaser's element
-  $hover = (module_invoke('jq', 'add', 'hoverIntent')) ? 'hoverIntent' : 'hover';
-
-  $js .= '
-  $("#views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '").' . $hover . '(
-    function() {
-      views_slideshow_switch("' . $div . '", ' . $count . ');
-      views_slideshow_pause("' . $div . '");
-    },
-    function() {
-      views_slideshow_resume("' . $div . '");
-   });
-';
-  return $js;
-}
-
-/**
- *  an individual breakout teaser
- */
-function theme_views_slideshow_breakout_teaser($item, $div, $count) {
-  $class = $count ? '' : ' views_slideshow_active_teaser';
-  $output .= '  <div id="views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '" class="views_slideshow_div_breakout_teaser' . $class . '">' . "\n  ";
-  $output .= $item . "\n";
-  $output .= '  </div><!--close views_slideshow_div_breakout_teaser_' . $div . '_' . $count . '-->' . "\n\n";
-  return $output;
-}
-
-function theme_views_slideshow_jcarousel($items, $div = '', $skin = NULL) {
-  if (sizeof($items)) {
-    if (!isset($skin)) {
-      $skin = variable_get('views_slideshow_jcarousel_skin', VIEWS_SLIDESHOW_JCAROUSEL_SKIN_DEFAULT);
-    }
-    $output .= "\n" . '<ul id="views_slideshow_jcarousel_' . $div . '" class="jcarousel-skin-' . $skin . '">' . "\n";
-    $output .= '  <li>';
-    $output .= implode("</li>\n\n  <li>", $items);
-    $output .= "</li></ul>\n";
-  }
-  return $output;
-}
-
-// TODO :add other jcarousel options...
-function theme_views_slideshow_jcarousel_js($div) {
-  $js = "$(document).ready(function() {\n";
-  $js .= "$('#views_slideshow_jcarousel_$div').jcarousel();\n";
-  $js .= "})\n";
-  return $js;
+function views_slideshow_views_api() {
+  return array(
+    'api' => 2.0,
+  );
 }

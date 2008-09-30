@@ -1,27 +1,27 @@
 // $Id$
 
-2008-03-25
-move js to /js folder
+2008-09
+-------
+ * Port to d6 (aaron).
 
-2008-03-22
-#237259 fix endless upload of images in xp/ff
+2008-03
+----------
+ * Move js to /js folder (aaron).
+ * #237259 fix endless upload of images in xp/ff (aaron).
 
-2008-01-28
-smoother hovers if hoverintent is installed
+2008-01
+-------
+ * Smoother hovers if hoverintent is installed (aaron).
+ * Allow teasers in slideshow (aaron).
+ * Allow change of placement of teasers in breakout hover mode (aaron).
 
-2008-01-23
-allow teasers in slideshow
+2007-09
+-------
+ * Added functionality for 'multi-thumbnail hover' mode slideshows (aaron).
+ * Separated theme functions (aaron).
+ * Cleaned up & documented code (aaron).
 
-2008-01-10
-allow change of placement of teasers in breakout hover mode
-
-2007-09-23
-added functionality for 'multi-thumbnail hover' mode slideshows
-
-2007-09-22
-separated theme functions
-cleaned up & documented code
-
-2007-07-18
-added global settings & instructions to override
-began project for views slideshow
+2007-07
+-------
+ * Added global settings & instructions to override (aaron).
+ * Began project for views slideshow (aaron).
