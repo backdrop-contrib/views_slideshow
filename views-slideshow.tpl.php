@@ -31,6 +31,8 @@
   drupal_add_js($js, 'inline');
 
   $teaser = ($options['hover_breakout'] == VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER ? TRUE : FALSE);
+  $output = '';
+  $view_teasers = FALSE;
 
   // if we're using the 'thumbnail hover' mode, then we need to display all the view thumbnails
   if ($options['mode'] == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {

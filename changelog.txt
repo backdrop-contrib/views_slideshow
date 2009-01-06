@@ -1,5 +1,9 @@
 // $Id$
 
+January 2009
+------------
+ * 324640/KarenS PHP Notices (robertDouglass/Karens).
+
 2008-09
 -------
  * Port to d6 (aaron).

@@ -44,7 +44,7 @@ JS;
  *  This displays the main element, where the current slide is shown.
  */
 function theme_views_slideshow_main_section($id, $hidden_elements) {
-  $output .= "\n\n" . '<div id="views_slideshow_main_' . $id . '" class="views_slideshow_main">' . "\n  ";
+  $output = "\n\n" . '<div id="views_slideshow_main_' . $id . '" class="views_slideshow_main">' . "\n  ";
   $output .= $hidden_elements;
   $output .= '</div><!--close views_slideshow_main_' . $id . "-->\n\n";
   return $output;
@@ -54,7 +54,7 @@ function theme_views_slideshow_main_section($id, $hidden_elements) {
  *  These are the slideshow elements themselves; not actually displayed, but used to give the html to the main element.
  */
 function theme_views_slideshow_no_display_section($view, $rows, $id, $mode, $teaser = TRUE) {
-  $output .= '<div id="views_slideshow_teaser_section_' . $id . '" class="views_slideshow_teaser_section">' . "\n";
+  $output = '<div id="views_slideshow_teaser_section_' . $id . '" class="views_slideshow_teaser_section">' . "\n";
   if ($mode == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
     foreach ($view->result as $count => $node) {
       $output .= theme('views_slideshow_no_display_teaser', node_view(node_load($node->nid), $teaser, FALSE, FALSE), $id, $count);
@@ -74,7 +74,7 @@ function theme_views_slideshow_no_display_section($view, $rows, $id, $mode, $tea
  */
 function theme_views_slideshow_no_display_teaser($item, $id, $count) {
   $hidden = $count ? 'class="views_slideshow_hidden"' : '';
-  $output .= '  <div id="views_slideshow_div_' . $id . '_' . $count . '" '. $hidden .'>' . "\n  ";
+  $output = '  <div id="views_slideshow_div_' . $id . '_' . $count . '" '. $hidden .'>' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_div_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;
@@ -84,7 +84,7 @@ function theme_views_slideshow_no_display_teaser($item, $id, $count) {
  *  These are teasers that may be pointed at with a mouse to change the element directly.
  */
 function theme_views_slideshow_breakout_teasers($items, $id) {
-  $output .= '<div id="views_slideshow_breakout_teasers_' . $id . '" class="views_slideshow_breakout_teasers">' . "\n";
+  $output = '<div id="views_slideshow_breakout_teasers_' . $id . '" class="views_slideshow_breakout_teasers">' . "\n";
   $js = "$(document).ready(function() {\n";
   foreach ($items as $count => $item) {
     $output .= theme('views_slideshow_breakout_teaser', $item, $id, $count);
@@ -105,7 +105,7 @@ function theme_views_slideshow_breakout_teaser_js($id, $count) {
   // Return the js to set the main div to this teaser's element.
   $hover = (module_invoke('jq', 'add', 'hoverIntent')) ? 'hoverIntent' : 'hover';
 
-  $js .= '
+  $js = '
   $("#views_slideshow_div_breakout_teaser_' . $id . '_' . $count . '").' . $hover . '(
     function() {
       views_slideshow_switch("' . $id . '", ' . $count . ');
@@ -123,7 +123,7 @@ function theme_views_slideshow_breakout_teaser_js($id, $count) {
  */
 function theme_views_slideshow_breakout_teaser($item, $id, $count) {
   $class = $count ? '' : ' views_slideshow_active_teaser';
-  $output .= '  <div id="views_slideshow_div_breakout_teaser_' . $id . '_' . $count . '" class="views_slideshow_div_breakout_teaser' . $class . '">' . "\n  ";
+  $output = '  <div id="views_slideshow_div_breakout_teaser_' . $id . '_' . $count . '" class="views_slideshow_div_breakout_teaser' . $class . '">' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_div_breakout_teaser_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;
