@@ -1,5 +1,9 @@
 // $Id$
 
+March 2009
+----------
+ * Add jQuery Cycle plugin js file (aaron).
+
 January 2009
 ------------
  * 324640/KarenS PHP Notices (robertDouglass/Karens).
