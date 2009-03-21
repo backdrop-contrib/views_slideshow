@@ -2,6 +2,7 @@
 
 March 2009
 ----------
+ * Load Cycle when using Single Frame mode (aaron).
  * Add jQuery Cycle plugin js file (aaron).
 
 January 2009

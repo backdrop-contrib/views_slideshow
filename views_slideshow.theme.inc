@@ -61,6 +61,18 @@ function theme_views_slideshow_no_display_section($view, $rows, $id, $mode, $tea
     }
   }
   else {
+    // Add support for the jQuery Cycle plugin.
+    // If we have the jQ module installed, use that to add the Cycle plugin if possible.
+    // That allows for version control.
+    if (module_exists('jq')) {
+      $js = jq_add('cycle');
+    }
+
+    // Otherwise, we'll add the version included with this module.
+    if (!$js) {
+      drupal_add_js(drupal_get_path('module', 'views_slideshow') .'/js/jquery.cycle.all.min.js', 'module');
+    }
+
     foreach ($rows as $count => $item) {
       $output .= theme('views_slideshow_no_display_teaser', $item, $id, $count);
     }
