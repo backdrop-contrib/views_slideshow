@@ -17,16 +17,10 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
    * Set default options
    */
   function option_definition() {
+    module_load_all_includes('views_slideshow.inc');
     $options = parent::option_definition();
-    $options['mode'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_MODE);
-    $options['hover'] = array('default' => (module_exists('hoverintent') ? 'hoverIntent' : 'hover'));
-    $options['timer_delay'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_TIMER_DELAY);
-    $options['sort'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_SORT_ORDER);
-    $options['fade'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_FADE);
-    $options['fade_speed'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_FADE_SPEED);
-    $options['fade_value'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_FADE_VALUE);
-    $options['hover_breakout'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_HOVER_BREAKOUT);
-    $options['teasers_last'] = array('default' => VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST);
+
+    $options = array_merge($options, module_invoke_all('views_slideshow_option_definition'));
 
     return $options;
   }
@@ -35,89 +29,18 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
    * Render the given style.
    */
   function options_form(&$form, &$form_state) {
+    module_load_all_includes('views_slideshow.inc');
     parent::options_form($form, $form_state);
-    $options = array(
-      VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => t('Single frame'),
-      VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER => t('Thumbnail hover'),
-//       VIEWS_SLIDESHOW_MODE_JCAROUSEL => t('jCarousel'),
-    );
+
     $form['mode'] = array(
-      '#type' => 'radios',
+      '#type' => 'select',
       '#title' => t('Slideshow mode'),
-      '#options' => $options,
+      '#options' => module_invoke_all('views_slideshow_modes'),
       '#default_value' => $this->options['mode'],
     );
-    $options = array(
-      VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER => t('Teaser'),
-      VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL => t('Full'),
-    );
-    $form['hover_breakout'] = array(
-      '#type' => 'radios',
-      '#title' => t('Hover breakout'),
-      '#options' => $options,
-      '#default_value' => $this->options['hover_breakout'],
-      '#description' => t("Hover breakout determines how to display the breakout element of the %thumbnail mode, either as a teaser or full node. It is ignored in %single mode.", array('%thumbnail' => t('Thumbnail hover'), '%single' => t('Single frame'))),
-    );
-    $form['teasers_last'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Display teasers last'),
-      '#default_value' => $this->options['teasers_last'],
-      '#description' => t('When the mode is thumbnail hover, this determines whether to print the teasers first or second.'),
-    );
-    $options = array('hover' => t('Hover'));
-    if (module_exists('hoverintent')) {
-      $options['hoverIntent'] = t('HoverIntent');
+    foreach (module_implements('views_slideshow_options_form') as $module) {
+      $function = $module .'_views_slideshow_options_form';
+      call_user_func_array($function, array(&$form, &$form_state, &$this));
     }
-    $form['hover'] = array(
-      '#type' => 'radios',
-      '#title' => t('Mouse hover'),
-      '#options' => $options,
-      '#default_value' => $this->options['hover'],
-      '#description' => t('The !hoverintent, if installed, adds the %hoverintent option here. Selecting it causes a delay when the mouse hovers, to stop quick flybys from triggering the behavior. Selecting %hoverdefault chooses the default mouse behavior.', array('!hoverintent' => l(t('HoverIntent module'), 'http://drupal.org/project/hoverintent'), '%hoverintent' => t('HoverIntent'), '%hoverdefault' => t('Hover'))),
-    );
-    $form['timer_delay'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Timer delay (in milliseconds)'),
-      '#default_value' => $this->options['timer_delay'],
-    );
-    $options = array(
-      VIEWS_SLIDESHOW_SORT_FORWARD => t('Forward'),
-      VIEWS_SLIDESHOW_SORT_REVERSE => t('Reverse'),
-      VIEWS_SLIDESHOW_SORT_RANDOM => t('Random'),
-    );
-    $form['sort'] = array(
-      '#type' => 'radios',
-      '#title' => t('Slideshow sort order'),
-      '#description' => t('This option determines the sort order of the returned results within the slideshow. Note that it is not related to the View\'s sorting options, and will only affect resulting items.'),
-      '#options' => $options,
-      '#default_value' => $this->options['sort'],
-    );
-    $form['fade'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Fade'),
-      '#default_value' => $this->options['fade'],
-      '#description' => t('If checked, then the slideshow will fade between frames. Otherwise, the Fade speed and value, below, will be ignored.'),
-    );
-    $options = array(
-      VIEWS_SLIDESHOW_FADE_SPEED_SLOW => t('Slow'),
-      VIEWS_SLIDESHOW_FADE_SPEED_NORMAL => t('Normal'),
-      VIEWS_SLIDESHOW_FADE_SPEED_FAST => t('Fast'),
-    );
-    $form['fade_speed'] = array(
-      '#type' => 'radios',
-      '#title' => t('Fade speed'),
-      '#options' => $options,
-      '#default_value' => $this->options['fade_speed'],
-    );
-    $form['fade_value'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Fade value'),
-      '#description' => t('The opacity to fade to, between 0 (fully transparent) and 1 (fully opaque).'),
-      '#default_value' => $this->options['fade_value'],
-    );
-    $options = array(
-      VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER => t('Teaser'),
-      VIEWS_SLIDESHOW_HOVER_BREAKOUT_FULL => t('Full'),
-    );
   }
 }

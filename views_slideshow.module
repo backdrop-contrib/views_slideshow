@@ -44,6 +44,16 @@ define('VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST', TRUE); // when the mode is thumbn
  */
 function views_slideshow_theme($existing, $type, $theme, $path) {
   return array(
+    'views_slideshow_single_frame' =>  array(
+      'arguments' => array('view' => NULL, 'options' => array(), 'rows' => array(), 'title' => ''),
+      'template' => 'views-slideshow-single-frame',
+      'file' => 'views_slideshow.theme.inc',
+    ),
+    'views_slideshow_thumbnail_hover' => array(
+      'arguments' => array('view' => NULL, 'options' => array(), 'rows' => array(), 'title' => ''),
+      'template' => 'views-slideshow-thumbnail-hover',
+      'file' => 'views_slideshow.theme.inc',
+    ),
     'views_slideshow_div_js' => array(
       'arguments' => array('rows' => NULL, 'options' => NULL, 'id' => NULL),
       'file' => 'views_slideshow.theme.inc',

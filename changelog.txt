@@ -2,6 +2,9 @@
 
 March 2009
 ----------
+ * Add Update 6000 function to rebuild theme (aaron).
+ * Separate theme functions into new tpl.php files (aaron).
+ * Create API to allow modules to plug into Views Slideshow (aaron).
  * Load Cycle when using Single Frame mode (aaron).
  * Add jQuery Cycle plugin js file (aaron).
 

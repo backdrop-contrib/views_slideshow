@@ -23,49 +23,5 @@
  * @ingroup views_templates
  */
 
-  $base = drupal_get_path('module', 'views_slideshow');
-  drupal_add_js($base . '/js/views_slideshow.js', 'module');
-  drupal_add_css($base . '/css/views_slideshow.css', 'module');
-
-  $js = theme('views_slideshow_div_js', $rows, $options, $id);
-  drupal_add_js($js, 'inline');
-
-  $teaser = ($options['hover_breakout'] == VIEWS_SLIDESHOW_HOVER_BREAKOUT_TEASER ? TRUE : FALSE);
-  $output = '';
-  $view_teasers = FALSE;
-
-  // if we're using the 'thumbnail hover' mode, then we need to display all the view thumbnails
-  if ($options['mode'] == VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER) {
-    $view_teasers = theme('views_slideshow_breakout_teasers', $rows, $id);
-    if (!$options['teasers_last']) {
-      $output .= $view_teasers;
-    }
-  }
-
-  // these are hidden elements, used to cycle through the main div
-  if ($options['mode'] != VIEWS_SLIDESHOW_MODE_JCAROUSEL) {
-    $hidden_elements = theme('views_slideshow_no_display_section', $view, $rows, $id, $options['mode'], $teaser);
-    $output .= theme('views_slideshow_main_section', $id, $hidden_elements);
-  }
-//  else {
-//    $output .= theme('views_slideshow_jcarousel', $items, $id, $skin);
-//  }
-
-  if ($view_teasers && $options['teasers_last']) {
-    $output .= $view_teasers;
-  }
-
-  print $output;
-  return;
-
+ print theme('views_slideshow_'. $options[mode], $view, $options, $rows, $title);
 ?>
-<div class="views-slideshow item-list">
-  <?php if (!empty($title)) : ?>
-    <h3><?php print $title; ?></h3>
-  <?php endif; ?>
-  <<?php print $options['type']; ?>>
-    <?php foreach ($rows as $row): ?>
-      <li><?php print $row ?></li>
-    <?php endforeach; ?>
-  </<?php print $options['type']; ?>>
-</div>

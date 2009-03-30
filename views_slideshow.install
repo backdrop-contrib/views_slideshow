@@ -32,3 +32,11 @@ function views_slideshow_update_2() {
   $ret = array_merge($ret, _views_slideshow_update_reset_cache());
   return $ret;
 }
+
+function views_slideshow_update_6000() {
+  $ret = array();
+
+  // We have two new theme functions.
+  drupal_rebuild_theme_registry();
+  return $ret;
+}
