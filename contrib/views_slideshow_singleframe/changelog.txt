@@ -4,4 +4,5 @@ Changelog for Views Slideshow: SingleFrame
 
 April 2009
 ----------
+ * Use Drupal.behaviors and settings for js (aaron).
  * Separate functionality from Views Slideshow (aaron).
