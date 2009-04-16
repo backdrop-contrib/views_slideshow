@@ -1,0 +1,7 @@
+// $Id$
+
+Changelog for Views Slideshow: SingleFrame
+
+April 2009
+----------
+ * Separate functionality from Views Slideshow (aaron).

@@ -8,7 +8,7 @@
 
 function views_slideshow_views_slideshow_modes() {
   $options = array(
-    VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => t('Single frame'),
+//     VIEWS_SLIDESHOW_MODE_SINGLE_FRAME => t('Single frame'),
     VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER => t('Thumbnail hover'),
 //    VIEWS_SLIDESHOW_MODE_JCAROUSEL => t('jCarousel'),
   );

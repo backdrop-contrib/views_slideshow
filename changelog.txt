@@ -1,5 +1,9 @@
 // $Id$
 
+April 2009
+----------
+ * Separate singleframe into contrib module (aaron).
+
 March 2009
 ----------
  * Add Update 6000 function to rebuild theme (aaron).

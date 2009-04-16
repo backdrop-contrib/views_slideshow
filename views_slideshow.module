@@ -6,7 +6,7 @@
  *  Provides Slideshow style options for Views.
  */
 
-define('VIEWS_SLIDESHOW_MODE_SINGLE_FRAME', 'single_frame');  // this will rotate through all slideshows in a single div element
+define('VIEWS_SLIDESHOW_MODE_SINGLE_FRAME', 'singleframe');  // this will rotate through all slideshows in a single div element
 define('VIEWS_SLIDESHOW_MODE_THUMBNAIL_HOVER', 'thumbnail_hover');  // this will create thumbnails of all the node teasers, with a mouse-over triggering a larger div full node view
 define('VIEWS_SLIDESHOW_MODE_JCAROUSEL', 'jcarousel');  // this uses the jcarousel jquery plugin, if the jcarousel module is installed
 define('VIEWS_SLIDESHOW_DEFAULT_MODE', VIEWS_SLIDESHOW_MODE_SINGLE_FRAME);

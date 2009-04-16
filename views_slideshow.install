@@ -40,3 +40,15 @@ function views_slideshow_update_6000() {
   drupal_rebuild_theme_registry();
   return $ret;
 }
+
+/**
+ *  We changed our views handler to group slideshow modes.
+ *  We also moved everything out to new modules, so have to change our views.
+ */
+function views_slideshow_update_6001() {
+  $ret = array();
+
+
+
+  return $ret;
+}

@@ -1,0 +1,21 @@
+<?php
+// $Id$
+
+/**
+ *  @file
+ *  The Views Slideshow: SingleFrame adds a Single Frame slideshow mode to Views Slideshows.
+ */
+
+/**
+ *  Implements hook_theme().
+ */
+function views_slideshow_singleframe_theme($existing, $type, $theme, $path) {
+  return array(
+    'views_slideshow_singleframe' => array(
+      'arguments' => array('view' => NULL, 'options' => array(), 'rows' => array(), 'title' => ''),
+      'template' => 'views-slideshow-singleframe',
+      'file' => 'views_slideshow_singleframe.theme.inc',
+    ),
+  );
+}
+
