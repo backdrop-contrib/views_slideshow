@@ -1,0 +1,7 @@
+// $Id$
+
+Changelog for Views Slideshow: ThumbnailHover
+
+April 2009
+----------
+ * Separate functionality from Views Slideshow (aaron).
