@@ -2,20 +2,20 @@
 
 /**
  *  @file
- *  A simple jQuery SingleFrame Div Slideshow Rotator.
+ *  A simple jQuery ThumbnailHover Div Slideshow Rotator.
  */
 
 /**
  *  This will set our initial behavior, by starting up each individual slideshow.
  */
-Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
-  $('.views_slideshow_main:not(.viewsSlideshowSingleFrame-processed)', context).addClass('viewsSlideshowSingleFrame-processed').each(function() {
+Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
+  $('.views_slideshow_main:not(.viewsSlideshowThumbnailHover-processed)', context).addClass('viewsSlideshowThumbnailHover-processed').each(function() {
     var fullId = '#' + $(this).attr('id');
 
     // Make sure we're working from
-    Drupal.settings.viewsSlideshowSingleFrame[fullId]._current_div = Drupal.settings.viewsSlideshowSingleFrame[fullId]._current_div ? Drupal.settings.viewsSlideshowSingleFrame[fullId]._current_div : 0;
+    Drupal.settings.viewsSlideshowThumbnailHover[fullId]._current_div = Drupal.settings.viewsSlideshowThumbnailHover[fullId]._current_div ? Drupal.settings.viewsSlideshowThumbnailHover[fullId]._current_div : 0;
 
-    var settings = Drupal.settings.viewsSlideshowSingleFrame[fullId];
+    var settings = Drupal.settings.viewsSlideshowThumbnailHover[fullId];
 
     // If we only have a single div, then we have nothing to do.
     // Thus, only turn on our slideshow if we have more than one slide.
@@ -41,22 +41,22 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
  */
 function views_slideshow_timer(slideshow_main, slideshow_status) {
   // Stop the current timer.
-  clearTimeout(Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._timer_id);
+  clearTimeout(Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._timer_id);
 
   // Start a new timer, if slideshow_status is true, unless we're currently paused.
-  if (slideshow_status && !Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._pause) { // !slideshow_data[slideshow_main]._pause) {
+  if (slideshow_status && !Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._pause) { // !slideshow_data[slideshow_main]._pause) {
     // Our timer will call views_slideshow_switch, which fades out the current slide.
-    Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._timer_id = setTimeout("views_slideshow_switch('" + slideshow_main + "', views_slideshow_next_div('" + slideshow_main + "'))", Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].timer_delay);
+    Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._timer_id = setTimeout("views_slideshow_switch('" + slideshow_main + "', views_slideshow_next_div('" + slideshow_main + "'))", Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].timer_delay);
   }
 }
 
 function views_slideshow_pause(slideshow_main) {
-  Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._pause = true;
+  Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._pause = true;
   views_slideshow_timer(slideshow_main, false);
 }
 
 function views_slideshow_resume(slideshow_main) {
-  Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._pause = false;
+  Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._pause = false;
   views_slideshow_timer(slideshow_main, true);
 }
 
@@ -68,9 +68,9 @@ function views_slideshow_switch(slideshow_main, new_div) {
   views_slideshow_timer(slideshow_main, false);
 
   // Check to see if we fade or not.
-  if (Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].fade) {
+  if (Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].fade) {
     // Fade out -- at the end, switch to the next slide in the slideshow.
-    $(slideshow_main).fadeTo(Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].fade_speed, Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].fade_value, function() { views_slideshow_set_div(slideshow_main, new_div); });
+    $(slideshow_main).fadeTo(Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].fade_speed, Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].fade_value, function() { views_slideshow_set_div(slideshow_main, new_div); });
   }
   else {
     // If we don't have a fade, then just switch without fading.
@@ -85,28 +85,28 @@ function views_slideshow_switch(slideshow_main, new_div) {
 function views_slideshow_set_div(slideshow_main, new_div_number) {
   // If the new div is greater than length, wrap to the first.
   // If it's less than zero, wrap to the last.
-  if (new_div_number >= Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].num_divs) {
+  if (new_div_number >= Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].num_divs) {
     new_div_number = 0;
   }
   else if (new_div_number < 0) {
-    new_div_number = Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].num_divs - 1;
+    new_div_number = Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].num_divs - 1;
   }
 
   // Grab the ID's for the two slides.
-  _old_breakout = Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].div_prefix + Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].id + "_" + Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._current_div;
-  _new_breakout = Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].div_prefix + Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].id + "_" + new_div_number;
+  _old_breakout = Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].div_prefix + Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].id + "_" + Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._current_div;
+  _new_breakout = Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].div_prefix + Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].id + "_" + new_div_number;
 
   // Hide our old slide and display the new one.
   $(_old_breakout).hide();
   $(_new_breakout).show();
 
   // Set the current_div number to the new node.
-  Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._current_div = new_div_number;
+  Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._current_div = new_div_number;
 
   // Check to see if we faded here or not.
-  if (Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].fade) {
+  if (Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].fade) {
     // Fade in -- at the end, turn on our timer.
-    $(slideshow_main).fadeTo(Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].fade_speed, 1, function() { views_slideshow_timer(slideshow_main, true); });
+    $(slideshow_main).fadeTo(Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].fade_speed, 1, function() { views_slideshow_timer(slideshow_main, true); });
   }
   else {
     // If we don't have a fade, then just turn on our timer without fading.
@@ -118,15 +118,15 @@ function views_slideshow_set_div(slideshow_main, new_div_number) {
  *  Get the next node div in our sequence.
  */
 function views_slideshow_next_div(slideshow_main) {
-  if (Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].sort) {
+  if (Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].sort) {
     // Select the next div, in forward or reverse order.
-    new_div_number = Drupal.settings.viewsSlideshowSingleFrame[slideshow_main]._current_div + Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].sort;
+    new_div_number = Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main]._current_div + Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].sort;
   }
   else {
     // Select a random div, but make sure we don't repeat ourselves, unless there's only one div.
     do {
-      new_div_number = Math.floor(Math.random() * Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].num_divs);
-    } while (Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].num_divs > 1 && (new_div_number == Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].num_divs - 1));
+      new_div_number = Math.floor(Math.random() * Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].num_divs);
+    } while (Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].num_divs > 1 && (new_div_number == Drupal.settings.viewsSlideshowThumbnailHover[slideshow_main].num_divs - 1));
   }
   return new_div_number;
 }
