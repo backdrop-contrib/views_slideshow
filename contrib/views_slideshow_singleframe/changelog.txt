@@ -1,6 +1,12 @@
 // $Id$
 
 Changelog for Views Slideshow: SingleFrame
+==========================================
+
+June 2009
+---------
+ * Pull proper key from options array during theme (aaron).
+ * Create DRUPAL-6--2 branch (aaron).
 
 April 2009
 ----------

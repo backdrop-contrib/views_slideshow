@@ -8,21 +8,22 @@
 
 function views_slideshow_thumbnailhover_views_slideshow_modes() {
   $options = array(
-    'thumbnailhover' => t('SingleFrame'),
+    'thumbnailhover' => t('ThumbnailHover'),
   );
   return $options;
 }
 
 function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
-  $options['thumbnailhover'] = array();
-  $options['thumbnailhover']['hover'] = array('default' => (module_exists('hoverintent') ? 'hoverIntent' : 'hover'));
-  $options['thumbnailhover']['timer_delay'] = array('default' => 5000);
-  $options['thumbnailhover']['sort'] = array('default' => 1);
-  $options['thumbnailhover']['fade'] = array('default' => TRUE);
-  $options['thumbnailhover']['fade_speed'] = array('default' => 'slow');
-  $options['thumbnailhover']['fade_value'] = array('default' => 0.25);
-  $options['thumbnailhover']['hover_breakout'] = array('default' => 'teaser');
-  $options['thumbnailhover']['teasers_last'] = array('default' => TRUE);
+  $options['thumbnailhover'] = array(
+    'hover' => module_exists('hoverintent') ? 'hoverIntent' : 'hover',
+    'timer_delay' => 5000,
+    'sort' => 1,
+    'fade' => TRUE,
+    'fade_speed' => 'slow',
+    'fade_value' => 0.25,
+    'hover_breakout' => 'teaser',
+    'teasers_last' => TRUE,
+  );
 
   return $options;
 }
@@ -32,7 +33,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
 
   $form['thumbnailhover'] = array(
     '#type' => 'fieldset',
-    '#title' => t('SingleFrame rotator options'),
+    '#title' => t('ThumbnailHover rotator options'),
     '#collapsible' => TRUE,
     '#collapsed' => !($view->options['mode'] == 'thumbnailhover'),
   );
@@ -92,14 +93,14 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     'teaser' => t('Teaser'),
     'full' => t('Full'),
   );
-  $form['hover_breakout'] = array(
+  $form['thumbnailhover']['hover_breakout'] = array(
     '#type' => 'radios',
     '#title' => t('Hover breakout'),
     '#options' => $options,
     '#default_value' => $view->options['hover_breakout'],
     '#description' => t("Hover breakout determines how to display the breakout element of the %thumbnail mode, either as a teaser or full node. It is ignored in %single mode.", array('%thumbnail' => t('Thumbnail hover'), '%single' => t('Single frame'))),
   );
-  $form['teasers_last'] = array(
+  $form['thumbnailhover']['teasers_last'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display teasers last'),
     '#default_value' => $view->options['teasers_last'],

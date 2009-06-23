@@ -10,7 +10,7 @@
  *  Implement template_preprocess_hook_THEMENAME().
  */
 function template_preprocess_views_slideshow_singleframe(&$vars) {
-  $options = $vars['options'];
+  $options = $vars['options']['singleframe'];
   $base = drupal_get_path('module', 'views_slideshow_singleframe');
   drupal_add_js($base . '/views_slideshow.js', 'module');
   drupal_add_css($base . '/views_slideshow.css', 'module');

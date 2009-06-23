@@ -1,5 +1,13 @@
 // $Id$
 
+Changelog for Views Slideshow.
+==============================
+
+June 2009
+---------
+ * Remove default options; require contrib modules (aaron).
+ * Create DRUPAL-6--2 branch (aaron).
+
 April 2009
 ----------
  * Separate singleframe into contrib module (aaron).

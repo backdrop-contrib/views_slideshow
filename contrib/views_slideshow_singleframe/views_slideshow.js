@@ -66,7 +66,6 @@ function views_slideshow_resume(slideshow_main) {
 function views_slideshow_switch(slideshow_main, new_div) {
   // Turn off our timer.
   views_slideshow_timer(slideshow_main, false);
-
   // Check to see if we fade or not.
   if (Drupal.settings.viewsSlideshowSingleFrame[slideshow_main].fade) {
     // Fade out -- at the end, switch to the next slide in the slideshow.
