@@ -21,6 +21,26 @@ function views_slideshow_thumbnailhover_theme($existing, $type, $theme, $path) {
       'template' => 'views-slideshow-thumbnailhover',
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
+    'views_slideshow_thumbnailhover_controls' =>array(
+      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'file' => 'views_slideshow_thumbnailhover.theme.inc',
+    ),
+    'views_slideshow_thumbnailhover_breakout_teaser' => array(
+      'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
+      'file' => 'views_slideshow_thumbnailhover.theme.inc',
+    ),
+    'views_slideshow_thumbnailhover_no_display_section' => array(
+      'arguments' => array('view' => NULL, 'rows' => NULL, 'id' => NULL, 'mode' => NULL, 'teaser' => TRUE),
+      'file' => 'views_slideshow_thumbnailhover.theme.inc',
+    ),
+    'views_slideshow_thumbnailhover_no_display_teaser' => array(
+      'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
+      'file' => 'views_slideshow_thumbnailhover.theme.inc',
+    ),
+    'views_slideshow_thumbnailhover_breakout_teasers' => array(
+      'arguments' => array('items' => NULL, 'id' => NULL),
+      'file' => 'views_slideshow_thumbnailhover.theme.inc',
+    ),
   );
 }
 

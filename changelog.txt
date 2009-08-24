@@ -3,6 +3,11 @@
 Changelog for Views Slideshow.
 ==============================
 
+August 2009
+-----------
+ * #463254 Lots of progress migrating to contrib/plugin architecture (fearlsgroove/redndahead).
+ * #463254 Transition to cycle plugin (fearlsgroove/redndahead).
+
 June 2009
 ---------
  * Remove default options; require contrib modules (aaron).
