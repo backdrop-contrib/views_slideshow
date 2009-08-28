@@ -105,11 +105,35 @@ function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count
 }
 
 
+/**
+ * Themed slideshow controls.
+ */
 function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
   $output = '<div class="views_slideshow_controls" id="views_slideshow_controls_' . $id . '">' . "\n";
-  $output .= '<a href="#" id="views_slideshow_prev_' . $id . '" class="views_slideshow_previous">' . t('Previous') . "</a>\n";
-  $output .= '<a href="#" id="views_slideshow_playpause_' . $id . '" class="views_slideshow_pause">' . t('Pause') . "</a>\n";
-  $output .= '<a href="#" id="views_slideshow_next_' . $id . '" class="views_slideshow_next">' . t('Next') . "</a>\n";
+  $output .= theme('views_slideshow_thumbnailhover_control_previous', $id, $view, $options);
+  $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
+  $output .= theme('views_slideshow_thumbnailhover_control_next', $id, $view, $options);
   $output .= "</div>\n";
   return $output;
+}
+
+/**
+ * Themed Previous Control
+ */
+function theme_views_slideshow_thumbnailhover_control_previous($id, $view, $options) {
+  return '<a href="#" id="views_slideshow_prev_' . $id . '" class="views_slideshow_previous">' . t('Previous') . "</a>\n";
+}
+
+/**
+ * Themed Pause Control
+ */
+function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options) {
+  return '<a href="#" id="views_slideshow_playpause_' . $id . '" class="views_slideshow_pause">' . t('Pause') . "</a>\n";
+}
+
+/**
+ * Themed Next Control
+ */
+function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options) {
+  return '<a href="#" id="views_slideshow_next_' . $id . '" class="views_slideshow_next">' . t('Next') . "</a>\n";
 }

@@ -20,6 +20,18 @@ function views_slideshow_singleframe_theme($existing, $type, $theme, $path) {
       'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_singleframe.theme.inc',
     ),
+    'views_slideshow_singleframe_control_previous' =>array(
+      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'file' => 'views_slideshow_singleframe.theme.inc',
+    ),
+    'views_slideshow_singleframe_control_pause' =>array(
+      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'file' => 'views_slideshow_singleframe.theme.inc',
+    ),
+    'views_slideshow_singleframe_control_next' =>array(
+      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'file' => 'views_slideshow_singleframe.theme.inc',
+    ),
     'views_slideshow_singleframe_pager' => array(
       'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_singleframe.theme.inc',
