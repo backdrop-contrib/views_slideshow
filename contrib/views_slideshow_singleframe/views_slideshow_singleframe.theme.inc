@@ -41,7 +41,9 @@ function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id,
   // If we have the jQ module installed, use that to add the Cycle plugin if possible.
   // That allows for version control.
   if (module_exists('jq')) {
-    $js = jq_add('cycle');
+    if (in_array('cycle', jq_plugins())) {
+      $js = jq_add('cycle');
+    }
   }
 
   // Otherwise, we'll add the version included with this module.
