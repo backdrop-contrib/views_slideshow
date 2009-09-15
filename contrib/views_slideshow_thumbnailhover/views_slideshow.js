@@ -16,7 +16,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     settings.opts = {
       fx:settings.effect,
       speed:settings.speed,
-      timeout:settings.timeout,
+      timeout:parseInt(settings.timeout),
       sync:settings.sync==1,
       random:settings.random==1,
       pause:settings.pause==1,
