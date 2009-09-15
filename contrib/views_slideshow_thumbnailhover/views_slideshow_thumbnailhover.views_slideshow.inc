@@ -24,6 +24,8 @@ function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
       'fade_value' => array('default' => 0.25),
       'hover_breakout' => array('default' => 'teaser'),
       'teasers_last' => array('default' => TRUE),
+      'cleartype' => 'true',
+      'cleartypenobg' => 'false',
     ),
   );
   return $options;
@@ -152,6 +154,20 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#options' => array(1 => t('Yes'), 2 => t('No')),
     '#default_value' =>$view->options['thumbnailhover']['sync'],
     '#description' => t('The sync option controls whether the slide transitions occur simultaneously. The default is yes which means that the current slide transitions out as the next slide transitions in. By setting the sync option to no you can get some interesting twists on your transitions.'),  
+  );
+  $form['thumbnailhover']['cleartype'] = array(
+    '#type' => 'radios',
+    '#title' => t('ClearType'),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#default_value' =>(isset($view->options['singleframe']['cleartype'])) ? $view->options['singleframe']['cleartype'] : 'true',
+    '#description' => t('True if clearType corrections should be applied (for IE).  Some background issues could be fixed by setting this to false.'),
+  );
+  $form['thumbnailhover']['cleartypenobg'] = array(
+    '#type' => 'radios',
+    '#title' => t('ClearType Background'),
+    '#options' => array('true' => t('True'), 'false' => t('False')),
+    '#default_value' =>(isset($view->options['singleframe']['cleartypenobg'])) ? $view->options['singleframe']['cleartypenobg'] : 'false',
+    '#description' => t('Set to true to disable extra cleartype fixing (leave false to force background color setting on slides)'),
   );
 }
 function views_slideshow_thumbnailhover_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {

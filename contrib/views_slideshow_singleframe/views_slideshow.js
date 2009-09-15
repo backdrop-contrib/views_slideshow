@@ -23,7 +23,9 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       pause:settings.pause==1,
       prev:(settings.controls > 0)?'#views_slideshow_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_next_' + settings.id:null,
-      pager:(settings.pager > 0)?'#views_slideshow_pager_' + settings.id:null
+      pager:(settings.pager > 0)?'#views_slideshow_pager_' + settings.id:null,
+      cleartype:(settings.cleartype),
+      cleartypeNoBg:(settings.cleartypenobg)
     });
     
     if (settings.controls > 0) {

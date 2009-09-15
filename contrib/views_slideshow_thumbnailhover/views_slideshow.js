@@ -32,7 +32,9 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       } : null,
       pagerEvent: (settings.pager_event == 'hoverIntent') ? null : settings.pager_event,
       prev:(settings.controls > 0)?'#views_slideshow_prev_' + settings.id:null,
-      next:(settings.controls > 0)?'#views_slideshow_next_' + settings.id:null
+      next:(settings.controls > 0)?'#views_slideshow_next_' + settings.id:null,
+      cleartype:(settings.cleartype),
+      cleartypeNoBg:(settings.cleartypenobg)
     };
 
     $(settings.targetId).cycle(settings.opts);
