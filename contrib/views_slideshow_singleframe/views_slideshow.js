@@ -14,8 +14,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     var settings = Drupal.settings.viewsSlideshowSingleFrame[fullId];
     settings.targetId = '#' + $(fullId + " :first").attr('id');
 
-    $(settings.targetId).cycle({
-      fx:settings.effect,
+    settings.opts = {
       speed:settings.speed,
       timeout:parseInt(settings.timeout),
       sync:settings.sync==1,
@@ -26,7 +25,16 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       pager:(settings.pager > 0)?'#views_slideshow_pager_' + settings.id:null,
       cleartype:(settings.cleartype),
       cleartypeNoBg:(settings.cleartypenobg)
-    });
+    }
+    
+    if (settings.effect == 'none') {
+      settings.opts.speed = 1;
+    }
+    else {
+      settings.opts.fx = settings.effect;
+    }
+    
+    $(settings.targetId).cycle(settings.opts);
     
     if (settings.controls > 0) {
       $('#views_slideshow_playpause_' + settings.id).click(function(e) {

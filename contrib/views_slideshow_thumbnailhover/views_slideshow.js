@@ -14,7 +14,6 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     var settings = Drupal.settings.viewsSlideshowThumbnailHover[fullId];
     settings.targetId = '#' + $(fullId + " :first").attr('id');
     settings.opts = {
-      fx:settings.effect,
       speed:settings.speed,
       timeout:parseInt(settings.timeout),
       sync:settings.sync==1,
@@ -36,6 +35,13 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       cleartype:(settings.cleartype),
       cleartypeNoBg:(settings.cleartypenobg)
     };
+    
+    if (settings.effect == 'none') {
+      settings.opts.speed = 1;
+    }
+    else {
+      settings.opts.fx = settings.effect;
+    }
 
     $(settings.targetId).cycle(settings.opts);
     
