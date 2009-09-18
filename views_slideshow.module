@@ -45,7 +45,7 @@ define('VIEWS_SLIDESHOW_DEFAULT_TEASERS_LAST', TRUE); // when the mode is thumbn
 function views_slideshow_theme($existing, $type, $theme, $path) {
   return array(
     'views_slideshow_main_section' => array(
-      'arguments' => array('id' => NULL, 'hidden_elements' => NULL),
+      'arguments' => array('id' => NULL, 'hidden_elements' => NULL, 'plugin' => NULL),
       'file' => 'views_slideshow.theme.inc',
     ),
   );

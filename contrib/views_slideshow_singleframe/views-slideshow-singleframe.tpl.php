@@ -14,7 +14,7 @@
   if ($options['singleframe']['pager'] == 1) {
     print theme('views_slideshow_singleframe_pager', $id, $view, $options);
   }
-  print theme('views_slideshow_main_section', $id, $hidden_elements);
+  print theme('views_slideshow_main_section', $id, $hidden_elements, 'singleframe');
   if ($options['singleframe']['controls'] == 2) {
     print theme('views_slideshow_singleframe_controls',$id,$view,$options);
   }

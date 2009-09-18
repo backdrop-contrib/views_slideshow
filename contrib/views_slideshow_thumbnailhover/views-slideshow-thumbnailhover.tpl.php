@@ -27,7 +27,7 @@
 
   // These are hidden elements, used to cycle through the main div
   $hidden_elements = theme('views_slideshow_thumbnailhover_no_display_section', $view, $rows, $id, $options['mode'], $teaser);
-  $output .= theme('views_slideshow_main_section', $id, $hidden_elements);
+  $output .= theme('views_slideshow_main_section', $id, $hidden_elements, 'thumbnailhover');
 
   if ($view_teasers && $options['thumbnailhover']['teasers_last']) {
     $output .= $view_teasers;

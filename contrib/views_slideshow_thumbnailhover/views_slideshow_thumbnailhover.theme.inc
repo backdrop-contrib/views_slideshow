@@ -22,14 +22,14 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
     array(
       'num_divs' => $num_divs,
       'teasers_last' => $teasers_last,
-      'id_prefix' => '#views_slideshow_main_',
-      'div_prefix' => '#views_slideshow_div_',
+      'id_prefix' => '#views_slideshow_thumbnailhover_main_',
+      'div_prefix' => '#views_slideshow_thumbnailhover_div_',
       'id' => $vars['id'],
     ),
     $options['thumbnailhover']
   );
 
-  drupal_add_js(array('viewsSlideshowThumbnailHover' => array('#views_slideshow_main_'. $vars['id'] => $settings)), 'setting');
+  drupal_add_js(array('viewsSlideshowThumbnailHover' => array('#views_slideshow_thumbnailhover_main_'. $vars['id'] => $settings)), 'setting');
   if ($settings['pager_event'] == 'hoverIntent') {
     if (module_exists('jq')) {
       if (in_array('hoverIntent', jq_plugins())) {
@@ -60,11 +60,11 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
   if (!$js) {
     drupal_add_js(drupal_get_path('module', 'views_slideshow') .'/js/jquery.cycle.all.min.js', 'module');
   }
-  $output = '<div id="views_slideshow_teaser_section_' . $id . '" class="views_slideshow_teaser_section">' . "\n";
+  $output = '<div id="views_slideshow_thumbnailhover_teaser_section_' . $id . '" class="views_slideshow_thumbnailhover_teaser_section">' . "\n";
   foreach ($view->result as $count => $node) {
     $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', node_view(node_load($node->nid), $teaser, FALSE, FALSE), $id, $count);
   }
-  $output .= "</div><!--close views_slideshow_no_display-->\n\n";
+  $output .= "</div><!--close views_slideshow_thumbnailhover_no_display-->\n\n";
   return $output;
 }
 
@@ -72,10 +72,10 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
  *  The html that will be placed into the element in its turn during its frame.
  */
 function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $count) {
-  $class = 'class="views_slideshow_slide' . ($count ? ' views_slideshow_hidden"' : '"');
-  $output = '  <div id="views_slideshow_div_' . $id . '_' . $count . '" '. $class .'>' . "\n  ";
+  $class = 'class="views_slideshow_thumbnailhover_slide' . ($count ? ' views_slideshow_thumbnailhover_hidden"' : '"');
+  $output = '  <div id="views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '" '. $class .'>' . "\n  ";
   $output .= $item . "\n";
-  $output .= '  </div><!--close views_slideshow_div_' . $id . '_' . $count . '-->' . "\n\n";
+  $output .= '  </div><!--close views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;
 }
 
@@ -83,7 +83,7 @@ function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $cou
  *  These are teasers that may be pointed at with a mouse to change the element directly.
  */
 function theme_views_slideshow_thumbnailhover_breakout_teasers($items, $id) {
-  $output = '<div id="views_slideshow_breakout_teasers_' . $id . '" class="views_slideshow_breakout_teasers clear-block">' . "\n";
+  $output = '<div id="views_slideshow_thumbnailhover_breakout_teasers_' . $id . '" class="views_slideshow_thumbnailhover_breakout_teasers clear-block">' . "\n";
   $js = "$(document).ready(function() {\n";
   foreach ($items as $count => $item) {
     $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $item, $id, $count);
@@ -92,7 +92,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($items, $id) {
   $js .= "})\n";
   drupal_add_js($js, 'inline');
 
-  $output .= "</div><!--close views_slideshow_breakout_teasers-->\n\n";
+  $output .= "</div><!--close views_slideshow_thumbnailhover_breakout_teasers-->\n\n";
 
   return $output;
 }
@@ -101,10 +101,10 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($items, $id) {
  *  An individual breakout teaser.
  */
 function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count) {
-  $class = $count ? '' : ' views_slideshow_active_teaser';
-  $output = '  <div id="views_slideshow_div_breakout_teaser_' . $id . '_' . $count . '" class="views_slideshow_div_breakout_teaser' . $class . '">' . "\n  ";
+  $class = $count ? '' : ' views_slideshow_thumbnailhover_active_teaser';
+  $output = '  <div id="views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '" class="views_slideshow_thumbnailhover_div_breakout_teaser' . $class . '">' . "\n  ";
   $output .= $item . "\n";
-  $output .= '  </div><!--close views_slideshow_div_breakout_teaser_' . $id . '_' . $count . '-->' . "\n\n";
+  $output .= '  </div><!--close views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;
 }
 
@@ -113,7 +113,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count
  * Themed slideshow controls.
  */
 function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
-  $output = '<div class="views_slideshow_controls" id="views_slideshow_controls_' . $id . '">' . "\n";
+  $output = '<div class="views_slideshow_thumbnailhover_controls" id="views_slideshow_thumbnailhover_controls_' . $id . '">' . "\n";
   $output .= theme('views_slideshow_thumbnailhover_control_previous', $id, $view, $options);
   $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
   $output .= theme('views_slideshow_thumbnailhover_control_next', $id, $view, $options);
@@ -125,19 +125,19 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
  * Themed Previous Control
  */
 function theme_views_slideshow_thumbnailhover_control_previous($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_prev_' . $id . '" class="views_slideshow_previous">' . t('Previous') . "</a>\n";
+  return '<a href="#" id="views_slideshow_thumbnailhover_prev_' . $id . '" class="views_slideshow_thumbnailhover_previous">' . t('Previous') . "</a>\n";
 }
 
 /**
  * Themed Pause Control
  */
 function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_playpause_' . $id . '" class="views_slideshow_pause">' . t('Pause') . "</a>\n";
+  return '<a href="#" id="views_slideshow_thumbnailhover_playpause_' . $id . '" class="views_slideshow_thumbnailhover_pause">' . t('Pause') . "</a>\n";
 }
 
 /**
  * Themed Next Control
  */
 function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_next_' . $id . '" class="views_slideshow_next">' . t('Next') . "</a>\n";
+  return '<a href="#" id="views_slideshow_thumbnailhover_next_' . $id . '" class="views_slideshow_thumbnailhover_next">' . t('Next') . "</a>\n";
 }
