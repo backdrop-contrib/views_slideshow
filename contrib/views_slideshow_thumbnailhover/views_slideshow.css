@@ -1,6 +1,7 @@
 /* $Id$ */
 
 .views_slideshow_thumbnailhover_no_display,
-.views_slideshow_thumbnailhover_hidden {
+.views_slideshow_thumbnailhover_hidden,
+.views_slideshow_thumbnailhover_controls {
   display: none;
 }

@@ -1,6 +1,7 @@
 /* $Id$ */
 
 .views_slideshow_singleframe_no_display,
-.views_slideshow_singleframe_hidden {
+.views_slideshow_singleframe_hidden,
+.views_slideshow_singleframe_controls {
   display: none;
 }

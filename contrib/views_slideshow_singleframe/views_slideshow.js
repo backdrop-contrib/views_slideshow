@@ -37,6 +37,9 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     $(settings.targetId).cycle(settings.opts);
     
     if (settings.controls > 0) {
+      // Show controls for people who have js enabled browsers.
+      $('#views_slideshow_singleframe_controls_' + settings.id).show();
+      
       $('#views_slideshow_singleframe_playpause_' + settings.id).click(function(e) {
       	if (settings.paused) {
       	  $(settings.targetId).cycle('resume');
