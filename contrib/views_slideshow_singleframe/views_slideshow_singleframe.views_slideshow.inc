@@ -40,6 +40,12 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#default_value' => (isset($view->options['singleframe']['timeout'])) ? $view->options['singleframe']['timeout'] : 1000,
     '#description' => t('Amount of time in milliseconds between transitions.')
   );
+  $form['singleframe']['delay'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Initial slide delay offset'),
+    '#default_value' => (isset($view->options['singleframe']['delay'])) ? $view->options['singleframe']['delay'] : 0,
+    '#description' => t('Amount of time in milliseconds for the first slide to transition. This number will be added to Timer delay to create the initial delay.  For example if Timer delay is 4000 and Initial delay is 2000 then the first slide will change at 6000ms (6 seconds).  If Initial delay is -2000 then the first slide will change at 2000ms (2 seconds).')
+  );
   $form['singleframe']['speed'] = array(
     '#type' => 'textfield',
     '#title' => t('Speed'),
