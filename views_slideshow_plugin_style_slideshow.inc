@@ -31,16 +31,25 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
   function options_form(&$form, &$form_state) {
     module_load_all_includes('views_slideshow.inc');
     parent::options_form($form, $form_state);
+    
+    $modules = module_invoke_all('views_slideshow_modes');
 
-    $form['mode'] = array(
-      '#type' => 'select',
-      '#title' => t('Slideshow mode'),
-      '#options' => module_invoke_all('views_slideshow_modes'),
-      '#default_value' => $this->options['mode'],
-    );
-    foreach (module_implements('views_slideshow_options_form') as $module) {
-      $function = $module .'_views_slideshow_options_form';
-      call_user_func_array($function, array(&$form, &$form_state, &$this));
+    if ($modules) {
+      $form['mode'] = array(
+        '#type' => 'select',
+        '#title' => t('Slideshow mode'),
+        '#options' => $modules,
+        '#default_value' => $this->options['mode'],
+      );
+      foreach (module_implements('views_slideshow_options_form') as $module) {
+        $function = $module .'_views_slideshow_options_form';
+        call_user_func_array($function, array(&$form, &$form_state, &$this));
+      }
+    }
+    else {
+      $form['enable_module'] = array(
+        '#value' => t('There is no Views Slideshow plugin enabled. Go to the <a href="' . base_path() . 'admin/build/modules">Modules Page</a> and enable a Views Slideshow plugin module. For example Views Slideshow Singleframe.'),
+      );
     }
   }
   
