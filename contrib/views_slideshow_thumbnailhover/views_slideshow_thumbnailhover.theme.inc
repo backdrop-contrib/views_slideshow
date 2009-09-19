@@ -101,8 +101,18 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($items, $id) {
  *  An individual breakout teaser.
  */
 function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count) {
-  $class = $count ? '' : ' views_slideshow_thumbnailhover_active_teaser';
-  $output = '  <div id="views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '" class="views_slideshow_thumbnailhover_div_breakout_teaser' . $class . '">' . "\n  ";
+  $class = 'views_slideshow_thumbnailhover_div_breakout_teaser';
+  if (!$count) {
+    $class .= ' views_slideshow_thumbnailhover_active_teaser';
+  }
+
+  if ($count % 2) {
+    $class .= ' views-row-even';
+  }
+  else {
+    $class .= ' views-row-odd';
+  }
+  $output = '  <div id="views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '" class="' . $class . '">' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;

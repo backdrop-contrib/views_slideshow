@@ -64,7 +64,17 @@ function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id,
  *  The html that will be placed into the element in its turn during its frame.
  */
 function theme_views_slideshow_singleframe_no_display_teaser($item, $id, $count) {
-  $class = 'class="views_slideshow_singleframe_slide' . ($count ? ' views_slideshow_singleframe_hidden"' : '"');
+  $class = 'views_slideshow_singleframe_slide';
+  if ($count) {
+    $class .= ' views_slideshow_singleframe_hidden';
+  }
+
+  if ($count % 2) {
+    $class .= ' views-row-even';
+  }
+  else {
+    $class .= ' views-row-odd';
+  }
   $output = '  <div id="views_slideshow_singleframe_div_' . $id . '_' . $count . '" '. $class .'>' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_singleframe_div_' . $id . '_' . $count . '-->' . "\n\n";
