@@ -24,6 +24,13 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.id:null,
       pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.id:null,
+      after:function(curr, next, opts) {
+        // Used for Image Counter.
+        if (settings.image_count) {
+          $('#views_slideshow_singleframe_image_count_' + settings.id + ' span.num').html(opts.currSlide + 1);
+          $('#views_slideshow_singleframe_image_count_' + settings.id + ' span.total').html(opts.slideCount);
+        }
+      },
       cleartype:(settings.cleartype),
       cleartypeNoBg:(settings.cleartypenobg)
     }

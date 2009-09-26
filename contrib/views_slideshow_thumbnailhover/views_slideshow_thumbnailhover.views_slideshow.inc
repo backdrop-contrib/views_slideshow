@@ -117,6 +117,13 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#default_value' => (isset($view->options['thumbnailhover']['controls'])) ? $view->options['thumbnailhover']['controls'] : 0,
     '#description' => t('Determine if controls for the slideshow (start/stop/next/previous) should appear, and if so whether they should appear before or after the slideshow.'),
   );
+  $form['thumbnailhover']['image_count'] = array(
+    '#type' => 'select',
+    '#title' => t('Image Counter'),
+    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
+    '#default_value' => (isset($view->options['thumbnailhover']['image_count'])) ? $view->options['thumbnailhover']['image_count'] : 0,
+    '#description' => t('Determine if Image Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
+  );
   $options = array(
     'none' => 'none',
     'blindX' => 'blindX',

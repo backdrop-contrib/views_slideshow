@@ -36,6 +36,10 @@ function views_slideshow_singleframe_theme($existing, $type, $theme, $path) {
       'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_singleframe.theme.inc',
     ),
+    'views_slideshow_singleframe_image_count' => array(
+      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'file' => 'views_slideshow_singleframe.theme.inc',
+    ),
     'views_slideshow_singleframe_no_display_section' => array(
       'arguments' => array('view' => NULL, 'rows' => NULL, 'id' => NULL, 'mode' => NULL, 'teaser' => TRUE),
       'file' => 'views_slideshow_singleframe.theme.inc',

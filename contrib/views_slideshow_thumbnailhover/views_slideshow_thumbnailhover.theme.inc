@@ -161,3 +161,8 @@ function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options
 function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options) {
   return '<a href="#" id="views_slideshow_thumbnailhover_next_' . $id . '" class="views_slideshow_thumbnailhover_next">' . t('Next') . "</a>\n";
 }
+
+function theme_views_slideshow_thumbnailhover_image_count($id, $view, $options) {
+  $output = '<div class="views_slideshow_thumbnailhover_image_count" id="views_slideshow_thumbnailhover_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
+  return $output;
+}

@@ -15,6 +15,10 @@
     print theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
   }
   
+  if ($options['thumbnailhover']['image_count'] == 1) {
+    print theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
+  }
+  
   $teaser = ($options['thumbnailhover']['hover_breakout'] == 'teaser' ? TRUE : FALSE);
   $output = '';
   $view_teasers = FALSE;
@@ -34,6 +38,10 @@
   }
   if ($options['thumbnailhover']['controls'] == 2) {
     print theme('views_slideshow_thumbnailhover_controls',$id,$view,$options);
+  }
+  
+  if ($options['thumbnailhover']['image_count'] == 2) {
+    print theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
   }
   print $output;
 

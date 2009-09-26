@@ -118,3 +118,8 @@ function theme_views_slideshow_singleframe_pager($id, $view, $options) {
   $output = '<div class="views_slideshow_singleframe_pager" id="views_slideshow_singleframe_pager_' . $id . '"></div>';
   return $output;
 }
+
+function theme_views_slideshow_singleframe_image_count($id, $view, $options) {
+  $output = '<div class="views_slideshow_singleframe_image_count" id="views_slideshow_singleframe_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
+  return $output;
+}

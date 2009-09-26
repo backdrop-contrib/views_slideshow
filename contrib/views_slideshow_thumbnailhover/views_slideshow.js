@@ -24,6 +24,13 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       pagerAnchorBuilder:(settings.pager_event == 'hoverIntent') ? null : function(idx, slide) { 
         return '#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + idx; 
       },
+      after:function(curr, next, opts) {
+        // Used for Image Counter.
+        if (settings.image_count) {
+          $('#views_slideshow_thumbnailhover_image_count_' + settings.id + ' span.num').html(opts.currSlide + 1);
+          $('#views_slideshow_thumbnailhover_image_count_' + settings.id + ' span.total').html(opts.slideCount);
+        }
+      },
       before:(settings.pager_event == 'hoverIntent') ? function(current,next) {
         var currId = (currId=$(current).attr('id')).substring(currId.lastIndexOf('_')+1)
         var nextId = (nextId=$(next).attr('id')).substring(nextId.lastIndexOf('_')+1)

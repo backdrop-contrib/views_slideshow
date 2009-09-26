@@ -37,6 +37,10 @@ function views_slideshow_thumbnailhover_theme($existing, $type, $theme, $path) {
       'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
+    'views_slideshow_thumbnailhover_image_count' => array(
+      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'file' => 'views_slideshow_thumbnailhover.theme.inc',
+    ),
     'views_slideshow_thumbnailhover_breakout_teaser' => array(
       'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',

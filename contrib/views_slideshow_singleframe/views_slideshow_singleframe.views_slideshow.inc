@@ -80,6 +80,13 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#default_value' => (isset($view->options['singleframe']['pager'])) ? $view->options['singleframe']['pager'] : 0,
     '#description' => t('Determine if a pager for the slideshow (1|2|3) should appear, and if so whether they should appear before or after the slideshow.'),
   );
+  $form['singleframe']['image_count'] = array(
+    '#type' => 'select',
+    '#title' => t('Image Counter'),
+    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
+    '#default_value' => (isset($view->options['singleframe']['image_count'])) ? $view->options['singleframe']['image_count'] : 0,
+    '#description' => t('Determine if the Image Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
+  );
   $options = array(
     'none' => 'none',
     'blindX' => 'blindX',
