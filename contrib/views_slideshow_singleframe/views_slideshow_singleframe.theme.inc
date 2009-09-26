@@ -75,7 +75,7 @@ function theme_views_slideshow_singleframe_no_display_teaser($item, $id, $count)
   else {
     $class .= ' views-row-odd';
   }
-  $output = '  <div id="views_slideshow_singleframe_div_' . $id . '_' . $count . '" '. $class .'>' . "\n  ";
+  $output = '  <div id="views_slideshow_singleframe_div_' . $id . '_' . $count . '" class="' . $class .'">' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_singleframe_div_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;

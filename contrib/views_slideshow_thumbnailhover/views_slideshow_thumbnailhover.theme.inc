@@ -72,8 +72,18 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
  *  The html that will be placed into the element in its turn during its frame.
  */
 function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $count) {
-  $class = 'class="views_slideshow_thumbnailhover_slide' . ($count ? ' views_slideshow_thumbnailhover_hidden"' : '"');
-  $output = '  <div id="views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '" '. $class .'>' . "\n  ";
+  $class = 'views_slideshow_thumbnailhover_slide';
+  if ($count) {
+    $class = ' views_slideshow_thumbnailhover_hidden';
+  }
+
+  if ($count % 2) {
+    $class .= ' views-row-even';
+  }
+  else {
+    $class .= ' views-row-odd';
+  }
+  $output = '  <div id="views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '" class="'. $class .'">' . "\n  ";
   $output .= $item . "\n";
   $output .= '  </div><!--close views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '-->' . "\n\n";
   return $output;
