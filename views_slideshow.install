@@ -23,12 +23,12 @@ function _views_slideshow_update_reset_cache() {
 
 function views_slideshow_update_2() {
   $ret = array();
-  $ret[] = update_sql("UPDATE {view_view} SET block_type='slideshow_list' WHERE block_type='views_slideshow_list'");
-  $ret[] = update_sql("UPDATE {view_view} SET block_type='slideshow_teaser' WHERE block_type='views_slideshow_teaser'");
-  $ret[] = update_sql("UPDATE {view_view} SET block_type='slideshow_node' WHERE block_type='views_slideshow_node'");
-  $ret[] = update_sql("UPDATE {view_view} SET page_type='slideshow_list' WHERE page_type='views_slideshow_list'");
-  $ret[] = update_sql("UPDATE {view_view} SET page_type='slideshow_teaser' WHERE page_type='views_slideshow_teaser'");
-  $ret[] = update_sql("UPDATE {view_view} SET page_type='slideshow_node' WHERE page_type='views_slideshow_node'");
+  $ret[] = update_sql("UPDATE {views_view} SET block_type='slideshow_list' WHERE block_type='views_slideshow_list'");
+  $ret[] = update_sql("UPDATE {views_view} SET block_type='slideshow_teaser' WHERE block_type='views_slideshow_teaser'");
+  $ret[] = update_sql("UPDATE {views_view} SET block_type='slideshow_node' WHERE block_type='views_slideshow_node'");
+  $ret[] = update_sql("UPDATE {views_view} SET page_type='slideshow_list' WHERE page_type='views_slideshow_list'");
+  $ret[] = update_sql("UPDATE {views_view} SET page_type='slideshow_teaser' WHERE page_type='views_slideshow_teaser'");
+  $ret[] = update_sql("UPDATE {views_view} SET page_type='slideshow_node' WHERE page_type='views_slideshow_node'");
   $ret = array_merge($ret, _views_slideshow_update_reset_cache());
   return $ret;
 }
