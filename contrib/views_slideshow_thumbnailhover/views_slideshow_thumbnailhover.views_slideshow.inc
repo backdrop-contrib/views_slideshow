@@ -36,7 +36,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#type' => 'fieldset',
     '#title' => t('ThumbnailHover rotator options'),
     '#collapsible' => TRUE,
-    '#collapsed' => !($view->options['mode'] == 'thumbnailhover'),
+    '#attributes' => array('class' => 'thumbnailhover'),
   );
   
   if (module_exists('hoverintent')) {

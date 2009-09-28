@@ -32,7 +32,7 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#type' => 'fieldset',
     '#title' => t('SingleFrame rotator options'),
     '#collapsible' => TRUE,
-    '#collapsed' => !($view->options['mode'] == 'singleframe'),
+    '#attributes' => array('class' => 'singleframe'),
   );
   $form['singleframe']['timeout'] = array(
     '#type' => 'textfield',
