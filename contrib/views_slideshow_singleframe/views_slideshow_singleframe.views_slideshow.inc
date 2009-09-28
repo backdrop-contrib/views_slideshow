@@ -131,18 +131,24 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#default_value' =>(isset($view->options['singleframe']['sync'])) ? $view->options['singleframe']['sync'] : 1,
     '#description' => t('The sync option controls whether the slide transitions occur simultaneously. The default is yes which means that the current slide transitions out as the next slide transitions in. By setting the sync option to no you can get some interesting twists on your transitions.'),  
   );
-  $form['singleframe']['cleartype'] = array(
+  $form['singleframe']['ie'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Internet Explorer Options'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['singleframe']['ie']['cleartype'] = array(
     '#type' => 'radios',
     '#title' => t('ClearType'),
     '#options' => array('true' => t('True'), 'false' => t('False')),
-    '#default_value' =>(isset($view->options['singleframe']['cleartype'])) ? $view->options['singleframe']['cleartype'] : 'true',
+    '#default_value' =>(isset($view->options['singleframe']['ie']['cleartype'])) ? $view->options['singleframe']['ie']['cleartype'] : 'true',
     '#description' => t('True if clearType corrections should be applied (for IE).  Some background issues could be fixed by setting this to false.'),
   );
-  $form['singleframe']['cleartypenobg'] = array(
+  $form['singleframe']['ie']['cleartypenobg'] = array(
     '#type' => 'radios',
     '#title' => t('ClearType Background'),
     '#options' => array('true' => t('True'), 'false' => t('False')),
-    '#default_value' =>(isset($view->options['singleframe']['cleartypenobg'])) ? $view->options['singleframe']['cleartypenobg'] : 'false',
+    '#default_value' =>(isset($view->options['singleframe']['ie']['cleartypenobg'])) ? $view->options['singleframe']['ie']['cleartypenobg'] : 'false',
     '#description' => t('Set to true to disable extra cleartype fixing (leave false to force background color setting on slides)'),
   );
 }

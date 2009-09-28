@@ -31,8 +31,8 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
           $('#views_slideshow_singleframe_image_count_' + settings.id + ' span.total').html(opts.slideCount);
         }
       },
-      cleartype:(settings.cleartype),
-      cleartypeNoBg:(settings.cleartypenobg)
+      cleartype:(settings.ie.cleartype),
+      cleartypeNoBg:(settings.ie.cleartypenobg)
     }
     
     if (settings.effect == 'none') {
