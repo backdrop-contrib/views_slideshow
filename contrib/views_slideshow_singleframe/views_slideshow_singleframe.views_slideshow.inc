@@ -80,6 +80,20 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#default_value' => (isset($view->options['singleframe']['pager'])) ? $view->options['singleframe']['pager'] : 0,
     '#description' => t('Determine if a pager for the slideshow (1|2|3) should appear, and if so whether they should appear before or after the slideshow.'),
   );
+  $form['singleframe']['pager_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Pager Type'),
+    '#options' => array(0 => t('Numbered'),1 => t('Thumbnails')),
+    '#default_value' => (isset($view->options['singleframe']['pager_type'])) ? $view->options['singleframe']['pager_type'] : 0,
+    '#description' => t('What the pager should look like.  Thumbnails grabs the first image in each slideshow item.'),
+  );
+  $form['singleframe']['pager_hover'] = array(
+    '#type' => 'select',
+    '#title' => t('Activate Slide and Pause on Pager Hover'),
+    '#options' => array(1 => t('Yes'),2 => t('No')),
+    '#default_value' => (isset($view->options['singleframe']['pager_hover'])) ? $view->options['singleframe']['pager_hover'] : 2,
+    '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
+  );
   $form['singleframe']['image_count'] = array(
     '#type' => 'select',
     '#title' => t('Image Counter'),

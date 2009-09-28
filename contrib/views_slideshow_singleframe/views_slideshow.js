@@ -24,6 +24,22 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.id:null,
       pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.id:null,
+      pagerAnchorBuilder: function(idx, slide) {
+        var classes = 'pager-item pager-num-' + (idx+1);
+        if (idx % 2) {
+          classes += ' odd';
+        }
+        else {
+          classes += ' even';
+        }
+        
+        if (settings.pager_type == 1) {
+          return '<div class="' + classes + '"><a href="#"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
+        }
+        else {
+          return '<div class="' + classes + '"><a href="#">' + (idx+1) + '</a></div>';
+        }
+      },
       after:function(curr, next, opts) {
         // Used for Image Counter.
         if (settings.image_count) {
@@ -33,6 +49,11 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       },
       cleartype:(settings.ie.cleartype),
       cleartypeNoBg:(settings.ie.cleartypenobg)
+    }
+    
+    if (settings.pager_hover == 1) {
+      settings.opts.pagerEvent = 'mouseover';
+      settings.opts.pauseOnPagerHover = true;
     }
     
     if (settings.effect == 'none') {
