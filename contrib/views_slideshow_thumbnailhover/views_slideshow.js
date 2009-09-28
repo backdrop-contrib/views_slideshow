@@ -50,6 +50,28 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     else {
       settings.opts.fx = settings.effect;
     }
+    
+    /**
+     * Add additional settings.
+     */
+    var advanced = settings.advanced.split("\n");
+    for (i=0; i<advanced.length; i++) {
+      var prop = '';
+      var value = '';
+      var property = advanced[i].split(":");
+      for (j=0; j<property.length; j++) {
+        if (j == 0) {
+          prop = property[j];
+        }
+        else if (j == 1) {
+          value = property[j];
+        }
+        else {
+          value += ":" + property[j];
+        }
+      }
+      settings.opts[prop] = value;
+    }
 
     $(settings.targetId).cycle(settings.opts);
     

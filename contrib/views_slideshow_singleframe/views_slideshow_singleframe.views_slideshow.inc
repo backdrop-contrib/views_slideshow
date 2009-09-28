@@ -131,6 +131,12 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#default_value' =>(isset($view->options['singleframe']['sync'])) ? $view->options['singleframe']['sync'] : 1,
     '#description' => t('The sync option controls whether the slide transitions occur simultaneously. The default is yes which means that the current slide transitions out as the next slide transitions in. By setting the sync option to no you can get some interesting twists on your transitions.'),  
   );
+  $form['singleframe']['advanced'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Advanced Options'),
+    '#default_value' =>(isset($view->options['singleframe']['advanced'])) ? $view->options['singleframe']['advanced'] : '',
+    '#description' => t('Add other jQuery cycle options one per line.  Ex. height: 350  !url', array('!url' => l('Click here for the additional options to add.', 'http://malsup.com/jquery/cycle/options.html'))),
+  );
   $form['singleframe']['ie'] = array(
     '#type' => 'fieldset',
     '#title' => t('Internet Explorer Options'),
