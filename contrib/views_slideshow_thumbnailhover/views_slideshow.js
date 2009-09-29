@@ -75,6 +75,9 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 
     $(settings.targetId).cycle(settings.opts);
     
+    // Show image count for people who have js enabled.
+    $('#views_slideshow_thumbnailhover_image_count_' + settings.id).show();
+    
     if (settings.pager_event == 'hoverIntent') {
       $('#views_slideshow_thumbnailhover_breakout_teasers_' + settings.id + ' .views_slideshow_thumbnailhover_div_breakout_teaser').each(function(i,obj) {
         $(obj).hoverIntent(
