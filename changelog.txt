@@ -2,6 +2,16 @@
 
 Changelog for Views Slideshow.
 ==============================
+September 2009
+--------------
+  #575410 by redndahead | picardo: Fixed Multiple slideshows on the same page; 
+    only the most recently added one works.
+  #574446 by redndahead: Fixed Notify user if no slideshow plugin module is 
+    enabled.
+  #583204 by oddments: Fixed Wrong table name in update function.
+  #589122 by redndahead: Remove unnecessary files and definitions.
+  #589582 by redndahead: Added Use jquery to show hide plugin options as you 
+    choose the plugin.
 
 August 2009
 -----------

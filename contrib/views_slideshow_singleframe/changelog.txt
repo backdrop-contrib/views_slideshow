@@ -2,7 +2,38 @@
 
 Changelog for Views Slideshow: SingleFrame
 ==========================================
-
+September 2009
+--------------
+  #344046 by jrglasgow, redndahead: Fixed Add Cleartype options in the settings 
+  page.
+  #573274 by hadsie: Fixed timeout value should be casted to an int in 
+    views_slideshow().js.
+  #559002 by redndahead: Fixed Choosing none doesn't seem to load Cycle JS.
+  #575410 by redndahead | picardo: Fixed Multiple slideshows on the same page; 
+    only the most recently added one works.
+  #562748 by redndahead | mcarbone: Fixed Broken control links display for 
+    non-js users.
+  #560116 by redndahead | mpettitt: Added Support for odd/even classes on 
+    output.
+  #332011 by redndahead, dwees: Added Allow for delay in start of slideshow.
+  #585942 by adamo: Fixed Classes not set properly on 
+    views_slideshow_singleframe_div_()*.
+    Add zebra classes to divs in views_slideshow_thumbnailhover.
+  #558662 by redndahead: Added Create ability to add 1 of 4 type pager.
+  #590324 by redndahead: Added Group IE settings into a fieldset and fix 
+    misnamed form value in thumbnailhover.
+  #589096 by redndahead: Added Add textarea for extra jQuery cycle settings.
+  #588944 by redndahead: Allow one to choose either thumbnails or numbers as 
+    pager items
+  #589582 by redndahead: Added Use jquery to show hide plugin options as you 
+    choose the plugin.
+  #591454 by redndahead: Fixed Image Count does not show.
+  
+August 2009
+-----------
+  #558640 by redndahead: Added more flexible layout to controls.
+  #562196 by guix: Fixed Error : the cycle jQuery plugin is not defined.
+  
 June 2009
 ---------
  * Pull proper key from options array during theme (aaron).
