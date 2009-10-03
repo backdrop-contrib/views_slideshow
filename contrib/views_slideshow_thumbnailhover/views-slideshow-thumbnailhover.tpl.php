@@ -5,12 +5,6 @@
  *  @file
  *  Views Slideshow: Thumbnail Hover
  */
-
-  $base = drupal_get_path('module', 'views_slideshow_thumbnailhover');
-
-  $js = theme('views_slideshow_div_js', $rows, $options, $id);
-  drupal_add_js($js, 'inline');
-
   if ($options['thumbnailhover']['controls'] == 1) {
     print theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
   }
