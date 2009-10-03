@@ -24,8 +24,13 @@ function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
       'fade_value' => array('default' => 0.25),
       'hover_breakout' => array('default' => 'teaser'),
       'teasers_last' => array('default' => TRUE),
-      'cleartype' => 'true',
-      'cleartypenobg' => 'false',
+      'ie' => array(
+        'contains' => array(
+          'cleartype' => array('default' => TRUE),
+          'cleartypenobg' => array('default' => FALSE),
+        ),
+      ),
+      'advanced' => array('default' => ''),
     ),
   );
   return $options;

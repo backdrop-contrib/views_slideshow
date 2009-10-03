@@ -20,9 +20,14 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'sort' => array('default' => 1),
       'effect' => array('default' => 'fade'),
       'speed' => array('default' => 700), //normal
-      'cleartype' => 'true',
-      'cleartypenobg' => 'false',
-    )
+      'ie' => array(
+        'contains' => array(
+          'cleartype' => array('default' => TRUE),
+          'cleartypenobg' => array('default' => FALSE),
+        ),
+      ),
+      'advanced' => array('default' => ''),
+    ),
   );
   return $options;
 }
