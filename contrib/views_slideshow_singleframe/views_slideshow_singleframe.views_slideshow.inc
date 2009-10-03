@@ -34,6 +34,25 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#collapsible' => TRUE,
     '#attributes' => array('class' => 'singleframe'),
   );
+  $form['singleframe']['js'] = array(
+    '#value' => "<script type='text/javascript'>
+                  viewsSlideshowSingleframePagerToggle();
+                  $('#edit-style-options-singleframe-pager').change(function() {
+                    viewsSlideshowSingleframePagerToggle();
+                  });
+                  
+                  function viewsSlideshowSingleframePagerToggle() {
+                    if ($('#edit-style-options-singleframe-pager').val() > 0) {
+                      $('#edit-style-options-singleframe-pager-type-wrapper').show('normal');
+                      $('#edit-style-options-singleframe-pager-hover-wrapper').show('normal');
+                    }
+                    else {
+                      $('#edit-style-options-singleframe-pager-type-wrapper').hide('normal');
+                      $('#edit-style-options-singleframe-pager-hover-wrapper').hide('normal');
+                    }
+                  }
+                </script>",
+  );
   $form['singleframe']['timeout'] = array(
     '#type' => 'textfield',
     '#title' => t('Timer delay'),
