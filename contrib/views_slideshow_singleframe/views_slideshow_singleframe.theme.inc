@@ -115,20 +115,9 @@ function theme_views_slideshow_singleframe_control_next($id, $view, $options) {
 }
 
 function theme_views_slideshow_singleframe_pager($id, $view, $options) {
-  
-  $classes = "views_slideshow_singleframe_pager";
-  if ($options['singleframe']['pager_type'] == 1) {
-    $classes .= ' thumbnails';
-  }
-  else {
-    $classes .= ' numbered';
-  }
-  
-  $output = '<div class="' . $classes . '" id="views_slideshow_singleframe_pager_' . $id . '"></div>';
-  return $output;
+  return '<div class="views_slideshow_singleframe_pager ' . $options['singleframe']['pager_type'] . '" id="views_slideshow_singleframe_pager_' . $id . '"></div>';
 }
 
 function theme_views_slideshow_singleframe_image_count($id, $view, $options) {
-  $output = '<div class="views_slideshow_singleframe_image_count" id="views_slideshow_singleframe_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
-  return $output;
+  return '<div class="views_slideshow_singleframe_image_count" id="views_slideshow_singleframe_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
 }

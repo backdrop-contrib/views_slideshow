@@ -107,7 +107,7 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
   $form['singleframe']['pager_type'] = array(
     '#type' => 'select',
     '#title' => t('Pager Type'),
-    '#options' => array(0 => t('Numbered'),1 => t('Thumbnails')),
+    '#options' => array('Numbered' => t('Numbered'),'Thumbnails' => t('Thumbnails')),
     '#default_value' => (isset($view->options['singleframe']['pager_type'])) ? $view->options['singleframe']['pager_type'] : 0,
     '#description' => t('What the pager should look like.  Thumbnails grabs the first image in each slideshow item.'),
   );

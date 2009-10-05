@@ -33,12 +33,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
           classes += ' even';
         }
         
-        if (settings.pager_type == 1) {
-          return '<div class="' + classes + '"><a href="#"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
-        }
-        else {
-          return '<div class="' + classes + '"><a href="#">' + (idx+1) + '</a></div>';
-        }
+        return Drupal.theme('viewsSlideshowPager' + settings.pager_type, classes, idx, slide);
       },
       after:function(curr, next, opts) {
         // Used for Image Counter.
@@ -109,4 +104,12 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       });
     }
   });
+}
+
+Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, slide) {
+  return '<div class="' + classes + '"><a href="#"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
+}
+
+Drupal.theme.prototype.viewsSlideshowPagerNumbered = function (classes, idx, slide) {
+  return '<div class="' + classes + '"><a href="#">' + (idx+1) + '</a></div>';
 }
