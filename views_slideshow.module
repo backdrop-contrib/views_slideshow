@@ -26,3 +26,19 @@ function views_slideshow_views_api() {
     'api' => 2.0,
   );
 }
+
+/**
+ * Implementation of hook_help().
+ */
+function views_slideshow_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#views_slideshow':
+      if (module_exists('advanced_help')) {
+        $output = '<p>'. t('<a href="@help">Click here to view the documentation for Views Slideshow</a>.',  array('@help' => base_path() . 'admin/advanced_help/views_slideshow')) .'</p>';
+      }
+      else {
+        $output = '<p>'. t('Views Slideshow help can be found by installing and enabling the <a href="@advanced_help">Advanced Help module</a>.',  array('@advanced_help' => 'http://drupal.org/project/advanced_help')) .'</p>';
+      }
+      return $output;
+  }
+}

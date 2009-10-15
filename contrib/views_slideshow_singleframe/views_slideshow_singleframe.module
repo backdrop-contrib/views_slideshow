@@ -51,3 +51,19 @@ function views_slideshow_singleframe_theme($existing, $type, $theme, $path) {
   );
 }
 
+/**
+ * Implementation of hook_help().
+ */
+function views_slideshow_singleframe_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#views_slideshow_singleframe':
+      if (module_exists('advanced_help')) {
+        $output = '<p>'. t('<a href="@help">Click here to view the documentation for Views Slideshow SingleFrame</a>.',  array('@help' => base_path() . 'admin/advanced_help/views_slideshow_singleframe')) .'</p>';
+      }
+      else {
+        $output = '<p>'. t('Views Slideshow SingleFrame help can be found by installing and enabling the <a href="@advanced_help">Advanced Help module</a>.',  array('@advanced_help' => 'http://drupal.org/project/advanced_help')) .'</p>';
+      }
+      return $output;
+  }
+}
+
