@@ -64,7 +64,7 @@ function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id,
  *  The html that will be placed into the element in its turn during its frame.
  */
 function theme_views_slideshow_singleframe_no_display_teaser($item, $id, $count) {
-  $class = 'views_slideshow_singleframe_slide';
+  $class = 'views_slideshow_singleframe_slide views_slideshow_slide';
   if ($count) {
     $class .= ' views_slideshow_singleframe_hidden';
   }
@@ -85,7 +85,7 @@ function theme_views_slideshow_singleframe_no_display_teaser($item, $id, $count)
  * Themed slideshow controls.
  */
 function theme_views_slideshow_singleframe_controls($id, $view, $options) {
-  $output = '<div class="views_slideshow_singleframe_controls" id="views_slideshow_singleframe_controls_' . $id . '">' . "\n";
+  $output = '<div class="views_slideshow_singleframe_controls views_slideshow_controls" id="views_slideshow_singleframe_controls_' . $id . '">' . "\n";
   $output .= theme('views_slideshow_singleframe_control_previous', $id, $view, $options);
   $output .= theme('views_slideshow_singleframe_control_pause', $id, $view, $options);
   $output .= theme('views_slideshow_singleframe_control_next', $id, $view, $options);
@@ -97,27 +97,27 @@ function theme_views_slideshow_singleframe_controls($id, $view, $options) {
  * Themed Previous Control
  */
 function theme_views_slideshow_singleframe_control_previous($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_singleframe_prev_' . $id . '" class="views_slideshow_singleframe_previous">' . t('Previous') . "</a>\n";
+  return '<a href="#" id="views_slideshow_singleframe_prev_' . $id . '" class="views_slideshow_singleframe_previous views_slideshow_previous">' . t('Previous') . "</a>\n";
 }
 
 /**
  * Themed Pause Control
  */
 function theme_views_slideshow_singleframe_control_pause($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_singleframe_playpause_' . $id . '" class="views_slideshow_singleframe_pause">' . t('Pause') . "</a>\n";
+  return '<a href="#" id="views_slideshow_singleframe_playpause_' . $id . '" class="views_slideshow_singleframe_pause views_slideshow_pause">' . t('Pause') . "</a>\n";
 }
 
 /**
  * Themed Next Control
  */
 function theme_views_slideshow_singleframe_control_next($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_singleframe_next_' . $id . '" class="views_slideshow_singleframe_next">' . t('Next') . "</a>\n";
+  return '<a href="#" id="views_slideshow_singleframe_next_' . $id . '" class="views_slideshow_singleframe_next views_slideshow_next">' . t('Next') . "</a>\n";
 }
 
 function theme_views_slideshow_singleframe_pager($id, $view, $options) {
-  return '<div class="views_slideshow_singleframe_pager ' . $options['singleframe']['pager_type'] . '" id="views_slideshow_singleframe_pager_' . $id . '"></div>';
+  return '<div class="views_slideshow_singleframe_pager views_slideshow_pager ' . $options['singleframe']['pager_type'] . '" id="views_slideshow_singleframe_pager_' . $id . '"></div>';
 }
 
 function theme_views_slideshow_singleframe_image_count($id, $view, $options) {
-  return '<div class="views_slideshow_singleframe_image_count" id="views_slideshow_singleframe_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
+  return '<div class="views_slideshow_singleframe_image_count views_slideshow_image_count" id="views_slideshow_singleframe_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
 }

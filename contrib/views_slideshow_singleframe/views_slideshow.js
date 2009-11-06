@@ -92,12 +92,22 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       $('#views_slideshow_singleframe_playpause_' + settings.id).click(function(e) {
       	if (settings.paused) {
       	  $(settings.targetId).cycle('resume');
-      	  $('#views_slideshow_singleframe_playpause_' + settings.id).addClass('views_slideshow_singleframe_pause').removeClass('views_slideshow_singleframe_play').text('Pause');
+      	  $('#views_slideshow_singleframe_playpause_' + settings.id)
+      	    .addClass('views_slideshow_singleframe_pause')
+      	    .addClass('views_slideshow_pause')
+      	    .removeClass('views_slideshow_singleframe_play')
+            .removeClass('views_slideshow_play')
+      	    .text('Pause');
       	  settings.paused = false;
       	}
       	else {
       	  $(settings.targetId).cycle('pause');
-      	  $('#views_slideshow_singleframe_playpause_' + settings.id).addClass('views_slideshow_singleframe_play').removeClass('views_slideshow_singleframe_pause').text('Resume');
+      	  $('#views_slideshow_singleframe_playpause_' + settings.id)
+      	    .addClass('views_slideshow_singleframe_play')
+      	    .addClass('views_slideshow_play')
+      	    .removeClass('views_slideshow_singleframe_pause')
+      	    .removeClass('views_slideshow_pause')
+      	    .text('Resume');
       	  settings.paused = true;
       	}
         e.preventDefault();
