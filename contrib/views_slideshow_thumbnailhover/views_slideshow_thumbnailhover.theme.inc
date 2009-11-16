@@ -32,7 +32,8 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   drupal_add_js(array('viewsSlideshowThumbnailHover' => array('#views_slideshow_thumbnailhover_main_'. $vars['id'] => $settings)), 'setting');
   if ($settings['pager_event'] == 'hoverIntent') {
     if (module_exists('jq')) {
-      if (in_array('hoverIntent', jq_plugins())) {
+      $loaded_plugins = jq_plugins();
+      if (!empty($loaded_plugins['hoverIntent'])) {
         jq_add('hoverIntent');
       }
     }
@@ -51,7 +52,8 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
   // If we have the jQ module installed, use that to add the Cycle plugin if possible.
   // That allows for version control.
   if (module_exists('jq')) {
-    if (in_array('cycle', jq_plugins())) {
+    $loaded_plugins = jq_plugins();
+    if (!empty($loaded_plugins['cycle'])) {
       $js = jq_add('cycle');
     }
   }
