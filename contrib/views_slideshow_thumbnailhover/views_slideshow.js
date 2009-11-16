@@ -31,12 +31,12 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
           $('#views_slideshow_thumbnailhover_image_count_' + settings.id + ' span.total').html(opts.slideCount);
         }
       },
-      before:(settings.pager_event == 'hoverIntent') ? function(current,next) {
+      before:function(current, next) {
         var currId = (currId=$(current).attr('id')).substring(currId.lastIndexOf('_')+1)
         var nextId = (nextId=$(next).attr('id')).substring(nextId.lastIndexOf('_')+1)
         $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + currId).removeClass('activeSlide');
         $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + nextId).addClass('activeSlide');
-      } : null,
+      },
       pagerEvent: (settings.pager_event == 'hoverIntent') ? null : settings.pager_event,
       prev:(settings.controls > 0)?'#views_slideshow_thumbnailhover_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_thumbnailhover_next_' + settings.id:null,
