@@ -59,13 +59,35 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     'teaser' => t('Teaser'),
     'full' => t('Full'),
   );
-  $form['thumbnailhover']['hover_breakout'] = array(
-    '#type' => 'radios',
-    '#title' => t('Hover breakout'),
-    '#options' => $options,
-    '#default_value' => $view->options['thumbnailhover']['hover_breakout'],
-    '#description' => t("Hover breakout determines how to display the breakout element of the %thumbnail mode, either as a teaser or full node. It is ignored in %single mode.", array('%thumbnail' => t('Thumbnail hover'), '%single' => t('Single frame'))),
-  );
+  if ($view->row_plugin->uses_fields()) {
+    $options = array();
+    foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
+      $options[$field] = $handler->ui_name();
+    }
+    $form['thumbnailhover']['main_fields'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Main frame fields'),
+      '#options' => $options,
+      '#default_value' => (!empty($view->options['thumbnailhover']['main_fields'])) ? $view->options['thumbnailhover']['main_fields'] : array(),
+      '#description' => t("Choose the fields that will appear in the main slide."),
+    );
+    $form['thumbnailhover']['breakout_fields'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Breakout fields'),
+      '#options' => $options,
+      '#default_value' => (!empty($view->options['thumbnailhover']['breakout_fields'])) ? $view->options['thumbnailhover']['breakout_fields'] : array(),
+      '#description' => t("Choose the fields that will appear in the breakout thumbnails."),
+    );
+  } 
+  else {
+    $form['thumbnailhover']['hover_breakout'] = array(
+      '#type' => 'radios',
+      '#title' => t('Hover breakout'),
+      '#options' => $options,
+      '#default_value' => $view->options['thumbnailhover']['hover_breakout'],
+      '#description' => t("Hover breakout determines how to display the breakout element of the %thumbnail mode, either as a teaser or full node when the row style is node.", array('%thumbnail' => t('Thumbnail hover'))),
+    );
+  }
   $form['thumbnailhover']['teasers_last'] = array(
     '#type' => 'checkbox',
     '#title' => t('Display teasers last'),

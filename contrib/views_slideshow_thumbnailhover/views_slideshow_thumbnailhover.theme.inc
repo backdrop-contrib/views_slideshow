@@ -47,7 +47,7 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
 /**
  *  These are the slideshow elements themselves; not actually displayed, but used to give the html to the main element.
  */
-function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $id, $mode, $teaser = TRUE) {
+function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $id, $options, $teaser = TRUE) {
   // Add support for the jQuery Cycle plugin.
   // If we have the jQ module installed, use that to add the Cycle plugin if possible.
   // That allows for version control.
@@ -64,7 +64,18 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
   }
   $output = '<div id="views_slideshow_thumbnailhover_teaser_section_' . $id . '" class="views_slideshow_thumbnailhover_teaser_section views_slideshow_teaser_section">' . "\n";
   foreach ($view->result as $count => $node) {
-    $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', node_view(node_load($node->nid), $teaser, FALSE, FALSE), $id, $count);
+    if ($view->display_handler->uses_fields()) {
+      $rendered = "";
+      foreach ($options['thumbnailhover']['main_fields'] as $id => $use) {
+        if ($use !== 0) {
+          $rendered .= $view->field[$id]->theme($node);
+        }
+      }
+    } 
+    else { 
+      $rendered = node_view(node_load($node->nid), $teaser, FALSE, FALSE);
+    }
+    $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', $rendered, $id, $count);
   }
   $output .= "</div><!--close views_slideshow_thumbnailhover_no_display-->\n\n";
   return $output;
@@ -94,15 +105,24 @@ function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $cou
 /**
  *  These are teasers that may be pointed at with a mouse to change the element directly.
  */
-function theme_views_slideshow_thumbnailhover_breakout_teasers($items, $id) {
+function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $id, $options) {
   $output = '<div id="views_slideshow_thumbnailhover_breakout_teasers_' . $id . '" class="views_slideshow_thumbnailhover_breakout_teasers clear-block">' . "\n";
-  $js = "$(document).ready(function() {\n";
-  foreach ($items as $count => $item) {
-    $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $item, $id, $count);
-    $js .= theme('views_slideshow_thumbnailhover_breakout_teaser_js', $id, $count);
+  if ($view->display_handler->uses_fields()) {
+    foreach ($view->result as $count => $node) {
+      $rendered_fields = "";
+      foreach ($options['thumbnailhover']['breakout_fields'] as $field => $use) {
+        if ($use !== 0) {
+          $rendered_fields .= $view->field[$field]->theme($node);
+        }
+      }
+      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $rendered_fields, $id, $count);
+    }
   }
-  $js .= "})\n";
-  drupal_add_js($js, 'inline');
+  else {
+    foreach ($items as $count => $item) {
+      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $item, $id, $count);
+    }
+  }
 
   $output .= "</div><!--close views_slideshow_thumbnailhover_breakout_teasers-->\n\n";
 
