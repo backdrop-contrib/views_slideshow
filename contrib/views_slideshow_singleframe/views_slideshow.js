@@ -77,6 +77,12 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
           value += ":" + property[j];
         }
       }
+      
+      // Need to evaluate so true and false isn't a string.
+      if (value == 'true' || value == 'false') {
+	value = eval(value);
+      }
+      
       settings.opts[prop] = value;
     }
     
