@@ -65,10 +65,13 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
   $output = '<div id="views_slideshow_thumbnailhover_teaser_section_' . $id . '" class="views_slideshow_thumbnailhover_teaser_section views_slideshow_teaser_section">' . "\n";
   foreach ($view->result as $count => $node) {
     if ($view->display_handler->uses_fields()) {
-      $rendered = "";
-      foreach ($options['thumbnailhover']['main_fields'] as $id => $use) {
-        if ($use !== 0) {
-          $rendered .= $view->field[$id]->theme($node);
+      $rendered = '';
+      foreach ($options['thumbnailhover']['main_fields'] as $field => $use) {
+        $rendered_field = $view->field[$field]->advanced_render($node);
+        if (($use !== 0) && !empty($rendered_field)) {
+          $rendered .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+          $rendered .=  $rendered_field;
+          $rendered .= '</div>';
         }
       }
     } 
@@ -109,10 +112,13 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
   $output = '<div id="views_slideshow_thumbnailhover_breakout_teasers_' . $id . '" class="views_slideshow_thumbnailhover_breakout_teasers clear-block">' . "\n";
   if ($view->display_handler->uses_fields()) {
     foreach ($view->result as $count => $node) {
-      $rendered_fields = "";
+      $rendered_fields = '';
       foreach ($options['thumbnailhover']['breakout_fields'] as $field => $use) {
-        if ($use !== 0) {
-          $rendered_fields .= $view->field[$field]->theme($node);
+        $rendered_field = $view->field[$field]->advanced_render($node);
+        if (($use !== 0) && !empty($rendered_field)) {
+          $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+          $rendered_fields .=  $rendered_field;
+          $rendered_fields .= '</div>';          
         }
       }
       $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $rendered_fields, $id, $count);
