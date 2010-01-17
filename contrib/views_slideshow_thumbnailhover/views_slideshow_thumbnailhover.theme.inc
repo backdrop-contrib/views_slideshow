@@ -51,6 +51,7 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
   // Add support for the jQuery Cycle plugin.
   // If we have the jQ module installed, use that to add the Cycle plugin if possible.
   // That allows for version control.
+  $js = 0;
   if (module_exists('jq')) {
     $loaded_plugins = jq_plugins();
     if (!empty($loaded_plugins['cycle'])) {
@@ -74,8 +75,8 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
           $rendered .= '</div>';
         }
       }
-    } 
-    else { 
+    }
+    else {
       $rendered = node_view(node_load($node->nid), $teaser, FALSE, FALSE);
     }
     $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', $rendered, $id, $count);
@@ -118,7 +119,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
         if (($use !== 0) && !empty($rendered_field)) {
           $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
           $rendered_fields .=  $rendered_field;
-          $rendered_fields .= '</div>';          
+          $rendered_fields .= '</div>';
         }
       }
       $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $rendered_fields, $id, $count);

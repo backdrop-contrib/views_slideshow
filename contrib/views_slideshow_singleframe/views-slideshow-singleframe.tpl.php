@@ -7,7 +7,7 @@
  */
 
   // these are hidden elements, used to cycle through the main div
-  $hidden_elements = theme('views_slideshow_singleframe_no_display_section', $view, $rows, $id, $options['mode'], $teaser);
+  $hidden_elements = theme('views_slideshow_singleframe_no_display_section', $view, $rows, $id, $options['mode']);
   if ($options['singleframe']['controls'] == 1) {
     print theme('views_slideshow_singleframe_controls',$id,$view,$options);
   }

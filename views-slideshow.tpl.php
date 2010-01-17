@@ -23,5 +23,5 @@
  * @ingroup views_templates
  */
 
- print theme('views_slideshow_'. $options[mode], $view, $options, $rows, $title);
+ print theme('views_slideshow_'. $options['mode'], $view, $options, $rows, $title);
 ?>

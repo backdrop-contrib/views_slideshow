@@ -20,7 +20,6 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
   $settings = array_merge(
     array(
       'num_divs' => $num_divs,
-      'hoverFunction' => $hover,
       'id_prefix' => '#views_slideshow_singleframe_main_',
       'div_prefix' => '#views_slideshow_singleframe_div_',
       'id' => $vars['id'],
@@ -36,10 +35,11 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
 /**
  *  These are the slideshow elements themselves; not actually displayed, but used to give the html to the main element.
  */
-function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id, $mode, $teaser = TRUE) {
+function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id, $mode) {
   // Add support for the jQuery Cycle plugin.
   // If we have the jQ module installed, use that to add the Cycle plugin if possible.
   // That allows for version control.
+  $js = FALSE;
   if (module_exists('jq')) {
     $loaded_plugins = jq_plugins();
     if (!empty($loaded_plugins['cycle'])) {
@@ -51,7 +51,7 @@ function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id,
   if (!$js) {
     drupal_add_js(drupal_get_path('module', 'views_slideshow') .'/js/jquery.cycle.all.min.js', 'module');
   }
-  
+
   $output = '<div id="views_slideshow_singleframe_teaser_section_' . $id . '" class="views_slideshow_singleframe_teaser_section">' . "\n";
 
   foreach ($rows as $count => $item) {
