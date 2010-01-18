@@ -89,7 +89,7 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
  *  The html that will be placed into the element in its turn during its frame.
  */
 function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $count) {
-  $class = 'views_slideshow_thumbnailhover_slide views_slideshow_slide';
+  $class = 'views_slideshow_thumbnailhover_slide views_slideshow_slide views-row-' . ($count + 1);
   if ($count) {
     $class = ' views_slideshow_thumbnailhover_hidden';
   }
