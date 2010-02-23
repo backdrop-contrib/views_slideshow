@@ -2,12 +2,12 @@
 // $Id$
 
 /**
- *  @file
- *  Provides Slideshow style options for Views.
+ * @file
+ * Provides Slideshow style options for Views.
  */
 
 /**
- *  Implement hook_theme().
+ * Implement hook_theme().
  */
 function views_slideshow_theme($existing, $type, $theme, $path) {
   return array(
@@ -19,7 +19,7 @@ function views_slideshow_theme($existing, $type, $theme, $path) {
 }
 
 /**
- *  Implements hook_views_api().
+ * Implements hook_views_api().
  */
 function views_slideshow_views_api() {
   return array(
@@ -28,7 +28,7 @@ function views_slideshow_views_api() {
 }
 
 /**
- * Implementats hook_help().
+ * Implements hook_help().
  */
 function views_slideshow_help($path, $arg) {
   switch ($path) {
@@ -41,4 +41,13 @@ function views_slideshow_help($path, $arg) {
       }
       return $output;
   }
+}
+
+/**
+ * Preprocess function for the slideshow.
+ */
+function template_preprocess_views_slideshow(&$vars) {
+  $options = $vars['options'];
+
+  $vars['slideshow'] = theme('views_slideshow_' . $options['mode'], $vars['view'], $options, $vars['rows'], $vars['title']);
 }

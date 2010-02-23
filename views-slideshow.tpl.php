@@ -14,9 +14,3 @@
  */
 ?>
 <?php print $slideshow; ?>
-<?php
-//print theme('views_slideshow_'. $options['mode'], $view, $options, $rows, $title);
-
-//$sort, $fade, $fade_speed, $fade_value
-
-//dpm($node);

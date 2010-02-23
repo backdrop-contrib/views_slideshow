@@ -13,9 +13,3 @@ function theme_views_slideshow_main_section($id, $hidden_elements, $plugin) {
 
   return "<div$attributes>$hidden_elements</div>";
 }
-
-function template_preprocess_views_slideshow(&$vars) {
-  $options = $vars['options'];
-
-  $vars['slideshow'] = theme('views_slideshow_'. $options['mode'], $vars['view'], $options, $vars['rows'], $vars['title']);
-}
