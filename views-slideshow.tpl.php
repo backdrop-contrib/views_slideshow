@@ -13,4 +13,5 @@
  * @ingroup views_templates
  */
 ?>
+
 <?php print $slideshow; ?>

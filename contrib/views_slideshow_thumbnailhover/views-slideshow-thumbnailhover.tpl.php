@@ -5,28 +5,30 @@
  * @file
  * Views Slideshow: Thumbnail Hover template file.
  */
+?>
 
-// Add controls, image count and teasers above the main slideshow.
-if ($options['thumbnailhover']['controls'] == 1) {
-  print $controls;
-}
-if ($options['thumbnailhover']['image_count'] == 1) {
-  print $image_count;
-}
-if (!$options['thumbnailhover']['teasers_last']) {
-  print $view_teasers;
-}
+<?php if ($options['thumbnailhover']['controls'] == 1): ?>
+  <?php print $controls; ?>
+<?php endif; ?>
 
-// The main slideshow including all the hidden elements.
-print $slideshow;
+<?php if ($options['thumbnailhover']['image_count'] == 1): ?>
+  <?php print $image_count; ?>
+<?php endif; ?>
 
-// Add controls, image count and teasers below the main slideshow.
-if ($view_teasers && $options['thumbnailhover']['teasers_last']) {
-  print $view_teasers;
-}
-if ($options['thumbnailhover']['controls'] == 2) {
-  print $controls;
-}
-if ($options['thumbnailhover']['image_count'] == 2) {
-  print $image_count;
-}
+<?php if (!$options['thumbnailhover']['teasers_last']): ?>
+  <?php print $view_teasers; ?>
+<?php endif; ?>
+
+<?php print $slideshow; ?>
+
+<?php if ($view_teasers && $options['thumbnailhover']['teasers_last']): ?>
+  <?php print $view_teasers; ?>
+<?php endif; ?>
+
+<?php if ($options['thumbnailhover']['controls'] == 2): ?>
+  <?php print $controls; ?>
+<?php endif; ?>
+
+<?php if ($options['thumbnailhover']['image_count'] == 2): ?>
+  <?php print $image_count; ?>
+<?php endif; ?>
