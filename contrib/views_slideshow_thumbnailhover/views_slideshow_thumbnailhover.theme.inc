@@ -2,26 +2,27 @@
 // $Id$
 
 /**
- *  @file
- *  Theme & preprocess functions for the Views Slideshow: ThumbnailHover module.
+ * @file
+ * Theme & preprocess functions for the Views Slideshow: ThumbnailHover module.
  */
 
 /**
- *  Implement template_preprocess_hook_THEMENAME().
+ * Implements template_preprocess_hook_THEMENAME().
  */
 function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
-  $options = $vars['options'];
-  $base = drupal_get_path('module', 'views_slideshow_thumbnailhover');
-  drupal_add_js($base . '/views_slideshow.js', 'module');
-  drupal_add_css($base . '/views_slideshow.css', 'module');
+  $module_path = drupal_get_path('module', 'views_slideshow_thumbnailhover');
+  drupal_add_js($module_path . '/views_slideshow.js', 'module');
+  drupal_add_css($module_path . '/views_slideshow.css', 'module');
 
-  $num_divs = sizeof($vars['rows']);
-  $teasers_last = $options['thumbnailhover']['teasers_last'] ? 'true' : 'false';
+  $options = $vars['options'];
+  $id = $vars['id'];
+  $view = $vars['view'];
+  $rows = $vars['rows'];
 
   $settings = array_merge(
     array(
-      'num_divs' => $num_divs,
-      'teasers_last' => $teasers_last,
+      'num_divs' => sizeof($vars['rows']),
+      'teasers_last' => ($options['thumbnailhover']['teasers_last']) ? 'true' : 'false',
       'id_prefix' => '#views_slideshow_thumbnailhover_main_',
       'div_prefix' => '#views_slideshow_thumbnailhover_div_',
       'id' => $vars['id'],
@@ -29,7 +30,10 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
     $options['thumbnailhover']
   );
 
-  drupal_add_js(array('viewsSlideshowThumbnailHover' => array('#views_slideshow_thumbnailhover_main_'. $vars['id'] => $settings)), 'setting');
+  drupal_add_js(array('viewsSlideshowThumbnailHover' => array(
+    "#views_slideshow_thumbnailhover_main_$id" => $settings)), 'setting');
+
+  // Add the hoverIntent plugin.
   if ($settings['pager_event'] == 'hoverIntent') {
     if (module_exists('jq')) {
       $loaded_plugins = jq_plugins();
@@ -41,17 +45,25 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
       hoverintent_add();
     }
   }
+
+  $teaser = ($options['thumbnailhover']['hover_breakout'] == 'teaser') ? TRUE : FALSE;
+  $hidden_elements = theme('views_slideshow_thumbnailhover_no_display_section', $view, $rows, $id, $options, $teaser);
+
+  $vars['controls'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+  $vars['image_count'] = theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
+  $vars['view_teasers'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+  $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'thumbnailhover');
 }
 
-
 /**
- *  These are the slideshow elements themselves; not actually displayed, but used to give the html to the main element.
+ * Add the jQuery Cycle plugin the HTML for the hidden slideshow elements.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $id, $options, $teaser = TRUE) {
-  // Add support for the jQuery Cycle plugin.
-  // If we have the jQ module installed, use that to add the Cycle plugin if possible.
-  // That allows for version control.
-  $js = 0;
+  // If the jQ module is installed, use that to add the jQuery Cycle plugin.
+  // This allows different versions of the plugin to be used.
+  $js = FALSE;
   if (module_exists('jq')) {
     $loaded_plugins = jq_plugins();
     if (!empty($loaded_plugins['cycle'])) {
@@ -61,9 +73,15 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
 
   // Otherwise, we'll add the version included with this module.
   if (!$js) {
-    drupal_add_js(drupal_get_path('module', 'views_slideshow') .'/js/jquery.cycle.all.min.js', 'module');
+    drupal_add_js(drupal_get_path('module', 'views_slideshow') . '/js/jquery.cycle.all.min.js');
   }
-  $output = '<div id="views_slideshow_thumbnailhover_teaser_section_' . $id . '" class="views_slideshow_thumbnailhover_teaser_section views_slideshow_teaser_section">' . "\n";
+
+  // Add the slideshow elements.
+  $attributes['id'] = "views_slideshow_thumbnailhover_teaser_section_$id";
+  $attributes['class'] = 'views_slideshow_thumbnailhover_teaser_section views_slideshow_teaser_section';
+  $attributes = drupal_attributes($attributes);
+
+  $output = "<div$attributes>";
   foreach ($view->result as $count => $node) {
     if ($view->display_handler->uses_fields()) {
       $rendered = '';
@@ -81,36 +99,46 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
     }
     $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', $rendered, $id, $count);
   }
-  $output .= "</div><!--close views_slideshow_thumbnailhover_no_display-->\n\n";
+  $output .= "</div>";
   return $output;
 }
 
 /**
- *  The html that will be placed into the element in its turn during its frame.
+ * The active element.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $count) {
-  $class = 'views_slideshow_thumbnailhover_slide views_slideshow_slide views-row-' . ($count + 1);
-  if ($count) {
-    $class = ' views_slideshow_thumbnailhover_hidden';
-  }
+  $current = $count + 1;
 
-  if ($count % 2) {
-    $class .= ' views-row-even';
+  $classes = array(
+    'views_slideshow_thumbnailhover_slide',
+    "views_slideshow_slide views-row-$current",
+  );
+
+  if ($count) {
+    $classes[] = 'views_slideshow_thumbnailhover_hidden';
   }
-  else {
-    $class .= ' views-row-odd';
-  }
-  $output = '  <div id="views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '" class="'. $class .'">' . "\n  ";
-  $output .= $item . "\n";
-  $output .= '  </div><!--close views_slideshow_thumbnailhover_div_' . $id . '_' . $count . '-->' . "\n\n";
-  return $output;
+  $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
+
+  $attributes['id'] = "views_slideshow_thumbnailhover_div_${id}_${count}";
+  $attributes['class'] = implode(' ', $classes);
+  $attributes = drupal_attributes($attributes);
+
+  return "<div$attributes>$item</div>";
 }
 
 /**
- *  These are teasers that may be pointed at with a mouse to change the element directly.
+ * The pager in the form of node teasers.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $id, $options) {
-  $output = '<div id="views_slideshow_thumbnailhover_breakout_teasers_' . $id . '" class="views_slideshow_thumbnailhover_breakout_teasers clear-block">' . "\n";
+  $attributes['id'] = "views_slideshow_thumbnailhover_breakout_teasers_$id";
+  $attributes['class'] = 'views_slideshow_thumbnailhover_breakout_teasers clear-block';
+  $attributes = drupal_attributes($attributes);
+
+  $output = "<div$attributes>";
   if ($view->display_handler->uses_fields()) {
     foreach ($view->result as $count => $node) {
       $rendered_fields = '';
@@ -130,39 +158,50 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
       $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $item, $id, $count);
     }
   }
-
-  $output .= "</div><!--close views_slideshow_thumbnailhover_breakout_teasers-->\n\n";
+  $output .= "</div>\n";
 
   return $output;
 }
 
 /**
- *  An individual breakout teaser.
+ * The breakout teaser.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count) {
-  $class = 'views_slideshow_thumbnailhover_div_breakout_teaser';
+  $current = $count + 1;
+  $classes = array(
+    'views_slideshow_thumbnailhover_div_breakout_teaser',
+  );
   if (!$count) {
-    $class .= ' views_slideshow_thumbnailhover_active_teaser';
+    $classes[] = 'views_slideshow_thumbnailhover_active_teaser';
   }
+  $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
 
-  if ($count % 2) {
-    $class .= ' views-row-even';
-  }
-  else {
-    $class .= ' views-row-odd';
-  }
-  $output = '  <div id="views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '" class="' . $class . '">' . "\n  ";
-  $output .= $item . "\n";
-  $output .= '  </div><!--close views_slideshow_thumbnailhover_div_breakout_teaser_' . $id . '_' . $count . '-->' . "\n\n";
-  return $output;
+  $attributes['class'] = implode(' ', $classes);
+  $attributes['id'] = "views_slideshow_thumbnailhover_div_breakout_teaser_${id}_${count}";
+  $attributes = drupal_attributes($attributes);
+
+  return "<div$attributes>$item</div>\n";
 }
 
-
 /**
- * Themed slideshow controls.
+ * The slideshow controls.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
-  $output = '<div class="views_slideshow_thumbnailhover_controls views_slideshow_controls" id="views_slideshow_thumbnailhover_controls_' . $id . '">' . "\n";
+  $classes = array(
+    'views_slideshow_thumbnailhover_controls',
+    'views_slideshow_controls',
+  );
+
+  $attributes['class'] = implode(' ', $classes);
+
+  $attributes['id'] = "views_slideshow_thumbnailhover_controls_$id";
+  $attributes = drupal_attributes($attributes);
+
+  $output = "<div$attributes>";
   $output .= theme('views_slideshow_thumbnailhover_control_previous', $id, $view, $options);
   $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
   $output .= theme('views_slideshow_thumbnailhover_control_next', $id, $view, $options);
@@ -171,27 +210,52 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
 }
 
 /**
- * Themed Previous Control
+ * The "previous" control.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_control_previous($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_thumbnailhover_prev_' . $id . '" class="views_slideshow_thumbnailhover_previous views_slideshow_previous">' . t('Previous') . "</a>\n";
+  return l(t('Previous'), '#', array('attributes' => array(
+    'class' => 'views_slideshow_thumbnailhover_previous views_slideshow_previous',
+    'id' => "views_slideshow_thumbnailhover_prev_$id",
+  )));
 }
 
 /**
- * Themed Pause Control
+ * The "pause" control.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_thumbnailhover_playpause_' . $id . '" class="views_slideshow_thumbnailhover_pause views_slideshow_pause">' . t('Pause') . "</a>\n";
+  return l(t('Pause'), '#', array('attributes' => array(
+    'class' => 'views_slideshow_thumbnailhover_pause views_slideshow_pause',
+    'id' => "views_slideshow_thumbnailhover_playpause_$id",
+  )));
 }
 
 /**
- * Themed Next Control
+ * The "next" control.
+ *
+ * @ingroup themeable
  */
 function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options) {
-  return '<a href="#" id="views_slideshow_thumbnailhover_next_' . $id . '" class="views_slideshow_thumbnailhover_next views_slideshow_next">' . t('Next') . "</a>\n";
+  return l(t('Next'), '#', array('attributes' => array(
+    'class' => 'views_slideshow_thumbnailhover_next views_slideshow_next',
+    'id' => "views_slideshow_thumbnailhover_next_$id",
+  )));
 }
 
+/**
+ * The image counter.
+ *
+ * @ingroup themeable
+ */
 function theme_views_slideshow_thumbnailhover_image_count($id, $view, $options) {
-  $output = '<div class="views_slideshow_thumbnailhover_image_count views_slideshow_image_count" id="views_slideshow_thumbnailhover_image_count_' . $id . '"><span class="num"></span> ' . t('of') .' <span class="total"></span></div>';
-  return $output;
+  $attributes['class'] = 'views_slideshow_thumbnailhover_image_count views_slideshow_image_count';
+  $attributes['id'] = "views_slideshow_thumbnailhover_image_count_$id";
+  $attributes = drupal_attributes($attributes);
+
+  $counter = '<span class="num"></span> ' . t('of') .' <span class="total"></span>';
+
+  return "<div$attributes>$counter</div>";
 }

@@ -2,13 +2,12 @@
 // $Id$
 
 /**
- *  @file
- *  views_slideshow.views.inc
- *  Defines slideshow view style plugins.
+ * @file
+ * Defines the View Style Plugins for Views Slideshow module.
  */
 
 /**
- * Slideshow View style plugins. Implementation of hook_views_plugins()
+ * Implements hook_views_plugins().
  */
 function views_slideshow_views_plugins() {
   return array(
@@ -26,4 +25,3 @@ function views_slideshow_views_plugins() {
     ),
   );
 }
-

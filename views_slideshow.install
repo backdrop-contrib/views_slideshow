@@ -2,13 +2,13 @@
 // $Id$
 
 /**
- * Implementation of hook_install().
+ * Implements hook_install().
  */
 function views_slideshow_install() {
 }
 
 /**
- *  we had to change the names of the plugins
+ * We had to change the names of the plugins
  */
 function views_slideshow_update_1() {
   return _views_slideshow_update_reset_cache();
@@ -42,8 +42,8 @@ function views_slideshow_update_6000() {
 }
 
 /**
- *  We changed our views handler to group slideshow modes.
- *  We also moved everything out to new modules, so have to change our views.
+ * We changed our views handler to group slideshow modes.
+ * We also moved everything out to new modules, so have to change our views.
  */
 function views_slideshow_update_6001() {
   $ret = array();

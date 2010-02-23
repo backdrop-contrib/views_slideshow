@@ -2,12 +2,12 @@
 // $Id$
 
 /**
- *  @file
- *  The Views Slideshow: SingleFrame adds a Single Frame slideshow mode to Views Slideshows.
+ * @file
+ * Views Slideshow: SingleFrame is typically used for field views.
  */
 
 /**
- *  Implements hook_theme().
+ * Implements hook_theme().
  */
 function views_slideshow_singleframe_theme($existing, $type, $theme, $path) {
   return array(
@@ -52,18 +52,17 @@ function views_slideshow_singleframe_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  */
 function views_slideshow_singleframe_help($path, $arg) {
   switch ($path) {
     case 'admin/help#views_slideshow_singleframe':
       if (module_exists('advanced_help')) {
-        $output = '<p>'. t('<a href="@help">Click here to view the documentation for Views Slideshow SingleFrame</a>.',  array('@help' => base_path() . 'admin/advanced_help/views_slideshow_singleframe')) .'</p>';
+        $output = '<p>' . l(t('Click here to view the documentation for Views Slideshow SingleFrame.'),  'admin/advanced_help/views_slideshow_singleframe') . '</p>';
       }
       else {
-        $output = '<p>'. t('Views Slideshow SingleFrame help can be found by installing and enabling the <a href="@advanced_help">Advanced Help module</a>.',  array('@advanced_help' => 'http://drupal.org/project/advanced_help')) .'</p>';
+        $output = '<p>' . t('Views Slideshow SingleFrame help can be found by installing and enabling the !advanced_help',  array('!advanced_help' => l('Advanced Help module', 'http://drupal.org/project/advanced_help'))) . '</p>';
       }
       return $output;
   }
 }
-

@@ -2,17 +2,18 @@
 // $Id$
 
 /**
- *  @file
- *  The Views Slideshow: ThumbnailHover works with node views only.
- *  It adds two parts to the view: the first part is a series of items
- *  displayed as a list, while the second part is either full or teaser.
- *  The slide show will synchronize the two, so that the 'active' item
- *  will correspond to the single full/teaser item. The slide show can
- *  be set to move automatically and/or on mouse hover.
+ * @file
+ * Views Slideshow: ThumbnailHover has options for working with node views.
+ *
+ * The ThumbnailHover mode adds two parts to the view: the first part is a
+ * series of items displayed as a list, the second part is either a full node
+ * or a node teaser. The slideshow will synchronize the two, so that the
+ * 'active' item will correspond to the single full/teaser item. The slide show
+ * can be set to advance automatically or on mouse hover/click.
  */
 
 /**
- *  Implements hook_theme().
+ * Implements hook_theme().
  */
 function views_slideshow_thumbnailhover_theme($existing, $type, $theme, $path) {
   return array(
@@ -61,16 +62,16 @@ function views_slideshow_thumbnailhover_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  */
 function views_slideshow_thumbnailhover_help($path, $arg) {
   switch ($path) {
     case 'admin/help#views_slideshow_thumbnailhover':
       if (module_exists('advanced_help')) {
-        $output = '<p>'. t('<a href="@help">Click here to view the documentation for Views Slideshow Thumbnailhover</a>.',  array('@help' => base_path() . 'admin/advanced_help/views_slideshow_thumbnailhover')) .'</p>';
+        $output = '<p>' . l(t('Click here to view the documentation for Views Slideshow Thumbnailhover'),  'admin/advanced_help/views_slideshow_thumbnailhover') . '</p>';
       }
       else {
-        $output = '<p>'. t('Views Slideshow Thumbnailhover help can be found by installing and enabling the <a href="@advanced_help">Advanced Help module</a>.',  array('@advanced_help' => 'http://drupal.org/project/advanced_help')) .'</p>';
+        $output = '<p>' . t('Views Slideshow Thumbnailhover help can be found by installing and enabling the !advanced_help.',  array('!advanced_help' => l(t('Advanced Help module'), 'http://drupal.org/project/advanced_help'))) . '</p>';
       }
       return $output;
   }

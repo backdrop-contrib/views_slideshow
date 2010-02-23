@@ -1,7 +1,6 @@
 <?php
 // $Id$
 
-// views_slideshow_plugin_style_slideshow.inc
 /**
  * @file
  * Contains the list style plugin.
@@ -69,7 +68,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     }
     else {
       $form['enable_module'] = array(
-        '#value' => t('There is no Views Slideshow plugin enabled. Go to the <a href="' . base_path() . 'admin/build/modules">Modules Page</a> and enable a Views Slideshow plugin module. For example Views Slideshow Singleframe.'),
+        '#value' => t('There is no Views Slideshow plugin enabled. Go to the !modules and enable a Views Slideshow plugin module. For example Views Slideshow Singleframe.', array('!modules' => l('Modules Page', 'admin/build/modules'))),
       );
     }
   }

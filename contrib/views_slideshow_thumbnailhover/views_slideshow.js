@@ -103,7 +103,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
         );
       });
     }
-   
+
     if (settings.controls > 0) {
       // Show controls for people who have js enabled browsers.
       $('#views_slideshow_thumbnailhover_controls_' + settings.id).show();
