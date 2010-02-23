@@ -1,6 +1,6 @@
 ; $Id$
 name = Views Slideshow
-description = Provides a View type that displays nodes as a jquery slideshow in a single div.
+description = Provides a View style that displays rows as a jQuery slideshow.
 dependencies[] = views
 package = Views
 core = 6.x
