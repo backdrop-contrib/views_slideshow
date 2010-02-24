@@ -6,7 +6,7 @@
  */
 
 /**
- *  This will set our initial behavior, by starting up each individual slideshow.
+ * This will set our initial behavior, by starting up each individual slideshow.
  */
 Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
   $('.views_slideshow_singleframe_main:not(.viewsSlideshowSingleFrame-processed)', context).addClass('viewsSlideshowSingleFrame-processed').each(function() {
@@ -58,9 +58,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       settings.opts.fx = settings.effect;
     }
     
-    /**
-     * Add additional settings.
-     */
+    // Add additional settings.
     var advanced = settings.advanced.split("\n");
     for (i=0; i<advanced.length; i++) {
       var prop = '';

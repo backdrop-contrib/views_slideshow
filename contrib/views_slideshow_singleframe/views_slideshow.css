@@ -7,9 +7,8 @@
   display: none;
 }
 
-/**
- * Pager Settings
- */
+/* Pager Settings */
+
 .views_slideshow_singleframe_pager div a img {
   width: 75px;
   height: 75px;

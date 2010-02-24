@@ -1,12 +1,12 @@
 // $Id$
 
 /**
- *  @file
- *  A simple jQuery ThumbnailHover Div Slideshow Rotator.
+ * @file
+ * A simple jQuery ThumbnailHover Div Slideshow Rotator.
  */
 
 /**
- *  This will set our initial behavior, by starting up each individual slideshow.
+ * This will set our initial behavior, by starting up each individual slideshow.
  */
 Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
   $('.views_slideshow_thumbnailhover_main:not(.viewsSlideshowThumbnailHover-processed)', context).addClass('viewsSlideshowThumbnailHover-processed').each(function() {
@@ -51,9 +51,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       settings.opts.fx = settings.effect;
     }
     
-    /**
-     * Add additional settings.
-     */
+    // Add additional settings.
     var advanced = settings.advanced.split("\n");
     for (i=0; i<advanced.length; i++) {
       var prop = '';

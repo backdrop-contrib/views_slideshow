@@ -2,8 +2,8 @@
 // $Id$
 
 /**
- *  @file
- *  The default options available with Views Slideshow: SingleFrame.
+ * @file
+ * The default options available with Views Slideshow: SingleFrame.
  */
 
 function views_slideshow_singleframe_views_slideshow_modes() {

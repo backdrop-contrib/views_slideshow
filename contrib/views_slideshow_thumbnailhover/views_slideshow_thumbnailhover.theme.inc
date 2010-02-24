@@ -104,7 +104,7 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
 }
 
 /**
- * The active element.
+ * Views Slideshow: active element.
  *
  * @ingroup themeable
  */
@@ -129,7 +129,7 @@ function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $cou
 }
 
 /**
- * The pager in the form of node teasers.
+ * Views Slideshow: pager in the form of node teasers.
  *
  * @ingroup themeable
  */
@@ -164,7 +164,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
 }
 
 /**
- * The breakout teaser.
+ * Views Slideshow: breakout teaser.
  *
  * @ingroup themeable
  */
@@ -186,7 +186,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count
 }
 
 /**
- * The slideshow controls.
+ * Views Slideshow: slideshow controls.
  *
  * @ingroup themeable
  */
@@ -210,7 +210,7 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
 }
 
 /**
- * The "previous" control.
+ * Views Slideshow: "previous" control.
  *
  * @ingroup themeable
  */
@@ -222,7 +222,7 @@ function theme_views_slideshow_thumbnailhover_control_previous($id, $view, $opti
 }
 
 /**
- * The "pause" control.
+ * Views Slideshow: "pause" control.
  *
  * @ingroup themeable
  */
@@ -234,7 +234,7 @@ function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options
 }
 
 /**
- * The "next" control.
+ * Views Slideshow: "next" control.
  *
  * @ingroup themeable
  */
@@ -246,7 +246,7 @@ function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options)
 }
 
 /**
- * The image counter.
+ * Views Slideshow: image counter.
  *
  * @ingroup themeable
  */

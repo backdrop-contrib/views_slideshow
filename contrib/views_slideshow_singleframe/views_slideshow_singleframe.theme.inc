@@ -75,7 +75,7 @@ function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id,
 }
 
 /**
- * The slideshow elements.
+ * Views Slideshow slideshow elements.
  *
  * @ingroup themeable
  */
@@ -121,7 +121,7 @@ function theme_views_slideshow_singleframe_controls($id, $view, $options) {
 }
 
 /**
- * The "previous" control.
+ * Views Slideshow: "previous" control.
  *
  * @ingroup themeable
  */
@@ -133,7 +133,7 @@ function theme_views_slideshow_singleframe_control_previous($id, $view, $options
 }
 
 /**
- * The "pause" control.
+ * Views Slideshow: "pause" control.
  *
  * @ingroup themeable
  */
@@ -145,7 +145,7 @@ function theme_views_slideshow_singleframe_control_pause($id, $view, $options) {
 }
 
 /**
- * The "next" control.
+ * Views Slideshow: "next" control.
  *
  * @ingroup themeable
  */
@@ -157,7 +157,7 @@ function theme_views_slideshow_singleframe_control_next($id, $view, $options) {
 }
 
 /**
- * The pager.
+ * Views Slideshow: pager.
  *
  * @ingroup themeable
  */
@@ -172,7 +172,7 @@ function theme_views_slideshow_singleframe_pager($id, $view, $options) {
 }
 
 /**
- * The image counter.
+ * Views Slideshow: image counter.
  *
  * @ingroup themeable
  */

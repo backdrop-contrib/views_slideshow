@@ -2,8 +2,8 @@
 // $Id$
 
 /**
- *  @file
- *  The default options available with Views Slideshow: ThumbnailHover.
+ * @file
+ * The default options available with Views Slideshow: ThumbnailHover.
  */
 
 function views_slideshow_thumbnailhover_views_slideshow_modes() {

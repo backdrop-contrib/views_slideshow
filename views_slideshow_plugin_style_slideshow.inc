@@ -12,9 +12,7 @@
  * @ingroup views_style_plugins
  */
 class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
-  /**
-   * Set default options
-   */
+  // Set default options
   function option_definition() {
     module_load_all_includes('views_slideshow.inc');
     $options = parent::option_definition();
@@ -24,9 +22,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     return $options;
   }
 
-  /**
-   * Render the given style.
-   */
+  // Render the given style.
   function options_form(&$form, &$form_state) {
     module_load_all_includes('views_slideshow.inc');
     parent::options_form($form, $form_state);

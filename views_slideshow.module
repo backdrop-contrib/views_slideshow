@@ -44,7 +44,7 @@ function views_slideshow_help($path, $arg) {
 }
 
 /**
- * Preprocess function for the slideshow.
+ * Views Slideshow: preprocess function for the slideshow.
  */
 function template_preprocess_views_slideshow(&$vars) {
   $options = $vars['options'];
