@@ -10,10 +10,6 @@
  * Implements template_preprocess_hook_THEMENAME().
  */
 function template_preprocess_views_slideshow_singleframe(&$vars) {
-  $module_path = drupal_get_path('module', 'views_slideshow_singleframe');
-  drupal_add_js($module_path . '/views_slideshow.js', 'module');
-  drupal_add_css($module_path . '/views_slideshow.css', 'module');
-
   $options = $vars['options'];
   $id = $vars['id'];
   $rows = $vars['rows'];
@@ -45,21 +41,6 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
  * @ingroup themeable
  */
 function theme_views_slideshow_singleframe_no_display_section($view, $rows, $id, $mode) {
-  // If the jQ module is installed, use that to add the jQuery Cycle plugin.
-  // This allows different versions of the plugin to be used.
-  $js = FALSE;
-  if (module_exists('jq')) {
-    $loaded_plugins = jq_plugins();
-    if (!empty($loaded_plugins['cycle'])) {
-      $js = jq_add('cycle');
-    }
-  }
-
-  // Otherwise, we'll add the version included with this module.
-  if (!$js) {
-    drupal_add_js(drupal_get_path('module', 'views_slideshow') . '/js/jquery.cycle.all.min.js');
-  }
-
   // Add the slideshow elements.
   $attributes['id'] = "views_slideshow_singleframe_teaser_section_$id";
   $attributes['class'] = 'views_slideshow_singleframe_teaser_section';
