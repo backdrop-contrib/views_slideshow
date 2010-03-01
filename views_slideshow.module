@@ -12,7 +12,8 @@
 function views_slideshow_init() {
   $module_path = drupal_get_path('module', 'views_slideshow');
 
-  // For performance we should add the files to the main aggregated files.
+  // Add contrib files.
+  // @todo: add a variable to allow user to define custom paths.
   $contrib = file_scan_directory($module_path . '/contrib', 'views_slideshow_[a-z]*.module');
   foreach ($contrib as $key => $module) {
     if (module_exists($module->name)) {
@@ -24,6 +25,7 @@ function views_slideshow_init() {
 
   // If the jQ module is installed, use that to add the jQuery Cycle plugin.
   // This allows different versions of the plugin to be used.
+  // @todo: allow use of different slideshow plugins.
   $js = FALSE;
   if (module_exists('jq')) {
     $loaded_plugins = jq_plugins();

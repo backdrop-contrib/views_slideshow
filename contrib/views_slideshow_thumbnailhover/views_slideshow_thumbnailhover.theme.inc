@@ -52,7 +52,7 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
 }
 
 /**
- * Add the jQuery Cycle plugin the HTML for the hidden slideshow elements.
+ * Add the the HTML for the hidden slideshow elements.
  *
  * @ingroup themeable
  */

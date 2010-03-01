@@ -36,7 +36,7 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
 }
 
 /**
- * Add the jQuery Cycle plugin the HTML for the hidden slideshow elements.
+ * Add the HTML for the hidden slideshow elements.
  *
  * @ingroup themeable
  */
