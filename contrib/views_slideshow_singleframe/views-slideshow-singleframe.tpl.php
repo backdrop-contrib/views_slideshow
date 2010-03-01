@@ -7,28 +7,20 @@
  */
 ?>
 
-<?php if ($options['singleframe']['controls'] == 1): ?>
-  <?php print $controls; ?>
-<?php endif; ?>
-
-<?php if ($options['singleframe']['pager'] == 1): ?>
-  <?php print $pager; ?>
-<?php endif; ?>
-
-<?php if ($options['singleframe']['image_count'] == 1): ?>
-  <?php print $image_count; ?>
+<?php if ($controls_top || $pager_top || $image_count_top): ?>
+  <div class="views-slideshow-controls-top clear-block">
+    <?php print $controls_top; ?>
+    <?php print $pager_top; ?>
+    <?php print $image_count_top; ?>
+  </div>
 <?php endif; ?>
 
 <?php print $slideshow; ?>
 
-<?php if ($options['singleframe']['controls'] == 2): ?>
-  <?php print $controls; ?>
-<?php endif; ?>
-
-<?php if ($options['singleframe']['pager'] == 2): ?>
-  <?php print $pager; ?>
-<?php endif; ?>
-
-<?php if ($options['singleframe']['image_count'] == 2): ?>
-  <?php print $image_count; ?>
+<?php if ($controls_bottom || $pager_bottom || $image_count_bottom): ?>
+  <div class="views-slideshow-controls-bottom clear-block">
+    <?php print $controls_bottom; ?>
+    <?php print $pager_bottom; ?>
+    <?php print $image_count_bottom; ?>
+  </div>
 <?php endif; ?>

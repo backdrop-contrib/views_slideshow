@@ -44,11 +44,30 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
 
   $teaser = ($options['thumbnailhover']['hover_breakout'] == 'teaser') ? TRUE : FALSE;
   $hidden_elements = theme('views_slideshow_thumbnailhover_no_display_section', $view, $rows, $id, $options, $teaser);
-
-  $vars['controls'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
-  $vars['image_count'] = theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
-  $vars['view_teasers'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
   $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'thumbnailhover');
+
+  $thumbnailhover = $vars['options']['thumbnailhover'];
+
+  if ($thumbnailhover['controls'] == 1) {
+    $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+  }
+  elseif ($thumbnailhover['controls'] == 2) {
+    $vars['controls_bottom'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+  }
+
+  if (!$thumbnailhover['teasers_last']) {
+    $vars['teasers_top'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+  }
+  else {
+    $vars['teasers_bottom'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+  }
+
+  if ($thumbnailhover['image_count'] == 1) {
+    $vars['image_count_top'] = theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
+  }
+  elseif ($thumbnailhover['image_count'] == 2) {
+    $vars['image_count_bottom'] = theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
+  }
 }
 
 /**

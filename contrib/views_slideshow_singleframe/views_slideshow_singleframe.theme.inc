@@ -24,15 +24,33 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
     ),
     $options['singleframe']
   );
-
   drupal_add_js(array('viewsSlideshowSingleFrame' => array('#views_slideshow_singleframe_main_'. $vars['id'] => $settings)), 'setting');
 
   $hidden_elements = theme('views_slideshow_singleframe_no_display_section', $view, $rows, $id, $options['mode']);
-
-  $vars['controls'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
-  $vars['pager'] = theme('views_slideshow_singleframe_pager', $id, $view, $options);
-  $vars['image_count'] = theme('views_slideshow_singleframe_image_count', $id, $view, $options);
   $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'singleframe');
+
+  $singleframe = $vars['options']['singleframe'];
+
+  if ($singleframe['controls'] == 1) {
+    $vars['controls_top'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
+  }
+  elseif ($singleframe['controls'] == 2) {
+    $vars['controls_bottom'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
+  }
+
+  if ($singleframe['pager'] == 1) {
+    $vars['pager_top'] = theme('views_slideshow_singleframe_pager', $id, $view, $options);
+  }
+  elseif ($singleframe['pager'] == 2) {
+    $vars['pager_bottom'] = theme('views_slideshow_singleframe_pager', $id, $view, $options);
+  }
+  
+  if ($singleframe['image_count'] == 1) {
+    $vars['image_count_top'] = theme('views_slideshow_singleframe_image_count', $id, $view, $options);
+  }
+  elseif ($singleframe['image_count'] == 2) {
+    $vars['image_count_bottom'] = theme('views_slideshow_singleframe_image_count', $id, $view, $options);
+  }
 }
 
 /**
