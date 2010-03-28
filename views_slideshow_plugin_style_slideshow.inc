@@ -18,6 +18,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     $options = parent::option_definition();
 
     $options = array_merge($options, module_invoke_all('views_slideshow_option_definition'));
+    $options['mode'] = array('default' => '');
 
     return $options;
   }
