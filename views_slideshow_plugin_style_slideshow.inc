@@ -33,16 +33,19 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     if ($modules) {
       $form['main_wrapper'] = array(
         '#value' => '<script type="text/javascript">' .
-          "$('#views-slideshow-main-wrapper select#edit-style-options-mode option').each(function() {
-            $('#views-slideshow-main-wrapper fieldset.' + $(this).val()).hide();
-          });
-           $('#views-slideshow-main-wrapper fieldset.' + $('#views-slideshow-main-wrapper select#edit-style-options-mode :selected').val()).show();
-          
-          $('#views-slideshow-main-wrapper select#edit-style-options-mode').change(function() {
+          "
+          $(document).ready(function() {
             $('#views-slideshow-main-wrapper select#edit-style-options-mode option').each(function() {
-              $('#views-slideshow-main-wrapper fieldset.' + $(this).val()).hide();
+              $('#views-slideshow-main-wrapper .fieldset.' + $(this).val()).hide();
             });
-            $('#views-slideshow-main-wrapper fieldset.' + $('#views-slideshow-main-wrapper select#edit-style-options-mode :selected').val()).show();
+            $('#views-slideshow-main-wrapper .fieldset.' + $('#views-slideshow-main-wrapper select#edit-style-options-mode :selected').val()).show();
+
+            $('#views-slideshow-main-wrapper select#edit-style-options-mode').change(function() {
+              $('#views-slideshow-main-wrapper select#edit-style-options-mode option').each(function() {
+                $('#views-slideshow-main-wrapper .fieldset.' + $(this).val()).hide();
+              });
+              $('#views-slideshow-main-wrapper .fieldset.' + $('#views-slideshow-main-wrapper select#edit-style-options-mode :selected').val()).show();
+            });
           });
           </script>" . 
         '<div id="views-slideshow-main-wrapper">',
