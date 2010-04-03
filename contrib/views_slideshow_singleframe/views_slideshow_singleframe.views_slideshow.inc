@@ -23,6 +23,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'delay' => array('default' => 0),
       'random' => array('default' => 0),
       'pause' => array('default' => 1),
+      'pause_on_click' => array('default' => 0),
       'controls' => array('default' => 0),
       'pager' => array('default' => 0),
       'pager_type' => array('default' => 0),
@@ -99,6 +100,13 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array(1 => t('Yes'),2 => t('No')),
     '#default_value' => $view->options['singleframe']['pause'],
     '#description' => t('Pause when hovering on the slideshow image.'),
+  );
+  $form['singleframe']['pause_on_click'] = array(
+    '#type' => 'radios',
+    '#title' => t('Pause On Click'),
+    '#options' => array(1 => t('Yes'), 0 => t('No')),
+    '#default_value' => $view->options['singleframe']['pause_on_click'],
+    '#description' => t('Pause when the slide is clicked.'),
   );
   $form['singleframe']['controls'] = array(
     '#type' => 'select',

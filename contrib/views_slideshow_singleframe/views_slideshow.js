@@ -13,6 +13,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     var fullId = '#' + $(this).attr('id');
     var settings = Drupal.settings.viewsSlideshowSingleFrame[fullId];
     settings.targetId = '#' + $(fullId + " :first").attr('id');
+    settings.paused = false;
 
     settings.opts = {
       speed:settings.speed,
@@ -20,7 +21,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       delay:parseInt(settings.delay),
       sync:settings.sync==1,
       random:settings.random==1,
-      pause:settings.pause==1,
+      pause:false,
       prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.id:null,
       pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.id:null,
@@ -57,7 +58,25 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     else {
       settings.opts.fx = settings.effect;
     }
-    
+
+    // Pause on hover.
+    if (settings.pause == 1) {
+      $('#views_slideshow_singleframe_teaser_section_' + settings.id).hover(function() {
+        $(settings.targetId).cycle('pause');
+      }, function() {
+        if (settings.paused == false) {
+          $(settings.targetId).cycle('resume');
+        }
+      });
+    }
+
+    // Pause on clicking of the slide.
+    if (settings.pause_on_click == 1) {
+      $('#views_slideshow_singleframe_teaser_section_' + settings.id).click(function() { 
+        viewsSlideshowPause(settings);
+      });
+    }
+
     // Add additional settings.
     var advanced = settings.advanced.split("\n");
     for (i=0; i<advanced.length; i++) {
@@ -78,7 +97,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       
       // Need to evaluate so true and false isn't a string.
       if (value == 'true' || value == 'false') {
-	value = eval(value);
+        value = eval(value);
       }
       
       settings.opts[prop] = value;
@@ -95,29 +114,43 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       
       $('#views_slideshow_singleframe_playpause_' + settings.id).click(function(e) {
       	if (settings.paused) {
-      	  $(settings.targetId).cycle('resume');
-      	  $('#views_slideshow_singleframe_playpause_' + settings.id)
-      	    .addClass('views_slideshow_singleframe_pause')
-      	    .addClass('views_slideshow_pause')
-      	    .removeClass('views_slideshow_singleframe_play')
-            .removeClass('views_slideshow_play')
-      	    .text('Pause');
-      	  settings.paused = false;
+      	  viewsSlideshowSingleFrameResume(settings);
       	}
       	else {
-      	  $(settings.targetId).cycle('pause');
-      	  $('#views_slideshow_singleframe_playpause_' + settings.id)
-      	    .addClass('views_slideshow_singleframe_play')
-      	    .addClass('views_slideshow_play')
-      	    .removeClass('views_slideshow_singleframe_pause')
-      	    .removeClass('views_slideshow_pause')
-      	    .text('Resume');
-      	  settings.paused = true;
+      	  viewsSlideshowSingleFramePause(settings);
       	}
         e.preventDefault();
       });
     }
   });
+}
+
+// Pause the slideshow 
+viewsSlideshowSingleFramePause = function (settings) {
+  $(settings.targetId).cycle('pause');
+  if (settings.controls > 0) {
+    $('#views_slideshow_singleframe_playpause_' + settings.id)
+      .addClass('views_slideshow_singleframe_play')
+      .addClass('views_slideshow_play')
+      .removeClass('views_slideshow_singleframe_pause')
+      .removeClass('views_slideshow_pause')
+      .text('Resume');
+  }
+  settings.paused = true;
+}
+
+// Resume the slideshow
+viewsSlideshowSingleFrameResume = function (settings) {
+  $(settings.targetId).cycle('resume');
+  if (settings.controls > 0) {
+    $('#views_slideshow_singleframe_playpause_' + settings.id)
+      .addClass('views_slideshow_singleframe_pause')
+      .addClass('views_slideshow_pause')
+      .removeClass('views_slideshow_singleframe_play')
+      .removeClass('views_slideshow_play')
+      .text('Pause');
+  }
+  settings.paused = false;
 }
 
 Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, slide) {

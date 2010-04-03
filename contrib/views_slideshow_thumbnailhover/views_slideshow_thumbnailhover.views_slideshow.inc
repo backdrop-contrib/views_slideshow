@@ -29,6 +29,7 @@ function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
       'delay' => array('default' => 0),
       'random' => array('default' => 0),
       'pause' => array('default' => 1),
+      'pause_on_click' => array('default' => 0),
       'pager_event' => array('default' => 'hover'),
       'controls' => array('default' => 0),
       'image_count' => array('default' => 0),
@@ -135,6 +136,13 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#options' => array(1 => t('Yes'),2 => t('No')),
     '#default_value' => $view->options['thumbnailhover']['pause'],
     '#description' => t('Pause when hovering on the slideshow image.'),
+  );
+  $form['singleframe']['pause_on_click'] = array(
+    '#type' => 'radios',
+    '#title' => t('Pause On Click'),
+    '#options' => array(1 => t('Yes'), 0 => t('No')),
+    '#default_value' => $view->options['singleframe']['pause_on_click'],
+    '#description' => t('Pause when the slide is clicked.'),
   );
   $options = array('mouseover' => t('Hover'), 'click' => t('Click'));
   if ((module_exists('jq') && jq_add('hoverIntent')) || (module_exists('hoverintent') && hoverintent_add())) {
