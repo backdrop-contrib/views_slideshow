@@ -94,7 +94,25 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
         value = eval(value);
       }
       
-      settings.opts[prop] = value;
+      // Parse strings into functions.
+      var func = value.match(/function\s*\((.*?)\)\s*\{(.*)\}/i);
+      if (func) {
+        value = new Function(func[1].match(/(\w+)/g), func[2]);
+      }
+
+      // Call both functions if prop was set previously.
+      if (typeof(value) == "function" && prop in settings.opts) {
+        var callboth = function(before_func, new_func) {
+          return function() {
+            before_func.apply(null, arguments);
+            new_func.apply(null, arguments);
+          };
+        };
+        settings.opts[prop] = callboth(settings.opts[prop], value);
+      }
+      else {
+        settings.opts[prop] = value;
+      }
     }
 
     $(settings.targetId).cycle(settings.opts);
