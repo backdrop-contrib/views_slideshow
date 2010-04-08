@@ -203,7 +203,9 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
 
   $output = "<div$attributes>";
   $output .= theme('views_slideshow_thumbnailhover_control_previous', $id, $view, $options);
-  $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
+  if ($options['thumbnailhover']['timeout']) {
+    $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
+  }
   $output .= theme('views_slideshow_thumbnailhover_control_next', $id, $view, $options);
   $output .= "</div>\n";
   return $output;

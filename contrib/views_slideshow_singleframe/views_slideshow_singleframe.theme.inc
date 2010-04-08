@@ -113,7 +113,9 @@ function theme_views_slideshow_singleframe_controls($id, $view, $options) {
 
   $output = "<div$attributes>";
   $output .= theme('views_slideshow_singleframe_control_previous', $id, $view, $options);
-  $output .= theme('views_slideshow_singleframe_control_pause', $id, $view, $options);
+  if ($options['singleframe']['timeout']) {
+    $output .= theme('views_slideshow_singleframe_control_pause', $id, $view, $options);
+  }
   $output .= theme('views_slideshow_singleframe_control_next', $id, $view, $options);
   $output .= "</div>\n";
   return $output;
