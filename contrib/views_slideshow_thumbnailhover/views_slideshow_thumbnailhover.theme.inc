@@ -141,7 +141,6 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
   $output = "<div$attributes>";
   if ('title' == $options['views_slideshow_thumbnailhover']['hover_breakout']) {
     foreach ($view->result as $count => $node) {
-      dsm($node);
       $node = node_load($node->nid); // TODO, this loads too much, but on node row we dont access the fields separately.
       $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $node->title, $id, $count);
     }
