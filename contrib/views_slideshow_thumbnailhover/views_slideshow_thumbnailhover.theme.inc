@@ -23,7 +23,7 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
       'div_prefix' => '#views_slideshow_thumbnailhover_div_',
       'id' => $vars['id'],
     ),
-    $options['thumbnailhover']
+    $options['views_slideshow_thumbnailhover']
   );
 
   drupal_add_js(array('viewsSlideshowThumbnailHover' => array(
@@ -42,11 +42,11 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
     }
   }
 
-  $teaser = ($options['thumbnailhover']['hover_breakout'] == 'teaser') ? TRUE : FALSE;
+  $teaser = ($options['views_slideshow_thumbnailhover']['hover_breakout'] == 'teaser') ? TRUE : FALSE;
   $hidden_elements = theme('views_slideshow_thumbnailhover_no_display_section', $view, $rows, $id, $options, $teaser);
-  $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'thumbnailhover');
+  $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'views_slideshow_thumbnailhover');
 
-  $thumbnailhover = $vars['options']['thumbnailhover'];
+  $thumbnailhover = $vars['options']['views_slideshow_thumbnailhover'];
 
   if ($thumbnailhover['controls'] == 1) {
     $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
@@ -85,7 +85,7 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
   foreach ($view->result as $count => $node) {
     if ($view->display_handler->uses_fields()) {
       $rendered = '';
-      foreach ($options['thumbnailhover']['main_fields'] as $field => $use) {
+      foreach ($options['views_slideshow_thumbnailhover']['main_fields'] as $field => $use) {
         $rendered_field = $view->field[$field]->theme($node);
         if (($use !== 0) && !empty($rendered_field)) {
           $rendered .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
@@ -142,7 +142,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
   if ($view->display_handler->uses_fields()) {
     foreach ($view->result as $count => $node) {
       $rendered_fields = '';
-      foreach ($options['thumbnailhover']['breakout_fields'] as $field => $use) {
+      foreach ($options['views_slideshow_thumbnailhover']['breakout_fields'] as $field => $use) {
         $rendered_field = $view->field[$field]->theme($node);
         if (($use !== 0) && !empty($rendered_field)) {
           $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
@@ -203,7 +203,7 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
 
   $output = "<div$attributes>";
   $output .= theme('views_slideshow_thumbnailhover_control_previous', $id, $view, $options);
-  if ($options['thumbnailhover']['timeout']) {
+  if ($options['views_slideshow_thumbnailhover']['timeout']) {
     $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
   }
   $output .= theme('views_slideshow_thumbnailhover_control_next', $id, $view, $options);

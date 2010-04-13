@@ -22,14 +22,15 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
       'div_prefix' => '#views_slideshow_singleframe_div_',
       'id' => $vars['id'],
     ),
-    $options['singleframe']
+    $options['views_slideshow_singleframe']
   );
+
   drupal_add_js(array('viewsSlideshowSingleFrame' => array('#views_slideshow_singleframe_main_'. $vars['id'] => $settings)), 'setting');
 
   $hidden_elements = theme('views_slideshow_singleframe_no_display_section', $view, $rows, $id, $options['mode']);
-  $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'singleframe');
+  $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'views_slideshow_singleframe');
 
-  $singleframe = $vars['options']['singleframe'];
+  $singleframe = $vars['options']['views_slideshow_singleframe'];
 
   if ($singleframe['controls'] == 1) {
     $vars['controls_top'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
@@ -113,7 +114,7 @@ function theme_views_slideshow_singleframe_controls($id, $view, $options) {
 
   $output = "<div$attributes>";
   $output .= theme('views_slideshow_singleframe_control_previous', $id, $view, $options);
-  if ($options['singleframe']['timeout']) {
+  if ($options['views_slideshow_singleframe']['timeout']) {
     $output .= theme('views_slideshow_singleframe_control_pause', $id, $view, $options);
   }
   $output .= theme('views_slideshow_singleframe_control_next', $id, $view, $options);
@@ -163,7 +164,7 @@ function theme_views_slideshow_singleframe_control_next($id, $view, $options) {
  * @ingroup themeable
  */
 function theme_views_slideshow_singleframe_pager($id, $view, $options) {
-  $pager_type = $options['singleframe']['pager_type'];
+  $pager_type = $options['views_slideshow_singleframe']['pager_type'];
 
   $attributes['class'] = "views_slideshow_singleframe_pager views_slideshow_pager$pager_type";
   $attributes['id'] = "views_slideshow_singleframe_pager_$id";

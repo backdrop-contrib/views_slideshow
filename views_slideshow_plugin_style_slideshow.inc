@@ -12,6 +12,27 @@
  * @ingroup views_style_plugins
  */
 class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
+  // if the view is still using the old variables replace with the new ones.
+  function init(&$view, &$display, $options = NULL) {
+    // These are required for the view to continue to work.
+    $this->view = &$view;
+    $this->display = &$display;
+
+    // Overlay incoming options on top of defaults
+    $this->unpack_options($this->options, isset($options) ? $options : $display->handler->get_option('style_options'));
+
+    if ($this->uses_row_plugin() && $display->handler->get_option('row_plugin')) {
+      $this->row_plugin = $display->handler->get_plugin('row');
+    }
+
+    // Eveything below here is what's needed for views slideshow.
+    if (isset($options['singleframe']) && is_array($options['singleframe'])) {
+      foreach($options['singleframe'] as $index => $value) {
+        $this->options['views_slideshow_singleframe'][$index] = $value;
+      }
+    }
+  }
+
   // Set default options
   function option_definition() {
     module_load_all_includes('views_slideshow.inc');
@@ -58,6 +79,12 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
         '#default_value' => $this->options['mode'],
       );
       foreach (module_implements('views_slideshow_options_form') as $module) {
+        $form[$module] = array(
+          '#type' => 'fieldset',
+          '#title' => t( $modules[$module] . ' options'),
+          '#collapsible' => TRUE,
+          '#attributes' => array('class' => $module),
+        );
         $function = $module .'_views_slideshow_options_form';
         call_user_func_array($function, array(&$form, &$form_state, &$this));
       }
