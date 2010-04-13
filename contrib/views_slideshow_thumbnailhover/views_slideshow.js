@@ -55,7 +55,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 		
 		// Pause on hover.
     if (settings.pause == 1) {
-      $('#views_slideshow_singleframe_teaser_section_' + settings.id).hover(function() {
+      $('#views_slideshow_thumbnailhover_teaser_section_' + settings.id).hover(function() {
         $(settings.targetId).cycle('pause');
       }, function() {
         if (settings.paused == false) {
@@ -66,7 +66,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 
     // Pause on clicking of the slide.
     if (settings.pause_on_click == 1) {
-      $('#views_slideshow_singleframe_teaser_section_' + settings.id).click(function() { 
+      $('#views_slideshow_thumbnailhover_teaser_section_' + settings.id).click(function() { 
         viewsSlideshowPause(settings);
       });
     }
