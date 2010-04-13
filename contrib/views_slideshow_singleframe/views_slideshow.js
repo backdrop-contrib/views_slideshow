@@ -34,7 +34,8 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
           classes += ' even';
         }
         
-        return Drupal.theme('viewsSlideshowPager' + settings.pager_type, classes, idx, slide);
+        var theme = 'viewsSlideshowPager' + settings.pager_type;
+        return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide) : '';
       },
       after:function(curr, next, opts) {
         // Used for Image Counter.
