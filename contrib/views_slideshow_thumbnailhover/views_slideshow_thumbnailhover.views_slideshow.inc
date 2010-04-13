@@ -60,6 +60,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     );
   }  
   $options = array(
+    'title' => t('Title'),
     'teaser' => t('Teaser'),
     'full' => t('Full'),
   );

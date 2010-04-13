@@ -139,7 +139,14 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
   $attributes = drupal_attributes($attributes);
 
   $output = "<div$attributes>";
-  if ($view->display_handler->uses_fields()) {
+  if ('title' == $options['views_slideshow_thumbnailhover']['hover_breakout']) {
+    foreach ($view->result as $count => $node) {
+      dsm($node);
+      $node = node_load($node->nid); // TODO, this loads too much, but on node row we dont access the fields separately.
+      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $node->title, $id, $count);
+    }
+  }
+  elseif ($view->display_handler->uses_fields()) {
     foreach ($view->result as $count => $node) {
       $rendered_fields = '';
       foreach ($options['views_slideshow_thumbnailhover']['breakout_fields'] as $field => $use) {
