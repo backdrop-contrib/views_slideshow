@@ -72,47 +72,49 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     }
     
     // Add additional settings.
-    var advanced = settings.advanced.split("\n");
-    for (i=0; i<advanced.length; i++) {
-      var prop = '';
-      var value = '';
-      var property = advanced[i].split(":");
-      for (j=0; j<property.length; j++) {
-        if (j == 0) {
-          prop = property[j];
+		if (settings.advanced != "\n") {
+      var advanced = settings.advanced.split("\n");
+      for (i=0; i<advanced.length; i++) {
+        var prop = '';
+        var value = '';
+        var property = advanced[i].split(":");
+        for (j=0; j<property.length; j++) {
+          if (j == 0) {
+            prop = property[j];
+          }
+          else if (j == 1) {
+            value = property[j];
+          }
+          else {
+            value += ":" + property[j];
+          }
         }
-        else if (j == 1) {
-          value = property[j];
+
+        // Need to evaluate so true, false and numerics aren't a string.
+        if (value == 'true' || value == 'false' || IsNumeric(value)) {
+          value = eval(value);
         }
         else {
-          value += ":" + property[j];
+          // Parse strings into functions.
+          var func = value.match(/function\s*\((.*?)\)\s*\{(.*)\}/i);
+          if (func) {
+            value = new Function(func[1].match(/(\w+)/g), func[2]);
+          }
         }
-      }
-      
-      // Need to evaluate so true, false and numerics aren't a string.
-      if (value == 'true' || value == 'false' || IsNumeric(value)) {
-        value = eval(value);
-      }
-      else {
-        // Parse strings into functions.
-        var func = value.match(/function\s*\((.*?)\)\s*\{(.*)\}/i);
-        if (func) {
-          value = new Function(func[1].match(/(\w+)/g), func[2]);
-        }
-      }
-
-      // Call both functions if prop was set previously.
-      if (typeof(value) == "function" && prop in settings.opts) {
-        var callboth = function(before_func, new_func) {
-          return function() {
-            before_func.apply(null, arguments);
-            new_func.apply(null, arguments);
+	
+        // Call both functions if prop was set previously.
+        if (typeof(value) == "function" && prop in settings.opts) {
+          var callboth = function(before_func, new_func) {
+            return function() {
+              before_func.apply(null, arguments);
+              new_func.apply(null, arguments);
+            };
           };
-        };
-        settings.opts[prop] = callboth(settings.opts[prop], value);
-      }
-      else {
-        settings.opts[prop] = value;
+          settings.opts[prop] = callboth(settings.opts[prop], value);
+        }
+        else {
+          settings.opts[prop] = value;
+        }
       }
     }
 
