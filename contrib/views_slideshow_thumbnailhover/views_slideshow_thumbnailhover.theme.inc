@@ -86,11 +86,13 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
     if ($view->display_handler->uses_fields()) {
       $rendered = '';
       foreach ($options['views_slideshow_thumbnailhover']['main_fields'] as $field => $use) {
-        $rendered_field = $view->field[$field]->theme($node);
-        if (($use !== 0) && !empty($rendered_field)) {
-          $rendered .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
-          $rendered .=  $rendered_field;
-          $rendered .= '</div>';
+        if (is_object($view->field[$field])) {
+          $rendered_field = $view->field[$field]->theme($node);
+          if (($use !== 0) && !empty($rendered_field)) {
+            $rendered .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+            $rendered .=  $rendered_field;
+            $rendered .= '</div>';
+          }
         }
       }
     }
