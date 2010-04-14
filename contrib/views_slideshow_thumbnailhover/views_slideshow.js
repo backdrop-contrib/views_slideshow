@@ -89,15 +89,16 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
         }
       }
       
-      // Need to evaluate so true and false isn't a string.
-      if (value == 'true' || value == 'false') {
+      // Need to evaluate so true, false and numerics aren't a string.
+      if (value == 'true' || value == 'false' || IsNumeric(value)) {
         value = eval(value);
       }
-      
-      // Parse strings into functions.
-      var func = value.match(/function\s*\((.*?)\)\s*\{(.*)\}/i);
-      if (func) {
-        value = new Function(func[1].match(/(\w+)/g), func[2]);
+      else {
+        // Parse strings into functions.
+        var func = value.match(/function\s*\((.*?)\)\s*\{(.*)\}/i);
+        if (func) {
+          value = new Function(func[1].match(/(\w+)/g), func[2]);
+        }
       }
 
       // Call both functions if prop was set previously.
@@ -183,4 +184,19 @@ viewsSlideshowThumbnailHoverResume = function (settings) {
       .text('Pause');
   }
   settings.paused = false;
+}
+
+// Verify that the value is a number.
+function IsNumeric(sText) {
+  var ValidChars = "0123456789";
+  var IsNumber=true;
+  var Char;
+
+  for (i=0; i < sText.length && IsNumber == true; i++) { 
+    Char = sText.charAt(i); 
+    if (ValidChars.indexOf(Char) == -1) {
+      IsNumber = false;
+    }
+  }
+  return IsNumber;
 }
