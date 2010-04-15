@@ -265,7 +265,7 @@ function theme_views_slideshow_thumbnailhover_image_count($id, $view, $options) 
   $attributes['id'] = "views_slideshow_thumbnailhover_image_count_$id";
   $attributes = drupal_attributes($attributes);
 
-  $counter = '<span class="num"></span> ' . t('of') .' <span class="total"></span>';
+  $counter = '<span class="num">1</span> ' . t('of') .' <span class="total">1</span>';
 
   return "<div$attributes>$counter</div>";
 }
