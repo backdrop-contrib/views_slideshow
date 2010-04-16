@@ -30,6 +30,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'pager_type' => array('default' => 0),
       'page_hover' => array('default' => 2),
       'image_count' => array('default' => 0),
+      'nowrap' => array('default' => 0),
       'sync' => array('default' => 1),
       'advanced' => array('default' => ''),
       'ie' => array(
@@ -188,6 +189,13 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array(1 => t('Yes'), 2 => t('No')),
     '#default_value' => $view->options['views_slideshow_singleframe']['sync'],
     '#description' => t('The sync option controls whether the slide transitions occur simultaneously. The default is yes which means that the current slide transitions out as the next slide transitions in. By setting the sync option to no you can get some interesting twists on your transitions.'),  
+  );
+  $form['views_slideshow_singleframe']['nowrap'] = array(
+    '#type' => 'select',
+    '#title' => t('End slideshow after last slide'),
+    '#options' => array(1 => t('Yes'), 0 => t('No')),
+    '#default_value' => $view->options['views_slideshow_singleframe']['nowrap'],
+    '#description' => t('If you select yes the slideshow will end when it gets to the last slide.'),  
   );
   $form['views_slideshow_singleframe']['advanced'] = array(
     '#type' => 'textarea',

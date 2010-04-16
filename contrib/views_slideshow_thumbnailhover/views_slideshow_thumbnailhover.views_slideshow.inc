@@ -215,6 +215,13 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['sync'],
     '#description' => t('The sync option controls whether the slide transitions occur simultaneously. The default is yes which means that the current slide transitions out as the next slide transitions in. By setting the sync option to no you can get some interesting twists on your transitions.'),  
   );
+  $form['views_slideshow_thumbnailhover']['nowrap'] = array(
+    '#type' => 'select',
+    '#title' => t('End slideshow after last slide'),
+    '#options' => array(1 => t('Yes'), 0 => t('No')),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['nowrap'],
+    '#description' => t('If you select yes the slideshow will end when it gets to the last slide.'),  
+  );
   $form['views_slideshow_thumbnailhover']['advanced'] = array(
     '#type' => 'textarea',
     '#title' => t('Advanced Options'),

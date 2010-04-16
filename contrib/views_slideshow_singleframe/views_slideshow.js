@@ -25,6 +25,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.id:null,
       pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.id:null,
+      nowrap:parseInt(settings.nowrap),
       pagerAnchorBuilder: function(idx, slide) {
         var classes = 'pager-item pager-num-' + (idx+1);
         if (idx % 2) {

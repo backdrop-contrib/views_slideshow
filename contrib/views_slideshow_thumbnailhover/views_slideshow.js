@@ -23,6 +23,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       random:settings.random==1,
       pause:false,
       pager:(settings.pager_event == 'hoverIntent') ? null : '#views_slideshow_breakout_teasers_' + settings.id,
+      nowrap:parseInt(settings.nowrap),
       pagerAnchorBuilder:(settings.pager_event == 'hoverIntent') ? null : function(idx, slide) { 
         return '#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + idx; 
       },
