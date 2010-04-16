@@ -90,7 +90,14 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
           $rendered_field = $view->field[$field]->theme($node);
           if (($use !== 0) && !empty($rendered_field)) {
             $rendered .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+            if ($view->field[$field]->label()) {
+              $rendered .= '<label class="view-label-'. views_css_safe($view->field[$field]->field) . '">';
+              $rendered .= $view->field[$field]->label() . ':';
+              $rendered .= '</label>';
+            }
+            $rendered .= '<div class="views-content-'. views_css_safe($view->field[$field]->field) .'">';
             $rendered .=  $rendered_field;
+            $rendered .= '</div>';
             $rendered .= '</div>';
           }
         }
@@ -151,11 +158,20 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
     foreach ($view->result as $count => $node) {
       $rendered_fields = '';
       foreach ($options['views_slideshow_thumbnailhover']['breakout_fields'] as $field => $use) {
-        $rendered_field = $view->field[$field]->theme($node);
-        if (($use !== 0) && !empty($rendered_field)) {
-          $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
-          $rendered_fields .=  $rendered_field;
-          $rendered_fields .= '</div>';
+        if (is_object($view->field[$field])) {
+          $rendered_field = $view->field[$field]->theme($node);
+          if (($use !== 0) && !empty($rendered_field)) {
+            $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+            if ($view->field[$field]->label()) {
+              $rendered_fields .= '<label class="view-label-'. views_css_safe($view->field[$field]->field) . '">';
+              $rendered_fields .= $view->field[$field]->label() . ':';
+              $rendered_fields .= '</label>';
+            }
+            $rendered_fields .= '<div class="views-content-'. views_css_safe($view->field[$field]->field) .'">';
+            $rendered_fields .=  $rendered_field;
+            $rendered_fields .= '</div>';
+            $rendered_fields .= '</div>';
+          }
         }
       }
       $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $rendered_fields, $id, $count);
