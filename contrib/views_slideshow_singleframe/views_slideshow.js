@@ -44,6 +44,14 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
           $('#views_slideshow_singleframe_image_count_' + settings.id + ' span.total').html(opts.slideCount);
         }
       },
+      before:function(curr, next, opts) {
+        if (settings.fixed_height == 0) {
+          //get the height of the current slide
+          var $ht = $(this).height();
+          //set the container's height to that of the current slide
+          $(this).parent().animate({height: $ht});
+        }
+      },
       cleartype:(settings.ie.cleartype),
       cleartypeNoBg:(settings.ie.cleartypenobg)
     }

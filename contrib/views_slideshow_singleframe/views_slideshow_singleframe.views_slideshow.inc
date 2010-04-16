@@ -21,6 +21,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'effect' => array('default' => 'fade'),
       'speed' => array('default' => 700), //normal
       'delay' => array('default' => 0),
+      'fixed_height' => array('default' => 1),
       'random' => array('default' => 0),
       'pause' => array('default' => 1),
       'pause_on_click' => array('default' => 0),
@@ -80,6 +81,13 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#title' => t('Speed'),
     '#default_value' => $view->options['views_slideshow_singleframe']['speed'],
     '#description' => t('Time in milliseconds that each transition lasts. Numeric only!'),  
+  );
+  $form['views_slideshow_singleframe']['fixed_height'] = array(
+    '#type' => 'select',
+    '#title' => t('Make the slide window height fit the largest slide'),
+    '#options' => array(1 => t('Yes'),0 => t('No')),
+    '#default_value' => $view->options['views_slideshow_singleframe']['fixed_height'],
+    '#description' => t('If this is set to no then if the slides are different sizes the height of the slide area will change as the slides change.'),
   );
   $form['views_slideshow_singleframe']['random'] = array(
     '#type' => 'radios',

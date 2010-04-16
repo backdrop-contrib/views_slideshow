@@ -34,6 +34,13 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
         }
       },
       before:function(current, next) {
+        if (settings.fixed_height == 0) {
+          //get the height of the current slide
+          var $ht = $(this).height();
+          //set the container's height to that of the current slide
+          $(this).parent().animate({height: $ht});
+        }
+        
         var currId = (currId=$(current).attr('id')).substring(currId.lastIndexOf('_')+1)
         var nextId = (nextId=$(next).attr('id')).substring(nextId.lastIndexOf('_')+1)
         $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + currId).removeClass('activeSlide');
