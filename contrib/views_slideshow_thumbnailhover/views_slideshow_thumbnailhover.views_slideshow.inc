@@ -96,9 +96,9 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
   }
   $form['views_slideshow_thumbnailhover']['teasers_last'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Display teasers last'),
+    '#title' => t('Display breakout fields last'),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['teasers_last'],
-    '#description' => t('When the mode is thumbnail hover, this determines whether to print the teasers first or second.'),
+    '#description' => t('When the mode is thumbnail hover, this determines whether to print the breakout fields first or second.'),
   );
   $form['views_slideshow_thumbnailhover']['timeout'] = array(
     '#type' => 'textfield',

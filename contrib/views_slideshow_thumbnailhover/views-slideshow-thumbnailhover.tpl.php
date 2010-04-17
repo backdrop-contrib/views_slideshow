@@ -11,7 +11,7 @@
   <div class="views-slideshow-controls-top clear-block">
     <?php print $controls_top; ?>
     <?php print $pager_top; ?>
-    <?php print $teasers_top; ?>
+    <?php print $breakout_top; ?>
   </div>
 <?php endif; ?>
 
@@ -19,7 +19,7 @@
 
 <?php if ($teasers_bottom || $controls_bottom || $image_count_bottom): ?>
   <div class="views-slideshow-controls-bottom clear-block">
-    <?php print $teasers_bottom; ?>
+    <?php print $breakout_bottom; ?>
     <?php print $controls_bottom; ?>
     <?php print $image_count_bottom; ?>
   </div>

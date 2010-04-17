@@ -56,10 +56,10 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   }
 
   if (!$thumbnailhover['teasers_last']) {
-    $vars['teasers_top'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+    $vars['breakout_top'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
   }
   else {
-    $vars['teasers_bottom'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+    $vars['breakout_bottom'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
   }
 
   if ($thumbnailhover['image_count'] == 1) {
