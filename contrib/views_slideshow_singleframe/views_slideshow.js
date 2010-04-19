@@ -53,8 +53,8 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
           $(this).parent().animate({height: $ht});
         }
       },
-      cleartype:eval(settings.ie.cleartype),
-      cleartypeNoBg:eval(settings.ie.cleartypenobg)
+      cleartype:(settings.ie.cleartype == 'true')? true : false,
+      cleartypeNoBg:(settings.ie.cleartypenobg == 'true')? true : false
     }
     
     if (settings.pager_hover == 1) {

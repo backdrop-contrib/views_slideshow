@@ -50,8 +50,8 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       pagerEvent: (settings.pager_event == 'hoverIntent') ? null : settings.pager_event,
       prev:(settings.controls > 0)?'#views_slideshow_thumbnailhover_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_thumbnailhover_next_' + settings.id:null,
-      cleartype:eval(settings.ie.cleartype),
-      cleartypeNoBg:eval(settings.ie.cleartypenobg)
+      cleartype:(settings.ie.cleartype == 'true')? true : false,
+      cleartypeNoBg:(settings.ie.cleartypenobg == 'true')? true : false
     };
     
     if (settings.effect == 'none') {
