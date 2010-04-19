@@ -22,6 +22,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       sync:settings.sync==1,
       random:settings.random==1,
       pause:false,
+      allowPagerClickBubble:(settings.pager_event=='click')? false : true,
       pager:(settings.pager_event == 'hoverIntent') ? null : '#views_slideshow_breakout_teasers_' + settings.id,
       nowrap:parseInt(settings.nowrap),
       pagerAnchorBuilder:(settings.pager_event == 'hoverIntent') ? null : function(idx, slide) { 
