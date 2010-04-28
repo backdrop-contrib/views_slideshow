@@ -76,7 +76,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     // Pause on clicking of the slide.
     if (settings.pause_on_click == 1) {
       $('#views_slideshow_thumbnailhover_teaser_section_' + settings.id).click(function() { 
-        viewsSlideshowPause(settings);
+        viewsSlideshowThumbnailHoverPause(settings);
       });
     }
     
