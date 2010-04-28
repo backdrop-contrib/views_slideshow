@@ -29,6 +29,13 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       nowrap:parseInt(settings.nowrap),
       pagerAnchorBuilder: function(idx, slide) {
         var classes = 'pager-item pager-num-' + (idx+1);
+        if (idx == 0) {
+          classes += ' first';
+        }
+        if (opts.slideCount == idx + 1) {
+          classes += ' last';
+        }
+
         if (idx % 2) {
           classes += ' odd';
         }
