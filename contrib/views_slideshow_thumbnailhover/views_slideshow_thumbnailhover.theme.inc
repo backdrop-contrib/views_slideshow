@@ -18,7 +18,7 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   $settings = array_merge(
     array(
       'num_divs' => sizeof($vars['rows']),
-      'teasers_last' => ($options['thumbnailhover']['teasers_last']) ? 'true' : 'false',
+      'teasers_last' => ($options['thumbnailhover']['teasers_last']) ? TRUE : FALSE,
       'id_prefix' => '#views_slideshow_thumbnailhover_main_',
       'div_prefix' => '#views_slideshow_thumbnailhover_div_',
       'id' => $vars['id'],
