@@ -52,26 +52,6 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     $modules = module_invoke_all('views_slideshow_modes');
 
     if ($modules) {
-      $form['main_wrapper'] = array(
-        '#value' => '<script type="text/javascript">' .
-          "
-          $(document).ready(function() {
-            $('#views-slideshow-main-wrapper select#edit-style-options-mode option').each(function() {
-              $('#views-slideshow-main-wrapper .fieldset.' + $(this).val()).hide();
-            });
-            $('#views-slideshow-main-wrapper .fieldset.' + $('#views-slideshow-main-wrapper select#edit-style-options-mode :selected').val()).show();
-
-            $('#views-slideshow-main-wrapper select#edit-style-options-mode').change(function() {
-              $('#views-slideshow-main-wrapper select#edit-style-options-mode option').each(function() {
-                $('#views-slideshow-main-wrapper .fieldset.' + $(this).val()).hide();
-              });
-              $('#views-slideshow-main-wrapper .fieldset.' + $('#views-slideshow-main-wrapper select#edit-style-options-mode :selected').val()).show();
-            });
-          });
-          </script>" . 
-        '<div id="views-slideshow-main-wrapper">',
-      );
-      
       $form['mode'] = array(
         '#type' => 'select',
         '#title' => t('Slideshow mode'),
@@ -79,6 +59,16 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
         '#default_value' => $this->options['mode'],
       );
       foreach (module_implements('views_slideshow_options_form') as $module) {
+        // We wrap our fieldsets in a div so we can use dependent.js to
+        // show/hide our fieldsets.
+        $form[$module . '-prefix'] = array(
+          '#type' => 'hidden',
+          '#id' => $module . '-options-wrapper',
+          '#prefix' => '<div><div id="' . $module .'-options-wrapper">',
+          '#process' => array('views_process_dependency'),
+          '#dependency' => array('edit-style-options-mode' => array($module)),
+        );
+
         $form[$module] = array(
           '#type' => 'fieldset',
           '#title' => t( $modules[$module] . ' options'),
@@ -87,6 +77,10 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
         );
         $function = $module .'_views_slideshow_options_form';
         call_user_func_array($function, array(&$form, &$form_state, &$this));
+
+        $form[$module . '-suffix']  = array(
+          '#value' => '</div></div>',
+        );
       }
       
       $form['main_wrapper_close'] = array(

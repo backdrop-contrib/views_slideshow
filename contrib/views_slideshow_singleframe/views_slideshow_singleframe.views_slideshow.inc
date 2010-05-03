@@ -46,25 +46,6 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
 }
 
 function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form_state, &$view) {
-  $form['views_slideshow_singleframe']['js'] = array(
-    '#value' => "<script type='text/javascript'>
-                  viewsSlideshowSingleframePagerToggle();
-                  $('#edit-style-options-views-slideshow-singleframe-pager').change(function() {
-                    viewsSlideshowSingleframePagerToggle();
-                  });
-                  
-                  function viewsSlideshowSingleframePagerToggle() {
-                    if ($('#edit-style-options-views-slideshow-singleframe-pager').val() > 0) {
-                      $('#edit-style-options-views-slideshow-singleframe-pager-type-wrapper').show('normal');
-                      $('#edit-style-options-views-slideshow-singleframe-pager-hover-wrapper').show('normal');
-                    }
-                    else {
-                      $('#edit-style-options-views-slideshow-singleframe-pager-type-wrapper').hide('normal');
-                      $('#edit-style-options-views-slideshow-singleframe-pager-hover-wrapper').hide('normal');
-                    }
-                  }
-                </script>",
-  );
   $form['views_slideshow_singleframe']['timeout'] = array(
     '#type' => 'textfield',
     '#title' => t('Timer delay'),
@@ -131,6 +112,8 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array('Numbered' => t('Numbered'),'Thumbnails' => t('Thumbnails')),
     '#default_value' => $view->options['views_slideshow_singleframe']['pager_type'],
     '#description' => t('What the pager should look like.  Thumbnails grabs the first image in each slideshow item.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-singleframe-pager' => array(1, 2)),
   );
   $form['views_slideshow_singleframe']['pager_hover'] = array(
     '#type' => 'select',
@@ -138,6 +121,8 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array(1 => t('Yes'),2 => t('No')),
     '#default_value' => $view->options['views_slideshow_singleframe']['pager_hover'],
     '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-singleframe-pager' => array(1, 2)),
   );
   $form['views_slideshow_singleframe']['image_count'] = array(
     '#type' => 'select',
