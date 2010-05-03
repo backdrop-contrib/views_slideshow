@@ -32,11 +32,14 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
 
   $singleframe = $vars['options']['views_slideshow_singleframe'];
 
-  if ($singleframe['controls'] == 1) {
-    $vars['controls_top'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
-  }
-  elseif ($singleframe['controls'] == 2) {
-    $vars['controls_bottom'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
+  // Only show controls when there is more than one result.
+  if ($settings['num_divs'] > 1) {
+    if ($singleframe['controls'] == 1) {
+      $vars['controls_top'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
+    }
+    elseif ($singleframe['controls'] == 2) {
+      $vars['controls_bottom'] = theme('views_slideshow_singleframe_controls', $id, $view, $options);
+    }
   }
 
   if ($singleframe['pager'] == 1) {

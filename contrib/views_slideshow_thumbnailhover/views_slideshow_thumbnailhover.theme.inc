@@ -48,11 +48,14 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
 
   $thumbnailhover = $vars['options']['views_slideshow_thumbnailhover'];
 
-  if ($thumbnailhover['controls'] == 1) {
-    $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
-  }
-  elseif ($thumbnailhover['controls'] == 2) {
-    $vars['controls_bottom'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+  // Only show controls when there is more than one result.
+  if ($settings['num_divs'] > 1) {
+    if ($thumbnailhover['controls'] == 1) {
+      $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+    }
+    elseif ($thumbnailhover['controls'] == 2) {
+      $vars['controls_bottom'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+    }
   }
 
   if (!$thumbnailhover['teasers_last']) {
