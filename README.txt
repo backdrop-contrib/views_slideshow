@@ -24,7 +24,7 @@ Further details about each can be found within their respective directories.
 Requirements
 ============
 
-Views 2 is required for this module to be of any use.
+Views 3 is required for this module to be of any use.
 
 
 Description
