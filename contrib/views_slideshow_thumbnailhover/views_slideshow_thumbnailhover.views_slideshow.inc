@@ -31,6 +31,8 @@ function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
       'random' => array('default' => 0),
       'pause' => array('default' => 1),
       'pause_on_click' => array('default' => 0),
+      'remember_slide' => array('default' => 0),
+      'remember_slide_days' => array('default' => 1),
       'pager_event' => array('default' => 'hover'),
       'controls' => array('default' => 0),
       'image_count' => array('default' => 0),
@@ -146,6 +148,21 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['pause_on_click'],
     '#description' => t('Pause when the slide is clicked.'),
   );
+  $form['views_slideshow_thumbnailhover']['remember_slide'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Start On Last Slide Viewed'),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['remember_slide'],
+    '#description' => t('When the user leaves a page with a slideshow and comes back start them on the last slide viewed.'),
+  );
+  $form['views_slideshow_thumbnailhover']['remember_slide_days'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Length of Time to Remember Last Slide'),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['remember_slide_days'],
+    '#description' => t('The number of days to have the site remember the last slide. Default is 1'),
+    '#size' => 4,
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-singleframe-remember-slide' => array(1)),
+  );
   $options = array('mouseover' => t('Hover'), 'click' => t('Click'));
   if ((module_exists('jq') && jq_add('hoverIntent')) || (module_exists('hoverintent') && hoverintent_add())) {
     $options['hoverIntent'] = 'hoverIntent';
@@ -255,5 +272,8 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form_validate(&$
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_thumbnailhover']['timeout'])) {
     form_error($form['views_slideshow_thumbnailhover']['timeout'],t('!setting must be numeric!',array('!setting' => 'Timeout')));
+  }
+  if (!is_numeric($form_state['values']['style_options']['views_slideshow_thumbnailhover']['remember_slide_days'])) {
+    form_error($form['views_slideshow_thumbnailhover']['remember_slide_days'], t('!setting must be numeric!',array('Slide days')));
   }
 }

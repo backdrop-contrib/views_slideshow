@@ -36,6 +36,12 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
         }
       },
       before:function(current, next) {
+        // Remember last slide.
+        if (settings.remember_slide) {
+          createCookie(settings.view_id, opts.currSlide + 1, settings.remember_slide_days);
+        }
+
+        // Make variable height.
         if (settings.fixed_height == 0) {
           //get the height of the current slide
           var $ht = $(this).height();
@@ -54,15 +60,24 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       cleartype:(settings.ie.cleartype == 'true')? true : false,
       cleartypeNoBg:(settings.ie.cleartypenobg == 'true')? true : false
     };
-    
+
+    // Set the starting slide if we are supposed to remember the slide
+    if (settings.remember_slide) {
+      var startSlide = readCookie(settings.view_id);
+      if (startSlide == null) {
+        startSlide = 0;
+      }
+      settings.opts.startingSlide =  startSlide;
+    }
+
     if (settings.effect == 'none') {
       settings.opts.speed = 1;
     }
     else {
       settings.opts.fx = settings.effect;
     }
-		
-		// Pause on hover.
+
+    // Pause on hover.
     if (settings.pause == 1) {
       $('#views_slideshow_thumbnailhover_teaser_section_' + settings.id).hover(function() {
         $(settings.targetId).cycle('pause');
@@ -211,3 +226,36 @@ function IsNumeric(sText) {
   }
   return IsNumber;
 }
+
+/**
+ * Cookie Handling Functions
+ */
+function createCookie(name,value,days) {
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    var expires = "; expires="+date.toGMTString();
+  }
+  else {
+    var expires = "";
+  }
+  document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) {
+      return c.substring(nameEQ.length,c.length);
+    }
+  }
+  return null;
+}
+
+function eraseCookie(name) {
+  createCookie(name,"",-1);
+}
+

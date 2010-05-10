@@ -25,6 +25,8 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'random' => array('default' => 0),
       'pause' => array('default' => 1),
       'pause_on_click' => array('default' => 0),
+      'remember_slide' => array('default' => 0),
+      'remember_slide_days' => array('default' => 1),
       'controls' => array('default' => 0),
       'pager' => array('default' => 0),
       'pager_type' => array('default' => 0),
@@ -91,6 +93,21 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array(1 => t('Yes'), 0 => t('No')),
     '#default_value' => $view->options['views_slideshow_singleframe']['pause_on_click'],
     '#description' => t('Pause when the slide is clicked.'),
+  );
+  $form['views_slideshow_singleframe']['remember_slide'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Start On Last Slide Viewed'),
+    '#default_value' => $view->options['views_slideshow_singleframe']['remember_slide'],
+    '#description' => t('When the user leaves a page with a slideshow and comes back start them on the last slide viewed.'),
+  );
+  $form['views_slideshow_singleframe']['remember_slide_days'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Length of Time to Remember Last Slide'),
+    '#default_value' => $view->options['views_slideshow_singleframe']['remember_slide_days'],
+    '#description' => t('The number of days to have the site remember the last slide. Default is 1'),
+    '#size' => 4,
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-singleframe-remember-slide' => array(1)),
   );
   $form['views_slideshow_singleframe']['controls'] = array(
     '#type' => 'select',
@@ -216,5 +233,8 @@ function views_slideshow_singleframe_views_slideshow_options_form_validate(&$for
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_singleframe']['timeout'])) {
     form_error($form['views_slideshow_singleframe']['speed'], t('!setting must be numeric!',array('timeout')));
+  }
+  if (!is_numeric($form_state['values']['style_options']['views_slideshow_singleframe']['remember_slide_days'])) {
+    form_error($form['views_slideshow_singleframe']['remember_slide_days'], t('!setting must be numeric!',array('Slide days')));
   }
 }

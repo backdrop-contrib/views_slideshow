@@ -21,6 +21,7 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
       'id_prefix' => '#views_slideshow_singleframe_main_',
       'div_prefix' => '#views_slideshow_singleframe_div_',
       'id' => $vars['id'],
+      'view_id' => $view->name . '-' . $view->current_display,
     ),
     $options['views_slideshow_singleframe']
   );

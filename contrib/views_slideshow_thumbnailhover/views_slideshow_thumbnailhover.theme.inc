@@ -22,6 +22,7 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
       'id_prefix' => '#views_slideshow_thumbnailhover_main_',
       'div_prefix' => '#views_slideshow_thumbnailhover_div_',
       'id' => $vars['id'],
+      'view_id' => $vars['view']->name . '-' . $vars['view']->current_display,
     ),
     $options['views_slideshow_thumbnailhover']
   );
