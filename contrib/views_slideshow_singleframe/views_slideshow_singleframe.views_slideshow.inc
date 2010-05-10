@@ -20,6 +20,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'sort' => array('default' => 1),
       'effect' => array('default' => 'fade'),
       'speed' => array('default' => 700), //normal
+      'start_paused' => array('default', 0),
       'delay' => array('default' => 0),
       'fixed_height' => array('default' => 1),
       'random' => array('default' => 0),
@@ -66,6 +67,12 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#title' => t('Speed'),
     '#default_value' => $view->options['views_slideshow_singleframe']['speed'],
     '#description' => t('Time in milliseconds that each transition lasts. Numeric only!'),  
+  );
+  $form['views_slideshow_singleframe']['start_paused'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Start Slideshow Paused'),
+    '#default_value' => $view->options['views_slideshow_singleframe']['start_paused'],
+    '#description' => t('Start the slideshow in the paused state.'),  
   );
   $form['views_slideshow_singleframe']['fixed_height'] = array(
     '#type' => 'select',

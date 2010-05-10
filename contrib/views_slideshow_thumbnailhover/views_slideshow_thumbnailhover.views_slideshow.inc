@@ -20,6 +20,7 @@ function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
       'sort' => array('default' => 1),
       'effect' => array('default' => 'fade'),
       'speed' => array('default' => 300),
+      'start_paused' => array('default', 0),
       'fade_value' => array('default' => 0.25),
       'hover_breakout' => array('default' => 'teaser'),
       'teasers_last' => array('default' => TRUE),
@@ -119,6 +120,12 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#title' => t('Speed'),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['speed'],
     '#description' => t('Time in milliseconds that each transition lasts. Numeric only!'),  
+  );
+  $form['views_slideshow_thumbnailhover']['start_paused'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Start Slideshow Paused'),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['start_paused'],
+    '#description' => t('Start the slideshow in the paused state.'),  
   );
   $form['views_slideshow_thumbnailhover']['fixed_height'] = array(
     '#type' => 'select',

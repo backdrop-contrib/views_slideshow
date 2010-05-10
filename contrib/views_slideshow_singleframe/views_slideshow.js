@@ -158,10 +158,15 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     }
     
     $(settings.targetId).cycle(settings.opts);
-    
+
+    // Start Paused
+    if (settings.start_pause) {
+      viewsSlideshowSingleFramePause(settings);
+    }
+
     // Show image count for people who have js enabled.
     $('#views_slideshow_singleframe_image_count_' + settings.id).show();
-    
+
     if (settings.controls > 0) {
       // Show controls for people who have js enabled browsers.
       $('#views_slideshow_singleframe_controls_' + settings.id).show();

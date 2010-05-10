@@ -143,7 +143,12 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     }
 
     $(settings.targetId).cycle(settings.opts);
-    
+
+    // Start Paused
+    if (settings.start_pause) {
+      viewsSlideshowThumbnailHoverPause(settings);
+    }
+
     // Show image count for people who have js enabled.
     $('#views_slideshow_thumbnailhover_image_count_' + settings.id).show();
     
