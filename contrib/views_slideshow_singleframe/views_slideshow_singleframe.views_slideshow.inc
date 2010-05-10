@@ -31,6 +31,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'pager' => array('default' => 0),
       'pager_type' => array('default' => 0),
       'page_hover' => array('default' => 2),
+      'pager_click_to_page' => array('default' => 0),
       'image_count' => array('default' => 0),
       'nowrap' => array('default' => 0),
       'sync' => array('default' => 1),
@@ -138,6 +139,14 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array(1 => t('Yes'),2 => t('No')),
     '#default_value' => $view->options['views_slideshow_singleframe']['pager_hover'],
     '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-singleframe-pager' => array(1, 2)),
+  );
+  $form['views_slideshow_singleframe']['pager_click_to_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Make Pager Linked to Slide Link'),
+    '#default_value' => $view->options['views_slideshow_singleframe']['pager_click_to_page'],
+    '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
     '#process' => array('views_process_dependency'),
     '#dependency' => array('edit-style-options-views-slideshow-singleframe-pager' => array(1, 2)),
   );

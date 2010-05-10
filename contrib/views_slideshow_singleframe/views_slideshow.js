@@ -22,7 +22,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       sync:settings.sync==1,
       random:settings.random==1,
       pause:false,
-      allowPagerClickBubble:settings.pager_hover==1,
+      allowPagerClickBubble:(settings.pager_hover==1 || settings.pager_click_to_page),
       prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.id:null,
       next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.id:null,
       pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.id:null,
@@ -44,7 +44,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
         }
         
         var theme = 'viewsSlideshowPager' + settings.pager_type;
-        return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide) : '';
+        return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
       },
       after:function(curr, next, opts) {
         // Used for Image Counter.
@@ -207,8 +207,12 @@ viewsSlideshowSingleFrameResume = function (settings) {
   settings.paused = false;
 }
 
-Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, slide) {
-  return '<div class="' + classes + '"><a href="#"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
+Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, slide, settings) {
+  var href = '#';
+  if (settings.pager_click_to_page) {
+    href = $(slide).find('a').attr('href');
+  }
+  return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
 }
 
 Drupal.theme.prototype.viewsSlideshowPagerNumbered = function (classes, idx, slide) {
