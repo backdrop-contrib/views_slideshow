@@ -71,7 +71,10 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
   if ($view->row_plugin->uses_fields()) {
     $options = array();
     foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
-      $options[$field] = $handler->ui_name();
+      // Only show the field if it's not excluded.
+      if (!$handler->options['exclude']) {
+        $options[$field] = $handler->ui_name();
+      }
     }
     $form['views_slideshow_thumbnailhover']['main_fields'] = array(
       '#type' => 'checkboxes',
