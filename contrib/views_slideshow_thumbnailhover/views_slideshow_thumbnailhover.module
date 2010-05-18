@@ -47,39 +47,39 @@ function views_slideshow_thumbnailhover_theme($existing, $type, $theme, $path) {
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_controls' =>array(
-      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_control_previous' =>array(
-      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_control_pause' =>array(
-      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_control_next' =>array(
-      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_image_count' => array(
-      'arguments' => array('id' => '', 'view' => NULL, 'options' => array()),
+      'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_breakout_teaser' => array(
-      'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
+      'arguments' => array('item' => NULL, 'vss_id' => NULL, 'count' => NULL),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_no_display_section' => array(
-      'arguments' => array('view' => NULL, 'rows' => NULL, 'id' => NULL, 'mode' => NULL, 'teaser' => TRUE),
+      'arguments' => array('view' => NULL, 'rows' => NULL, 'vss_id' => NULL, 'mode' => NULL, 'teaser' => TRUE),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_no_display_teaser' => array(
-      'arguments' => array('item' => NULL, 'id' => NULL, 'count' => NULL),
+      'arguments' => array('item' => NULL, 'vss_id' => NULL, 'count' => NULL),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
     'views_slideshow_thumbnailhover_breakout_teasers' => array(
-      'arguments' => array('items' => NULL, 'id' => NULL),
+      'arguments' => array('items' => NULL, 'vss_id' => NULL),
       'file' => 'views_slideshow_thumbnailhover.theme.inc',
     ),
   );

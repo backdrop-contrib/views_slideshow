@@ -23,16 +23,16 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
       random:settings.random==1,
       pause:false,
       allowPagerClickBubble:(settings.pager_event=='click')? false : true,
-      pager:(settings.pager_event == 'hoverIntent') ? null : '#views_slideshow_breakout_teasers_' + settings.id,
+      pager:(settings.pager_event == 'hoverIntent') ? null : '#views_slideshow_breakout_teasers_' + settings.vss_id,
       nowrap:parseInt(settings.nowrap),
       pagerAnchorBuilder:(settings.pager_event == 'hoverIntent') ? null : function(idx, slide) { 
-        return '#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + idx; 
+        return '#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.vss_id + '_' + idx; 
       },
       after:function(curr, next, opts) {
         // Used for Image Counter.
         if (settings.image_count) {
-          $('#views_slideshow_thumbnailhover_image_count_' + settings.id + ' span.num').html(opts.currSlide + 1);
-          $('#views_slideshow_thumbnailhover_image_count_' + settings.id + ' span.total').html(opts.slideCount);
+          $('#views_slideshow_thumbnailhover_image_count_' + settings.vss_id + ' span.num').html(opts.currSlide + 1);
+          $('#views_slideshow_thumbnailhover_image_count_' + settings.vss_id + ' span.total').html(opts.slideCount);
         }
       },
       before:function(current, next) {
@@ -51,12 +51,12 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
         
         var currId = (currId=$(current).attr('id')).substring(currId.lastIndexOf('_')+1)
         var nextId = (nextId=$(next).attr('id')).substring(nextId.lastIndexOf('_')+1)
-        $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + currId).removeClass('activeSlide');
-        $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + nextId).addClass('activeSlide');
+        $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.vss_id + '_' + currId).removeClass('activeSlide');
+        $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.vss_id + '_' + nextId).addClass('activeSlide');
       },
       pagerEvent: (settings.pager_event == 'hoverIntent') ? null : settings.pager_event,
-      prev:(settings.controls > 0)?'#views_slideshow_thumbnailhover_prev_' + settings.id:null,
-      next:(settings.controls > 0)?'#views_slideshow_thumbnailhover_next_' + settings.id:null,
+      prev:(settings.controls > 0)?'#views_slideshow_thumbnailhover_prev_' + settings.vss_id:null,
+      next:(settings.controls > 0)?'#views_slideshow_thumbnailhover_next_' + settings.vss_id:null,
       cleartype:(settings.ie.cleartype == 'true')? true : false,
       cleartypeNoBg:(settings.ie.cleartypenobg == 'true')? true : false
     };
@@ -79,7 +79,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 
     // Pause on hover.
     if (settings.pause == 1) {
-      $('#views_slideshow_thumbnailhover_teaser_section_' + settings.id).hover(function() {
+      $('#views_slideshow_thumbnailhover_teaser_section_' + settings.vss_id).hover(function() {
         $(settings.targetId).cycle('pause');
       }, function() {
         if (settings.paused == false) {
@@ -90,7 +90,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 
     // Pause on clicking of the slide.
     if (settings.pause_on_click == 1) {
-      $('#views_slideshow_thumbnailhover_teaser_section_' + settings.id).click(function() { 
+      $('#views_slideshow_thumbnailhover_teaser_section_' + settings.vss_id).click(function() { 
         viewsSlideshowThumbnailHoverPause(settings);
       });
     }
@@ -150,17 +150,17 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     }
 
     // Show image count for people who have js enabled.
-    $('#views_slideshow_thumbnailhover_image_count_' + settings.id).show();
+    $('#views_slideshow_thumbnailhover_image_count_' + settings.vss_id).show();
     
     if (settings.pager_event == 'hoverIntent') {
-      $('#views_slideshow_thumbnailhover_breakout_teasers_' + settings.id + ' .views_slideshow_thumbnailhover_div_breakout_teaser').each(function(i,obj) {
+      $('#views_slideshow_thumbnailhover_breakout_teasers_' + settings.vss_id + ' .views_slideshow_thumbnailhover_div_breakout_teaser').each(function(i,obj) {
         $(obj).hoverIntent(
           function() {
             $('.views_slideshow_thumbnailhover_div_breakout_teaser').removeClass('activeSlide');
             var id = $(this).attr('id');
             id = parseInt(id.substring(id.lastIndexOf('_')+1));
             $(settings.targetId).cycle(id);
-            $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.id + '_' + id).addClass('activeSlide');
+            $('#views_slideshow_thumbnailhover_div_breakout_teaser_' + settings.vss_id + '_' + id).addClass('activeSlide');
             $(settings.targetId).cycle('stop');
           },
           function() {
@@ -174,9 +174,9 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 
     if (settings.controls > 0) {
       // Show controls for people who have js enabled browsers.
-      $('#views_slideshow_thumbnailhover_controls_' + settings.id).show();
+      $('#views_slideshow_thumbnailhover_controls_' + settings.vss_id).show();
       
-      $('#views_slideshow_thumbnailhover_playpause_' + settings.id).click(function(e) {
+      $('#views_slideshow_thumbnailhover_playpause_' + settings.vss_id).click(function(e) {
         if (settings.paused) {
           viewsSlideshowThumbnailHoverResume(settings);
         }
@@ -193,7 +193,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 viewsSlideshowThumbnailHoverPause = function (settings) {
   $(settings.targetId).cycle('pause');
   if (settings.controls > 0) {
-    $('#views_slideshow_thumbnailhover_playpause_' + settings.id)
+    $('#views_slideshow_thumbnailhover_playpause_' + settings.vss_id)
       .addClass('views_slideshow_thumbnailhover_play')
       .addClass('views_slideshow_play')
       .removeClass('views_slideshow_thumbnailhover_pause')
@@ -207,7 +207,7 @@ viewsSlideshowThumbnailHoverPause = function (settings) {
 viewsSlideshowThumbnailHoverResume = function (settings) {
   $(settings.targetId).cycle('resume');
   if (settings.controls > 0) {
-    $('#views_slideshow_thumbnailhover_playpause_' + settings.id)
+    $('#views_slideshow_thumbnailhover_playpause_' + settings.vss_id)
       .addClass('views_slideshow_thumbnailhover_pause')
       .addClass('views_slideshow_pause')
       .removeClass('views_slideshow_thumbnailhover_play')

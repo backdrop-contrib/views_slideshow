@@ -23,9 +23,9 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       random:settings.random==1,
       pause:false,
       allowPagerClickBubble:(settings.pager_hover==1 || settings.pager_click_to_page),
-      prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.id:null,
-      next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.id:null,
-      pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.id:null,
+      prev:(settings.controls > 0)?'#views_slideshow_singleframe_prev_' + settings.vss_id:null,
+      next:(settings.controls > 0)?'#views_slideshow_singleframe_next_' + settings.vss_id:null,
+      pager:(settings.pager > 0)?'#views_slideshow_singleframe_pager_' + settings.vss_id:null,
       nowrap:parseInt(settings.nowrap),
       pagerAnchorBuilder: function(idx, slide) {
         var classes = 'pager-item pager-num-' + (idx+1);
@@ -49,14 +49,14 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
       after:function(curr, next, opts) {
         // Used for Image Counter.
         if (settings.image_count) {
-          $('#views_slideshow_singleframe_image_count_' + settings.id + ' span.num').html(opts.currSlide + 1);
-          $('#views_slideshow_singleframe_image_count_' + settings.id + ' span.total').html(opts.slideCount);
+          $('#views_slideshow_singleframe_image_count_' + settings.vss_id + ' span.num').html(opts.currSlide + 1);
+          $('#views_slideshow_singleframe_image_count_' + settings.vss_id + ' span.total').html(opts.slideCount);
         }
       },
       before:function(curr, next, opts) {
         // Remember last slide.
         if (settings.remember_slide) {
-          createCookie(settings.view_id, opts.currSlide + 1, settings.remember_slide_days);
+          createCookie(settings.vss_id, opts.currSlide + 1, settings.remember_slide_days);
         }
 
         // Make variable height.
@@ -73,7 +73,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     
     // Set the starting slide if we are supposed to remember the slide
     if (settings.remember_slide) {
-      var startSlide = readCookie(settings.view_id);
+      var startSlide = readCookie(settings.vss_id);
       if (startSlide == null) {
         startSlide = 0;
       }
@@ -94,7 +94,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
 
     // Pause on hover.
     if (settings.pause == 1) {
-      $('#views_slideshow_singleframe_teaser_section_' + settings.id).hover(function() {
+      $('#views_slideshow_singleframe_teaser_section_' + settings.vss_id).hover(function() {
         $(settings.targetId).cycle('pause');
       }, function() {
         if (settings.paused == false) {
@@ -105,7 +105,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
 
     // Pause on clicking of the slide.
     if (settings.pause_on_click == 1) {
-      $('#views_slideshow_singleframe_teaser_section_' + settings.id).click(function() { 
+      $('#views_slideshow_singleframe_teaser_section_' + settings.vss_id).click(function() { 
         viewsSlideshowPause(settings);
       });
     }
@@ -165,13 +165,13 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     }
 
     // Show image count for people who have js enabled.
-    $('#views_slideshow_singleframe_image_count_' + settings.id).show();
+    $('#views_slideshow_singleframe_image_count_' + settings.vss_id).show();
 
     if (settings.controls > 0) {
       // Show controls for people who have js enabled browsers.
-      $('#views_slideshow_singleframe_controls_' + settings.id).show();
+      $('#views_slideshow_singleframe_controls_' + settings.vss_id).show();
       
-      $('#views_slideshow_singleframe_playpause_' + settings.id).click(function(e) {
+      $('#views_slideshow_singleframe_playpause_' + settings.vss_id).click(function(e) {
       	if (settings.paused) {
       	  viewsSlideshowSingleFrameResume(settings);
       	}
@@ -188,7 +188,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
 viewsSlideshowSingleFramePause = function (settings) {
   $(settings.targetId).cycle('pause');
   if (settings.controls > 0) {
-    $('#views_slideshow_singleframe_playpause_' + settings.id)
+    $('#views_slideshow_singleframe_playpause_' + settings.vss_id)
       .addClass('views_slideshow_singleframe_play')
       .addClass('views_slideshow_play')
       .removeClass('views_slideshow_singleframe_pause')
@@ -202,7 +202,7 @@ viewsSlideshowSingleFramePause = function (settings) {
 viewsSlideshowSingleFrameResume = function (settings) {
   $(settings.targetId).cycle('resume');
   if (settings.controls > 0) {
-    $('#views_slideshow_singleframe_playpause_' + settings.id)
+    $('#views_slideshow_singleframe_playpause_' + settings.vss_id)
       .addClass('views_slideshow_singleframe_pause')
       .addClass('views_slideshow_pause')
       .removeClass('views_slideshow_singleframe_play')

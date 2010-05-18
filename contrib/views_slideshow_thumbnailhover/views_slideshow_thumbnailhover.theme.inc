@@ -11,9 +11,9 @@
  */
 function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   $options = $vars['options'];
-  $id = $vars['id'];
   $view = $vars['view'];
   $rows = $vars['rows'];
+  $vss_id = $view->name . '-' . $view->current_display;
 
   $settings = array_merge(
     array(
@@ -21,14 +21,14 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
       'teasers_last' => ($options['thumbnailhover']['teasers_last']) ? TRUE : FALSE,
       'id_prefix' => '#views_slideshow_thumbnailhover_main_',
       'div_prefix' => '#views_slideshow_thumbnailhover_div_',
-      'id' => $vars['id'],
-      'view_id' => $vars['view']->name . '-' . $vars['view']->current_display,
+      'vss_id' => $vss_id,
+      'view_id' => $vss_id,
     ),
     $options['views_slideshow_thumbnailhover']
   );
 
   drupal_add_js(array('viewsSlideshowThumbnailHover' => array(
-    "#views_slideshow_thumbnailhover_main_$id" => $settings)), 'setting');
+    "#views_slideshow_thumbnailhover_main_" . $vss_id => $settings)), 'setting');
 
   // Add the hoverIntent plugin.
   if ($settings['pager_event'] == 'hoverIntent') {
@@ -44,33 +44,33 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   }
 
   $teaser = ($options['views_slideshow_thumbnailhover']['hover_breakout'] == 'teaser') ? TRUE : FALSE;
-  $hidden_elements = theme('views_slideshow_thumbnailhover_no_display_section', $view, $rows, $id, $options, $teaser);
-  $vars['slideshow'] = theme('views_slideshow_main_section', $id, $hidden_elements, 'views_slideshow_thumbnailhover');
+  $hidden_elements = theme('views_slideshow_thumbnailhover_no_display_section', $view, $rows, $vss_id, $options, $teaser);
+  $vars['slideshow'] = theme('views_slideshow_main_section', $vss_id, $hidden_elements, 'views_slideshow_thumbnailhover');
 
   $thumbnailhover = $vars['options']['views_slideshow_thumbnailhover'];
 
   // Only show controls when there is more than one result.
   if ($settings['num_divs'] > 1) {
     if ($thumbnailhover['controls'] == 1) {
-      $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+      $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $vss_id, $view, $options);
     }
     elseif ($thumbnailhover['controls'] == 2) {
-      $vars['controls_bottom'] = theme('views_slideshow_thumbnailhover_controls', $id, $view, $options);
+      $vars['controls_bottom'] = theme('views_slideshow_thumbnailhover_controls', $vss_id, $view, $options);
     }
   }
 
   if (!$thumbnailhover['teasers_last']) {
-    $vars['breakout_top'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+    $vars['breakout_top'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $vss_id, $options);
   }
   else {
-    $vars['breakout_bottom'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $id, $options);
+    $vars['breakout_bottom'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $vss_id, $options);
   }
 
   if ($thumbnailhover['image_count'] == 1) {
-    $vars['image_count_top'] = theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
+    $vars['image_count_top'] = theme('views_slideshow_thumbnailhover_image_count', $vss_id, $view, $options);
   }
   elseif ($thumbnailhover['image_count'] == 2) {
-    $vars['image_count_bottom'] = theme('views_slideshow_thumbnailhover_image_count', $id, $view, $options);
+    $vars['image_count_bottom'] = theme('views_slideshow_thumbnailhover_image_count', $vss_id, $view, $options);
   }
 }
 
@@ -79,9 +79,9 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $id, $options, $teaser = TRUE) {
+function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $vss_id, $options, $teaser = TRUE) {
   // Add the slideshow elements.
-  $attributes['id'] = "views_slideshow_thumbnailhover_teaser_section_$id";
+  $attributes['id'] = "views_slideshow_thumbnailhover_teaser_section_" . $vss_id;
   $attributes['class'] = 'views_slideshow_thumbnailhover_teaser_section views_slideshow_teaser_section';
   $attributes = drupal_attributes($attributes);
 
@@ -107,7 +107,7 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
     else {
       $rendered = node_view(node_load($node->nid), $teaser, FALSE, FALSE);
     }
-    $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', $rendered, $id, $count);
+    $output .= theme('views_slideshow_thumbnailhover_no_display_teaser', $rendered, $vss_id, $count);
   }
   $output .= "</div>";
   return $output;
@@ -118,7 +118,7 @@ function theme_views_slideshow_thumbnailhover_no_display_section($view, $rows, $
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $count) {
+function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $vss_id, $count) {
   $current = $count + 1;
 
   $classes = array(
@@ -131,7 +131,7 @@ function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $cou
   }
   $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
 
-  $attributes['id'] = "views_slideshow_thumbnailhover_div_${id}_${count}";
+  $attributes['id'] = "views_slideshow_thumbnailhover_div_" . $vss_id . "_" . $count;
   $attributes['class'] = implode(' ', $classes);
   $attributes = drupal_attributes($attributes);
 
@@ -143,8 +143,8 @@ function theme_views_slideshow_thumbnailhover_no_display_teaser($item, $id, $cou
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $id, $options) {
-  $attributes['id'] = "views_slideshow_thumbnailhover_breakout_teasers_$id";
+function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $vss_id, $options) {
+  $attributes['id'] = "views_slideshow_thumbnailhover_breakout_teasers_" . $vss_id;
   $attributes['class'] = 'views_slideshow_thumbnailhover_breakout_teasers clear-block';
   $attributes = drupal_attributes($attributes);
 
@@ -152,7 +152,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
   if ('title' == $options['views_slideshow_thumbnailhover']['hover_breakout']) {
     foreach ($view->result as $count => $node) {
       $node = node_load($node->nid); // TODO, this loads too much, but on node row we dont access the fields separately.
-      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $node->title, $id, $count);
+      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $node->title, $vss_id, $count);
     }
   }
   elseif ($view->display_handler->uses_fields()) {
@@ -172,12 +172,12 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
           $rendered_fields .= '</div>';
         }
       }
-      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $rendered_fields, $id, $count);
+      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $rendered_fields, $vss_id, $count);
     }
   }
   else {
     foreach ($items as $count => $item) {
-      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $item, $id, $count);
+      $output .= theme('views_slideshow_thumbnailhover_breakout_teaser', $item, $vss_id, $count);
     }
   }
   $output .= "</div>\n";
@@ -190,7 +190,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teasers($view, $items, $i
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count) {
+function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $vss_id, $count) {
   $current = $count + 1;
   $classes = array(
     'views_slideshow_thumbnailhover_div_breakout_teaser',
@@ -201,7 +201,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count
   $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
 
   $attributes['class'] = implode(' ', $classes);
-  $attributes['id'] = "views_slideshow_thumbnailhover_div_breakout_teaser_${id}_${count}";
+  $attributes['id'] = "views_slideshow_thumbnailhover_div_breakout_teaser_" . $vss_id . "_" . $count;
   $attributes = drupal_attributes($attributes);
 
   return "<div$attributes>$item</div>\n";
@@ -212,7 +212,7 @@ function theme_views_slideshow_thumbnailhover_breakout_teaser($item, $id, $count
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
+function theme_views_slideshow_thumbnailhover_controls($vss_id, $view, $options) {
   $classes = array(
     'views_slideshow_thumbnailhover_controls',
     'views_slideshow_controls',
@@ -220,15 +220,15 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
 
   $attributes['class'] = implode(' ', $classes);
 
-  $attributes['id'] = "views_slideshow_thumbnailhover_controls_$id";
+  $attributes['id'] = "views_slideshow_thumbnailhover_controls_" . $vss_id;
   $attributes = drupal_attributes($attributes);
 
   $output = "<div$attributes>";
-  $output .= theme('views_slideshow_thumbnailhover_control_previous', $id, $view, $options);
+  $output .= theme('views_slideshow_thumbnailhover_control_previous', $vss_id, $view, $options);
   if ($options['views_slideshow_thumbnailhover']['timeout']) {
-    $output .= theme('views_slideshow_thumbnailhover_control_pause', $id, $view, $options);
+    $output .= theme('views_slideshow_thumbnailhover_control_pause', $vss_id, $view, $options);
   }
-  $output .= theme('views_slideshow_thumbnailhover_control_next', $id, $view, $options);
+  $output .= theme('views_slideshow_thumbnailhover_control_next', $vss_id, $view, $options);
   $output .= "</div>\n";
   return $output;
 }
@@ -238,11 +238,11 @@ function theme_views_slideshow_thumbnailhover_controls($id, $view, $options) {
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_control_previous($id, $view, $options) {
+function theme_views_slideshow_thumbnailhover_control_previous($vss_id, $view, $options) {
   return l(t('Previous'), '', array(
     'attributes' => array(
       'class' => 'views_slideshow_thumbnailhover_previous views_slideshow_previous',
-      'id' => "views_slideshow_thumbnailhover_prev_$id",
+      'id' => "views_slideshow_thumbnailhover_prev_" . $vss_id,
     ),
     'fragment' => ' ',
     'external' => TRUE,
@@ -254,11 +254,11 @@ function theme_views_slideshow_thumbnailhover_control_previous($id, $view, $opti
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options) {
+function theme_views_slideshow_thumbnailhover_control_pause($vss_id, $view, $options) {
   return l(t('Pause'), '', array(
     'attributes' => array(
       'class' => 'views_slideshow_thumbnailhover_pause views_slideshow_pause',
-      'id' => "views_slideshow_thumbnailhover_playpause_$id",
+      'id' => "views_slideshow_thumbnailhover_playpause_" . $vss_id,
     ),
     'fragment' => ' ',
     'external' => TRUE,
@@ -270,11 +270,11 @@ function theme_views_slideshow_thumbnailhover_control_pause($id, $view, $options
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options) {
+function theme_views_slideshow_thumbnailhover_control_next($vss_id, $view, $options) {
   return l(t('Next'), '', array(
     'attributes' => array(
       'class' => 'views_slideshow_thumbnailhover_next views_slideshow_next',
-      'id' => "views_slideshow_thumbnailhover_next_$id",
+      'id' => "views_slideshow_thumbnailhover_next_" . $vss_id,
     ),
     'fragment' => ' ',
     'external' => TRUE,
@@ -286,9 +286,9 @@ function theme_views_slideshow_thumbnailhover_control_next($id, $view, $options)
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_thumbnailhover_image_count($id, $view, $options) {
+function theme_views_slideshow_thumbnailhover_image_count($vss_id, $view, $options) {
   $attributes['class'] = 'views_slideshow_thumbnailhover_image_count views_slideshow_image_count';
-  $attributes['id'] = "views_slideshow_thumbnailhover_image_count_$id";
+  $attributes['id'] = "views_slideshow_thumbnailhover_image_count_" . $vss_id;
   $attributes = drupal_attributes($attributes);
 
   $counter = '<span class="num">1</span> ' . t('of') .' <span class="total">1</span>';
