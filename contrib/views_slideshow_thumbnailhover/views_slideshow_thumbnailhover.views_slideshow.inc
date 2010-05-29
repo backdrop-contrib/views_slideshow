@@ -253,7 +253,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#type' => 'textarea',
     '#title' => t('Advanced Options'),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['advanced'],
-    '#description' => t('Add other jQuery cycle options one per line.  Ex. height: 350  !url', array('!url' => l('Click here for the additional options to add.', 'http://malsup.com/jquery/cycle/options.html'))),
+    '#description' => t('Add other jQuery cycle options one per line.  Ex. height: 350  !url', array('!url' => l(t('Click here for the additional options to add.'), 'http://malsup.com/jquery/cycle/options.html'))),
   );
   $form['views_slideshow_thumbnailhover']['ie'] = array(
     '#type' => 'fieldset',

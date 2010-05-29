@@ -219,7 +219,7 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#type' => 'textarea',
     '#title' => t('Advanced Options'),
     '#default_value' => $view->options['views_slideshow_singleframe']['advanced'],
-    '#description' => t('Add other jQuery cycle options one per line.  Ex. height: 350  !url', array('!url' => l('Click here for the additional options to add.', 'http://malsup.com/jquery/cycle/options.html'))),
+    '#description' => t('Add other jQuery cycle options one per line.  Ex. height: 350  !url', array('!url' => l(t('Click here for the additional options to add.'), 'http://malsup.com/jquery/cycle/options.html'))),
   );
   $form['views_slideshow_singleframe']['ie'] = array(
     '#type' => 'fieldset',
