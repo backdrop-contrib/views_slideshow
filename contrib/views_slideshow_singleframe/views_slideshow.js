@@ -220,8 +220,12 @@ Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, s
   return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
 }
 
-Drupal.theme.prototype.viewsSlideshowPagerNumbered = function (classes, idx, slide) {
-  return '<div class="' + classes + '"><a href="#">' + (idx+1) + '</a></div>';
+Drupal.theme.prototype.viewsSlideshowPagerNumbered = function (classes, idx, slide, settings) {
+  var href = '#';
+  if (settings.pager_click_to_page) {
+    href = $(slide).find('a').attr('href');
+  }
+  return '<div class="' + classes + '"><a href="' + href + '">' + (idx+1) + '</a></div>';
 }
 
 // Verify that the value is a number.
