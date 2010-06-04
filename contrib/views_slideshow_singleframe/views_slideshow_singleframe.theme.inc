@@ -25,6 +25,25 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
     $options['views_slideshow_singleframe']
   );
 
+  // We need to go through the current js setting values to make sure the one we
+  // want to add is not already there. If it is already there then append -[num]
+  // to the id to make it unique.
+  $slideshow_count = 1;
+  $current_settings = drupal_add_js();
+  foreach ($current_settings['setting'] AS $current_setting) {
+    if (isset($current_setting['viewsSlideshowSingleFrame'])) {
+      $current_keys = array_keys($current_setting['viewsSlideshowSingleFrame']);
+      if (stristr($current_keys[0], '#views_slideshow_singleframe_main_' . $vss_id)) {
+        $slideshow_count++;
+      }
+    }
+  }
+
+  if ($slideshow_count > 1) {
+    $vss_id .= '-' . $slideshow_count;
+    $settings['vss_id'] = $vss_id;  
+  }
+
   drupal_add_js(array('viewsSlideshowSingleFrame' => array('#views_slideshow_singleframe_main_' . $vss_id => $settings)), 'setting');
 
   $hidden_elements = theme('views_slideshow_singleframe_no_display_section', $view, $rows, $vss_id, $options['mode']);
