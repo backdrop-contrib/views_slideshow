@@ -82,10 +82,6 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
           '#value' => '</div></div>',
         );
       }
-      
-      $form['main_wrapper_close'] = array(
-        '#value' => '</div>',
-      );
     }
     else {
       $form['enable_module'] = array(
