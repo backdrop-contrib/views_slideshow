@@ -54,7 +54,7 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#type' => 'textfield',
     '#title' => t('Timer delay'),
     '#default_value' => $view->options['views_slideshow_singleframe']['timeout'],
-    '#description' => t('Amount of time in milliseconds between transitions.')
+    '#description' => t('Amount of time in milliseconds between transitions. Set the value to 0 to not rotate the slideshow automatically.')
   );
   $form['views_slideshow_singleframe']['delay'] = array(
     '#type' => 'textfield',

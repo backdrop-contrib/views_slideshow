@@ -110,7 +110,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#type' => 'textfield',
     '#title' => t('Timer delay'),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['timeout'],
-    '#description' => t('Amount of time in milliseconds between transitions.'),
+    '#description' => t('Amount of time in milliseconds between transitions. Set the value to 0 to not rotate the slideshow automatically.'),
   );
   $form['views_slideshow_thumbnailhover']['delay'] = array(
     '#type' => 'textfield',
