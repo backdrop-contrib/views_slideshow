@@ -106,7 +106,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     // Pause on clicking of the slide.
     if (settings.pause_on_click == 1) {
       $('#views_slideshow_singleframe_teaser_section_' + settings.vss_id).click(function() { 
-        viewsSlideshowPause(settings);
+        viewsSlideshowSingleFramePause(settings);
       });
     }
 
