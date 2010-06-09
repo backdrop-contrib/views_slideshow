@@ -145,7 +145,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     $(settings.targetId).cycle(settings.opts);
 
     // Start Paused
-    if (settings.start_pause) {
+    if (settings.start_paused) {
       viewsSlideshowThumbnailHoverPause(settings);
     }
 

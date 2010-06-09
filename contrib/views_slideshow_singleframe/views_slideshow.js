@@ -160,7 +160,7 @@ Drupal.behaviors.viewsSlideshowSingleFrame = function (context) {
     $(settings.targetId).cycle(settings.opts);
 
     // Start Paused
-    if (settings.start_pause) {
+    if (settings.start_paused) {
       viewsSlideshowSingleFramePause(settings);
     }
 
