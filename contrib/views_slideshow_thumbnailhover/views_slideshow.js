@@ -35,7 +35,7 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
           $('#views_slideshow_thumbnailhover_image_count_' + settings.vss_id + ' span.total').html(opts.slideCount);
         }
       },
-      before:function(current, next) {
+      before:function(current, next, opts) {
         // Remember last slide.
         if (settings.remember_slide) {
           createCookie(settings.view_id, opts.currSlide + 1, settings.remember_slide_days);
