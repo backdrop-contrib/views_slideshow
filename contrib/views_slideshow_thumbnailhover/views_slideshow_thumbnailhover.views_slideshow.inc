@@ -32,6 +32,9 @@ function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
       'random' => array('default' => 0),
       'pause' => array('default' => 1),
       'pause_on_click' => array('default' => 0),
+      'pause_when_hidden' => array('default' => 0),
+      'pasue_when_hidden_type' => array('default' => 'full'),
+      'amount_allowed_visible' => array('default' => ''),
       'remember_slide' => array('default' => 0),
       'remember_slide_days' => array('default' => 1),
       'pager_event' => array('default' => 'hover'),
@@ -157,6 +160,43 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#options' => array(1 => t('Yes'), 0 => t('No')),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['pause_on_click'],
     '#description' => t('Pause when the slide is clicked.'),
+  );
+  $form['views_slideshow_thumbnailhover']['pause_when_hidden'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Pause When the Slideshow is Not Visible'),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['pause_when_hidden'],
+    '#description' => t('When the slideshow is scrolled out of view or when a window is resized that hides the slideshow, this will pause the slideshow.'),
+  );
+  $form['views_slideshow_thumbnailhover']['pause_when_hidden_type'] = array(
+    '#type' => 'select',
+    '#title' => t('How to Calculate Amount of Slide that Needs to be Shown'),
+    '#options' => array(
+      'full' => t('Entire slide'),
+      'vertical' => t('Set amount of vertical'),
+      'horizontal' => t('Set amount of horizontal'),
+      'area' => t('Set total area of the slide'),
+    ),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['pause_when_hidden_type'],
+    '#description' => t('Choose how to calculate how much of the slide has to be shown. Entire Slide: All the slide has to be shown. Vertical: Set amount of height that has to be shown. Horizontal: Set amount of width that has to be shown. Area: Set total area that has to be shown.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-thumbnailhover-pause-when-hidden' => array(1)),
+  );
+  $form['views_slideshow_thumbnailhover']['amount_allowed_visible'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Amount of Slide Needed to be Shown'),
+    '#default_value' => $view->options['views_slideshow_thumbnailhover']['amount_allowed_visible'],
+    '#description' => t("The amount of the slide that needs to be shown to have it rotate. You can set the value in percentage (ex: 50%) or in pixels (ex: 250). The slidehsow will not rotate until it's height/width/total area, depending on the calculation method you have chosen above, is less than the value you have entered in this field."),
+    '#size' => 4,
+    '#process' => array('views_process_dependency'),
+    '#dependency_count' => 2,
+    '#dependency' => array(
+      'edit-style-options-views-slideshow-thumbnailhover-pause-when-hidden' => array(1),
+      'edit-style-options-views-slideshow-thumbnailhover-pause-when-hidden-type' => array(
+        'vertical',
+        'horizontal',
+        'area',
+      ),
+    ),
   );
   $form['views_slideshow_thumbnailhover']['remember_slide'] = array(
     '#type' => 'checkbox',

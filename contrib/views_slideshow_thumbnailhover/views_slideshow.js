@@ -148,6 +148,32 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
     if (settings.start_paused) {
       viewsSlideshowThumbnailHoverPause(settings);
     }
+    
+    // Pause if hidden.
+    if (settings.pause_when_hidden) {
+      var checkPause = function(settings) {
+        // If the slideshow is visible and it is paused then resume.
+        // otherwise if the slideshow is not visible and it is not paused then
+        // pause it.
+        var visible = viewsSlideshowThumbnailHoverIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
+        if (visible && settings.paused) {
+          viewsSlideshowThumbnailHoverResume(settings);
+        }
+        else if (!visible && !settings.paused) {
+          viewsSlideshowThumbnailHoverPause(settings);
+        }
+      }
+     
+      // Check when scrolled.
+      $(window).scroll(function() {
+       checkPause(settings);
+      });
+      
+      // Check when window is resized.
+      $(window).resize(function() {
+        checkPause(settings);
+      });
+    }
 
     // Show image count for people who have js enabled.
     $('#views_slideshow_thumbnailhover_image_count_' + settings.vss_id).show();
@@ -264,3 +290,104 @@ function eraseCookie(name) {
   createCookie(name,"",-1);
 }
 
+/**
+ * Checks to see if the slide is visible enough.
+ * elem = element to check.
+ * amountVisible = amount that should be visible. Either in percent or px. If
+ *                it's not defined then all of the slide must be visible.
+ *
+ * Returns true or false
+ */
+function viewsSlideshowThumbnailHoverIsVisible(elem, type, amountVisible) {
+  // Get the top and bottom of the window;
+  var docViewTop = $(window).scrollTop();
+  var docViewBottom = docViewTop + $(window).height();
+  var docViewLeft = $(window).scrollLeft();
+  var docViewRight = docViewLeft + $(window).width();
+
+  // Get the top, bottom, and height of the slide;
+  var elemTop = $(elem).offset().top;
+  var elemHeight = $(elem).height();
+  var elemBottom = elemTop + elemHeight;
+  var elemLeft = $(elem).offset().left;
+  var elemWidth = $(elem).width();
+  var elemRight = elemLeft + elemWidth;
+  var elemArea = elemHeight * elemWidth;
+  
+  // Calculate what's hiding in the slide.
+  var missingLeft = 0;
+  var missingRight = 0;
+  var missingTop = 0;
+  var missingBottom = 0;
+  
+  // Find out how much of the slide is missing from the left.
+  if (elemLeft < docViewLeft) {
+    missingLeft = docViewLeft - elemLeft;
+  }
+
+  // Find out how much of the slide is missing from the right.
+  if (elemRight > docViewRight) {
+    missingRight = elemRight - docViewRight;
+  }
+  
+  // Find out how much of the slide is missing from the top.
+  if (elemTop < docViewTop) {
+    missingTop = docViewTop - elemTop;
+  }
+
+  // Find out how much of the slide is missing from the bottom.
+  if (elemBottom > docViewBottom) {
+    missingBottom = elemBottom - docViewBottom;
+  }
+  
+  // If there is no amountVisible defined then check to see if the whole slide
+  // is visible.
+  if (type == 'full') {
+    return ((elemBottom >= docViewTop) && (elemTop <= docViewBottom)
+    && (elemBottom <= docViewBottom) &&  (elemTop >= docViewTop)
+    && (elemLeft >= docViewLeft) && (elemRight <= docViewRight)
+    && (elemLeft <= docViewRight) && (elemRight >= docViewLeft));
+  }
+  else if(type == 'vertical') {
+    var verticalShowing = elemHeight - missingTop - missingBottom;
+    
+    // If user specified a percentage then find out if the current shown percent
+    // is larger than the allowed percent.
+    // Otherwise check to see if the amount of px shown is larger than the
+    // allotted amount.
+    if (amountVisible.indexOf('%')) {
+      return (((verticalShowing/elemHeight)*100) >= parseInt(amountVisible));
+    }
+    else {
+      return (verticalShowing >= parseInt(amountVisible));
+    }
+  }
+  else if(type == 'horizontal') {
+    var horizontalShowing = elemWidth - missingLeft - missingRight;
+    
+    // If user specified a percentage then find out if the current shown percent
+    // is larger than the allowed percent.
+    // Otherwise check to see if the amount of px shown is larger than the
+    // allotted amount.
+    if (amountVisible.indexOf('%')) {
+      return (((horizontalShowing/elemWidth)*100) >= parseInt(amountVisible));
+    }
+    else {
+      return (horizontalShowing >= parseInt(amountVisible));
+    }
+  }
+  else if(type == 'area') {
+    var areaShowing = (elemWidth - missingLeft - missingRight) * (elemHeight - missingTop - missingBottom);
+    
+    // If user specified a percentage then find out if the current shown percent
+    // is larger than the allowed percent.
+    // Otherwise check to see if the amount of px shown is larger than the
+    // allotted amount.
+    if (amountVisible.indexOf('%')) {
+      return (((areaShowing/elemArea)*100) >= parseInt(amountVisible));
+    }
+    else {
+      return (areaShowing >= parseInt(amountVisible));
+    }
+  }
+}
