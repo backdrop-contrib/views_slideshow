@@ -27,7 +27,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'pause' => array('default' => 1),
       'pause_on_click' => array('default' => 0),
       'pause_when_hidden' => array('default' => 0),
-      'pasue_when_hidden_type' => array('default' => 'full'),
+      'pause_when_hidden_type' => array('default' => 'full'),
       'amount_allowed_visible' => array('default' => ''),
       'remember_slide' => array('default' => 0),
       'remember_slide_days' => array('default' => 1),
