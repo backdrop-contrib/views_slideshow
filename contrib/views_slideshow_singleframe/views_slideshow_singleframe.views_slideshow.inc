@@ -34,7 +34,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'controls' => array('default' => 0),
       'pager' => array('default' => 0),
       'pager_type' => array('default' => 0),
-      'page_hover' => array('default' => 2),
+      'pager_hover' => array('default' => 2),
       'pager_click_to_page' => array('default' => 0),
       'image_count' => array('default' => 0),
       'nowrap' => array('default' => 0),
