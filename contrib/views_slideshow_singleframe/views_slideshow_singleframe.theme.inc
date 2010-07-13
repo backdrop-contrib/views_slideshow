@@ -82,14 +82,33 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
  * @ingroup themeable
  */
 function theme_views_slideshow_singleframe_no_display_section($view, $rows, $vss_id, $mode) {
+  // Retrive the number of itmes per frame
+  if (isset($view->display_handler->display->display_options['style_options']['views_slideshow_singleframe']['items_per_slide']) && $view->display_handler->display->display_options['style_options']['views_slideshow_singleframe']['items_per_slide'] > 0) {
+    $items_per_slide = $view->display_handler->display->display_options['style_options']['views_slideshow_singleframe']['items_per_slide'];
+  }
+  elseif (isset($view->display['default']->display_options['style_options']['views_slideshow_singleframe']['items_per_slide']) && $view->display['default']->display_options['style_options']['views_slideshow_singleframe']['items_per_slide'] > 0) {
+    $items_per_slide = $view->display['default']->display_options['style_options']['views_slideshow_singleframe']['items_per_slide'];
+  }
+  else {
+    $items_per_slide = 1;
+  }
+  
   // Add the slideshow elements.
   $attributes['id'] = "views_slideshow_singleframe_teaser_section_" . $vss_id;
   $attributes['class'] = 'views_slideshow_singleframe_teaser_section';
   $attributes = drupal_attributes($attributes);
 
   $output = "<div$attributes>";
+  
+  $items = array();
+  $slideshow_count = 0;
   foreach ($rows as $count => $item) {
-    $output .= theme('views_slideshow_singleframe_no_display_teaser', $item, $vss_id, $count);
+    $items[] = $item;
+    if (count($items) == $items_per_slide || $count == (count($rows)-1)) {
+      $output .= theme('views_slideshow_singleframe_no_display_teaser', $items, $vss_id, $slideshow_count);
+      $items = array();
+      $slideshow_count++;
+    }
   }
   $output .= "</div>\n";
 
@@ -101,7 +120,7 @@ function theme_views_slideshow_singleframe_no_display_section($view, $rows, $vss
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_singleframe_no_display_teaser($item, $vss_id, $count) {
+function theme_views_slideshow_singleframe_no_display_teaser($items, $vss_id, $count) {
   $current = $count + 1;
   $classes = array(
     'views_slideshow_singleframe_slide',
@@ -116,7 +135,25 @@ function theme_views_slideshow_singleframe_no_display_teaser($item, $vss_id, $co
   $attributes['id'] = "views_slideshow_singleframe_div_" . $vss_id . "_" . $count;
   $attributes = drupal_attributes($attributes);
 
-  return "<div$attributes>$item</div>\n";
+  $output = "<div$attributes>";
+  foreach ($items as $item_count => $item) {
+    $item_class = 'views-row views-row-' . $item_count;
+    if (!$item_count) {
+      $item_class .= ' views-row-first';
+    }
+    if ($item_count % 2) {
+      $item_class .= ' views-row-even';
+    }
+    else {
+      $item_class .= ' views-row-odd';
+    }
+    $output .= '<div class="' . $item_class . '">' . "\n";
+    $output .= $item . "\n";
+    $output .= '</div>' . "\n";
+  }
+
+  $output .= "</div>\n";
+  return $output;
 }
 
 /**

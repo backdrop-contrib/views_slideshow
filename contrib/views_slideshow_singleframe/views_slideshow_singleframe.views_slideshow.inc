@@ -32,6 +32,7 @@ function views_slideshow_singleframe_views_slideshow_option_definition() {
       'remember_slide' => array('default' => 0),
       'remember_slide_days' => array('default' => 1),
       'controls' => array('default' => 0),
+      'items_per_slide' => array('default' => 1),
       'pager' => array('default' => 0),
       'pager_type' => array('default' => 0),
       'pager_hover' => array('default' => 2),
@@ -203,6 +204,13 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
     '#default_value' => $view->options['views_slideshow_singleframe']['image_count'],
     '#description' => t('Determine if the Image Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
+  );
+  $form['views_slideshow_singleframe']['items_per_slide'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Items per slide'),
+    '#default_value' => $view->options['views_slideshow_singleframe']['items_per_slide'],
+    '#description' => t('The number of items per slide'),
+    '#size' => 4,
   );
   $options = array(
     'none' => 'none',
