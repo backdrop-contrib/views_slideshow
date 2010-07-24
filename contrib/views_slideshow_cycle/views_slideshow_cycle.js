@@ -17,16 +17,15 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
 
     settings.opts = {
       speed:settings.speed,
-      timeout:parseInt(settings.timeout),
-      delay:parseInt(settings.delay),
-      sync:settings.sync==1,
-      random:settings.random==1,
-      pause:false,
-      allowPagerClickBubble:(settings.pager_hover==1 || settings.pager_click_to_page),
+      timeout:settings.timeout,
+      delay:settings.delay,
+      sync:settings.sync,
+      random:settings.random,
+      allowPagerClickBubble:(settings.pager_hover || settings.pager_click_to_page),
       prev:(settings.controls > 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
       next:(settings.controls > 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
       pager:(settings.pager > 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
-      nowrap:parseInt(settings.nowrap),
+      nowrap:settings.nowrap,
       pagerAnchorBuilder: function(idx, slide) {
         var classes = 'pager-item pager-num-' + (idx+1);
         if (idx == 0) {
@@ -60,15 +59,15 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         }
 
         // Make variable height.
-        if (settings.fixed_height == 0) {
+        if (!settings.fixed_height) {
           //get the height of the current slide
           var $ht = $(this).height();
           //set the container's height to that of the current slide
           $(this).parent().animate({height: $ht});
         }
       },
-      cleartype:(settings.ie.cleartype == 'true')? true : false,
-      cleartypeNoBg:(settings.ie.cleartypenobg == 'true')? true : false
+      cleartype:(settings.cleartype)? true : false,
+      cleartypeNoBg:(settings.cleartypenobg)? true : false
     }
     
     // Set the starting slide if we are supposed to remember the slide
@@ -80,7 +79,7 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
       settings.opts.startingSlide =  startSlide;
     }
 
-    if (settings.pager_hover == 1) {
+    if (settings.pager_hover) {
       settings.opts.pagerEvent = 'mouseover';
       settings.opts.pauseOnPagerHover = true;
     }
@@ -93,18 +92,18 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     }
 
     // Pause on hover.
-    if (settings.pause == 1) {
+    if (settings.pause) {
       $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
         $(settings.targetId).cycle('pause');
       }, function() {
-        if (settings.paused == false) {
+        if (!settings.paused) {
           $(settings.targetId).cycle('resume');
         }
       });
     }
 
     // Pause on clicking of the slide.
-    if (settings.pause_on_click == 1) {
+    if (settings.pause_on_click) {
       $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() { 
         viewsSlideshowCyclePause(settings);
       });
