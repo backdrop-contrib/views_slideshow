@@ -8,7 +8,7 @@
 
 function views_slideshow_thumbnailhover_views_slideshow_modes() {
   $options = array(
-    'views_slideshow_thumbnailhover' => t('ThumbnailHover'),
+    'views_slideshow_thumbnailhover' => t('ThumbnailHover (Legacy)'),
   );
   return $options;
 }

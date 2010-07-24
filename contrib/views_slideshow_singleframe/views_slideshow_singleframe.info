@@ -1,5 +1,5 @@
 ; $Id$
-name = Views Slideshow: SingleFrame
+name = Views Slideshow: SingleFrame (Legacy)
 description = Adds a Single Frame slideshow mode to Views Slideshows.
 dependencies[] = views_slideshow
 package = Views

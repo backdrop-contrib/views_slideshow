@@ -8,7 +8,7 @@
 
 function views_slideshow_singleframe_views_slideshow_modes() {
   $options = array(
-    'views_slideshow_singleframe' => t('SingleFrame'),
+    'views_slideshow_singleframe' => t('SingleFrame (Legacy)'),
   );
   return $options;
 }
