@@ -237,11 +237,61 @@ function theme_views_slideshow_cycle_control_next($vss_id, $view, $options) {
 function theme_views_slideshow_cycle_pager($vss_id, $view, $options) {
   $pager_type = $options['views_slideshow_cycle']['pager_type'];
 
-  $attributes['class'] = "views_slideshow_cycle_pager views_slideshow_pager$pager_type";
+  $attributes['class'] = 'views_slideshow_cycle_pager views_slideshow_pager_' . $pager_type;
   $attributes['id'] = "views_slideshow_cycle_pager_" . $vss_id;
   $attributes = drupal_attributes($attributes);
+  
+  $output = '';
+  if ($pager_type == 'thumbnails' || $pager_type == 'numbered') {
+    $output = '<div' . $attributes . '></div>';
+  }
+  else if ($pager_type == 'fields') {
+    $output = '<div' . $attributes . '>';
+    foreach ($view->result as $count => $node) {
+      $rendered_fields = '';
+      foreach ($options['views_slideshow_cycle']['pager_fields'] as $field => $use) {
+        if ($use !== 0 && is_object($view->field[$field])) {
+          $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+          if ($view->field[$field]->label()) {
+            $rendered_fields .= '<label class="view-label-'. views_css_safe($view->field[$field]->field) . '">';
+            $rendered_fields .= $view->field[$field]->label() . ':';
+            $rendered_fields .= '</label>';
+          }
+          $rendered_fields .= '<div class="views-content-'. views_css_safe($view->field[$field]->field) .'">';
+          $rendered_fields .=  $view->style_plugin->rendered_fields[$count][$field];
+          $rendered_fields .= '</div>';
+          $rendered_fields .= '</div>';
+        }
+      }
+  
+      $output .= theme('views_slideshow_cycle_pager_item', $rendered_fields, $vss_id, $count);
+    }
+    $output .= '</div>';
+  }
 
-  return "<div$attributes></div>";
+  return $output;
+}
+
+/**
+ * Views Slideshow: pager item.
+ *
+ * @ingroup themeable
+ */
+function theme_views_slideshow_cycle_pager_item($item, $vss_id, $count) {
+  $current = $count + 1;
+  $classes = array(
+    'views_slideshow_cycle_div_pager_item',
+  );
+  if (!$count) {
+    $classes[] = 'views_slideshow_cycle_active_pager_item';
+  }
+  $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
+
+  $attributes['class'] = implode(' ', $classes);
+  $attributes['id'] = 'views_slideshow_cycle_div_pager_item_' . $vss_id . '_' . $count;
+  $attributes = drupal_attributes($attributes);
+
+  return '<div' . $attributes . '>' . $item . '</div>' . "\n";
 }
 
 /**

@@ -16,17 +16,12 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     settings.paused = false;
 
     settings.opts = {
-      speed:settings.speed,
-      timeout:settings.timeout,
-      delay:settings.delay,
+      speed:parseInt(settings.speed),
+      timeout:parseInt(settings.timeout),
+      delay:parseInt(settings.delay),
       sync:settings.sync,
       random:settings.random,
-      allowPagerClickBubble:(settings.pager_hover || settings.pager_click_to_page),
-      prev:(settings.controls > 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
-      next:(settings.controls > 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
-      pager:(settings.pager > 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
-      nowrap:settings.nowrap,
-      pagerAnchorBuilder: function(idx, slide) {
+      pagerAnchorBuilder:function(idx, slide) {
         var classes = 'pager-item pager-num-' + (idx+1);
         if (idx == 0) {
           classes += ' first';
@@ -45,6 +40,11 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         var theme = 'viewsSlideshowPager' + settings.pager_type;
         return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
       },
+      allowPagerClickBubble:(settings.pager_hover || settings.pager_click_to_page),
+      prev:(settings.controls > 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
+      next:(settings.controls > 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
+      pager:(settings.pager > 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
+      nowrap:settings.nowrap,
       after:function(curr, next, opts) {
         // Used for Image Counter.
         if (settings.image_count) {
@@ -68,6 +68,29 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
       },
       cleartype:(settings.cleartype)? true : false,
       cleartypeNoBg:(settings.cleartypenobg)? true : false
+    }
+    
+    // Build the pager if we are using number or thumbnails.
+    if (settings.pager_type == 'numbered' || settings.pager_type == 'thumbnails') {
+      settings.opts.pagerAnchorBuilder = function(idx, slide) {
+        var classes = 'pager-item pager-num-' + (idx+1);
+        if (idx == 0) {
+          classes += ' first';
+        }
+        if ($(slide).siblings().length == idx) {
+          classes += ' last';
+        }
+
+        if (idx % 2) {
+          classes += ' odd';
+        }
+        else {
+          classes += ' even';
+        }
+        
+        var theme = 'viewsSlideshowPager' + settings.pager_type;
+        return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
+      }
     }
     
     // Set the starting slide if we are supposed to remember the slide
@@ -237,7 +260,7 @@ viewsSlideshowCycleResume = function (settings) {
   settings.paused = false;
 }
 
-Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, slide, settings) {
+Drupal.theme.prototype.viewsSlideshowPagerthumbnails = function (classes, idx, slide, settings) {
   var href = '#';
   if (settings.pager_click_to_page) {
     href = $(slide).find('a').attr('href');
@@ -245,12 +268,16 @@ Drupal.theme.prototype.viewsSlideshowPagerThumbnails = function (classes, idx, s
   return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
 }
 
-Drupal.theme.prototype.viewsSlideshowPagerNumbered = function (classes, idx, slide, settings) {
+Drupal.theme.prototype.viewsSlideshowPagernumbered = function (classes, idx, slide, settings) {
   var href = '#';
   if (settings.pager_click_to_page) {
     href = $(slide).find('a').attr('href');
   }
   return '<div class="' + classes + '"><a href="' + href + '">' + (idx+1) + '</a></div>';
+}
+
+Drupal.theme.prototype.viewsSlideshowPagerfields = function (classes, idx, slide, settings) {
+  return '#views_slideshow_cycle_div_pager_item_' + settings.vss_id + '_' + idx;
 }
 
 // Verify that the value is a number.
