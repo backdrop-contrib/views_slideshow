@@ -46,7 +46,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'pager_hover' => array('default' => 0),
       'pager_click_to_page' => array('default' => 0),
       'controls' => array('default' => 0),
-      'image_count' => array('default' => 0),
+      'slide_counter' => array('default' => 0),
 
       // Internet Explorer Tweaks
       'cleartype' => array('default' => 'true'),
@@ -273,8 +273,6 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
   );
   
-  
-  
   // Pager and Controls
   $form['views_slideshow_cycle']['pager_and_controls'] = array(
     '#value' => '<h2>' . t('Pager and Controls') . '</h2>',
@@ -282,7 +280,11 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
   $form['views_slideshow_cycle']['pager'] = array(
     '#type' => 'select',
     '#title' => t('Pager'),
-    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
+    '#options' => array(
+      0 => t('None'),
+      'top' => t('Top'),
+      'bottom' => t('Bottom'),
+    ),
     '#default_value' => $view->options['views_slideshow_cycle']['pager'],
     '#description' => t('Determine if a pager for the slideshow (1|2|3) should appear, and if so whether they should appear before or after the slideshow.'),
   );
@@ -350,20 +352,27 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#process' => array('views_process_dependency'),
     '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array(1, 2)),
   );
-  
   $form['views_slideshow_cycle']['controls'] = array(
     '#type' => 'select',
     '#title' => t('Controls'),
-    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
+    '#options' => array(
+      0 => t('None'),
+      'top' => t('Top'),
+      'bottom' => t('Bottom'),
+    ),
     '#default_value' => $view->options['views_slideshow_cycle']['controls'],
     '#description' => t('Determine if controls for the slideshow (start/stop/next/previous) should appear, and if so whether they should appear before or after the slideshow.'),
   );
-  $form['views_slideshow_cycle']['image_count'] = array(
+  $form['views_slideshow_cycle']['slide_counter'] = array(
     '#type' => 'select',
-    '#title' => t('Image Counter'),
-    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
-    '#default_value' => $view->options['views_slideshow_cycle']['image_count'],
-    '#description' => t('Determine if the Image Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
+    '#title' => t('Slide Counter'),
+    '#options' => array(
+      0 => t('None'),
+      'top' => t('Top'),
+      'bottom' => t('Bottom'),
+    ),
+    '#default_value' => $view->options['views_slideshow_cycle']['slide_counter'],
+    '#description' => t('Determine if the Slide Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
   );
   
   // Internet Explorer Tweaks

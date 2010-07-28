@@ -46,10 +46,10 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
       pager:(settings.pager > 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
       nowrap:settings.nowrap,
       after:function(curr, next, opts) {
-        // Used for Image Counter.
-        if (settings.image_count) {
-          $('#views_slideshow_cycle_image_count_' + settings.vss_id + ' span.num').html(opts.currSlide + 1);
-          $('#views_slideshow_cycle_image_count_' + settings.vss_id + ' span.total').html(opts.slideCount);
+        // Used for Slide Counter.
+        if (settings.slide_counter) {
+          $('#views_slideshow_cycle_slide_counter_' + settings.vss_id + ' span.num').html(opts.currSlide + 1);
+          $('#views_slideshow_cycle_slide_counter_' + settings.vss_id + ' span.total').html(opts.slideCount);
         }
       },
       before:function(curr, next, opts) {

@@ -52,27 +52,22 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   $cycle = $vars['options']['views_slideshow_cycle'];
 
   // Only show controls when there is more than one result.
+  $vars['controls_location'] = 0;
   if ($settings['num_divs'] > 1) {
-    if ($cycle['controls'] == 1) {
-      $vars['controls_top'] = theme('views_slideshow_cycle_controls', $vss_id, $view, $options);
-    }
-    elseif ($cycle['controls'] == 2) {
-      $vars['controls_bottom'] = theme('views_slideshow_cycle_controls', $vss_id, $view, $options);
+    $vars['controls_location'] = $cycle['controls'];
+    if ($cycle['controls']) {
+      $vars['controls'] = theme('views_slideshow_cycle_controls', $vss_id, $view, $options);
     }
   }
 
-  if ($cycle['pager'] == 1) {
-    $vars['pager_top'] = theme('views_slideshow_cycle_pager', $vss_id, $view, $options);
-  }
-  elseif ($cycle['pager'] == 2) {
-    $vars['pager_bottom'] = theme('views_slideshow_cycle_pager', $vss_id, $view, $options);
+  $vars['pager_location'] = $cycle['pager'];
+  if ($cycle['pager']) {
+    $vars['pager'] = theme('views_slideshow_cycle_pager', $vss_id, $view, $options);
   }
   
-  if ($cycle['image_count'] == 1) {
-    $vars['image_count_top'] = theme('views_slideshow_cycle_image_count', $vss_id, $view, $options);
-  }
-  elseif ($cycle['image_count'] == 2) {
-    $vars['image_count_bottom'] = theme('views_slideshow_cycle_image_count', $vss_id, $view, $options);
+  $vars['slide_counter_location'] = $cycle['slide_counter'];
+  if ($cycle['slide_counter']) {
+    $vars['slide_counter'] = theme('views_slideshow_cycle_slide_counter', $vss_id, $view, $options);
   }
 }
 
@@ -295,13 +290,13 @@ function theme_views_slideshow_cycle_pager_item($item, $vss_id, $count) {
 }
 
 /**
- * Views Slideshow: image counter.
+ * Views Slideshow: slide counter.
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_image_count($vss_id, $view, $options) {
-  $attributes['class'] = 'views_slideshow_cycle_image_count views_slideshow_image_count';
-  $attributes['id'] = "views_slideshow_cycle_image_count_" . $vss_id;
+function theme_views_slideshow_cycle_slide_counter($vss_id, $view, $options) {
+  $attributes['class'] = 'views_slideshow_cycle_slide_counter views_slideshow_slide_counter';
+  $attributes['id'] = "views_slideshow_cycle_slide_counter_" . $vss_id;
   $attributes = drupal_attributes($attributes);
 
   $counter = '<span class="num">1</span> ' . t('of') . ' <span class="total">1</span>';

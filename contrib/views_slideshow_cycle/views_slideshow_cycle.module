@@ -64,7 +64,7 @@ function views_slideshow_cycle_theme($existing, $type, $theme, $path) {
       'arguments' => array('item' => NULL, 'vss_id' => NULL, 'count' => NULL),
       'file' => 'views_slideshow_cycle.theme.inc',
     ),
-    'views_slideshow_cycle_image_count' => array(
+    'views_slideshow_cycle_slide_counter' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'file' => 'views_slideshow_cycle.theme.inc',
     ),
