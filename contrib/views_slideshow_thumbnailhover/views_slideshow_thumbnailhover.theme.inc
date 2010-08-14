@@ -69,6 +69,8 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   $thumbnailhover = $vars['options']['views_slideshow_thumbnailhover'];
 
   // Only show controls when there is more than one result.
+  $vars['controls_top'] = '';
+  $vars['controls_bottom'] = '';
   if ($settings['num_divs'] > 1) {
     if ($thumbnailhover['controls'] == 1) {
       $vars['controls_top'] = theme('views_slideshow_thumbnailhover_controls', $vss_id, $view, $options);
@@ -78,6 +80,8 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
     }
   }
 
+  $vars['breakout_top'] = '';
+  $vars['breakout_bottom'] = '';
   if (!$thumbnailhover['teasers_last']) {
     $vars['breakout_top'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $vss_id, $options);
   }
@@ -85,6 +89,8 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
     $vars['breakout_bottom'] = theme('views_slideshow_thumbnailhover_breakout_teasers', $view, $rows, $vss_id, $options);
   }
 
+  $vars['image_count_top'] = '';
+  $vars['image_count_bottom'] = '';
   if ($thumbnailhover['image_count'] == 1) {
     $vars['image_count_top'] = theme('views_slideshow_thumbnailhover_image_count', $vss_id, $view, $options);
   }

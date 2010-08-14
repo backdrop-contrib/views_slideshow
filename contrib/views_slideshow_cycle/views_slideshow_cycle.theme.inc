@@ -53,6 +53,7 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
 
   // Only show controls when there is more than one result.
   $vars['controls_location'] = 0;
+  $vars['controls'] = '';
   if ($settings['num_divs'] > 1) {
     $vars['controls_location'] = $cycle['controls'];
     if ($cycle['controls']) {
@@ -61,11 +62,13 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   }
 
   $vars['pager_location'] = $cycle['pager'];
+  $vars['pager'] = '';
   if ($cycle['pager']) {
     $vars['pager'] = theme('views_slideshow_cycle_pager', $vss_id, $view, $options);
   }
   
   $vars['slide_counter_location'] = $cycle['slide_counter'];
+  $vars['slide_counter'] = '';
   if ($cycle['slide_counter']) {
     $vars['slide_counter'] = theme('views_slideshow_cycle_slide_counter', $vss_id, $view, $options);
   }

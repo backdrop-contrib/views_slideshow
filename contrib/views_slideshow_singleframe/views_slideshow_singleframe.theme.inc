@@ -52,6 +52,8 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
   $singleframe = $vars['options']['views_slideshow_singleframe'];
 
   // Only show controls when there is more than one result.
+  $vars['controls_top'] = '';
+  $vars['controls_bottom'] = '';
   if ($settings['num_divs'] > 1) {
     if ($singleframe['controls'] == 1) {
       $vars['controls_top'] = theme('views_slideshow_singleframe_controls', $vss_id, $view, $options);
@@ -61,6 +63,8 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
     }
   }
 
+  $vars['pager_top'] = '';
+  $vars['pager_bottom'] = '';
   if ($singleframe['pager'] == 1) {
     $vars['pager_top'] = theme('views_slideshow_singleframe_pager', $vss_id, $view, $options);
   }
@@ -68,6 +72,8 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
     $vars['pager_bottom'] = theme('views_slideshow_singleframe_pager', $vss_id, $view, $options);
   }
   
+  $vars['image_count_top'] = '';
+  $vars['image_count_bottom'] = '';
   if ($singleframe['image_count'] == 1) {
     $vars['image_count_top'] = theme('views_slideshow_singleframe_image_count', $vss_id, $view, $options);
   }
