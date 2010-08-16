@@ -41,7 +41,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
 
       // Pager and Controls
       'pager' => array('default' => 0),
-      'pager_type' => array('default' => 0),
+      'pager_type' => array('default' => 'numbered'),
       'pager_fields' => array('default' => array()),
       'pager_hover' => array('default' => 0),
       'pager_click_to_page' => array('default' => 0),
