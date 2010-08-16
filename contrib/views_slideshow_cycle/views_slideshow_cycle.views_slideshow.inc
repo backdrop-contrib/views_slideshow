@@ -307,7 +307,7 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#default_value' => $view->options['views_slideshow_cycle']['pager_type'],
     '#description' => t('What the pager should look like.  Thumbnails grabs the first image in each slideshow item.'),
     '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array(1, 2)),
+    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
   );
   
   if ($view->row_plugin->uses_fields()) {
@@ -329,7 +329,7 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
       ),
       '#dependency_count' => 2,
       '#dependency' => array(
-        'edit-style-options-views-slideshow-cycle-pager' => array(1, 2),
+        'edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom'),
         'edit-style-options-views-slideshow-cycle-pager-type' => array('fields'),
       ),
       '#suffix' => '</div></div>',
@@ -342,7 +342,7 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#default_value' => $view->options['views_slideshow_cycle']['pager_hover'],
     '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
     '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array(1, 2)),
+    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
   );
   $form['views_slideshow_cycle']['pager_click_to_page'] = array(
     '#type' => 'checkbox',
@@ -350,7 +350,7 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#default_value' => $view->options['views_slideshow_cycle']['pager_click_to_page'],
     '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
     '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array(1, 2)),
+    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
   );
   $form['views_slideshow_cycle']['controls'] = array(
     '#type' => 'select',
