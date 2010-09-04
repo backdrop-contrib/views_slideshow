@@ -214,7 +214,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
     '#dependency' => array('edit-style-options-views-slideshow-thumbnailhover-remember-slide' => array(1)),
   );
   $options = array('mouseover' => t('Hover'), 'click' => t('Click'));
-  if ((module_exists('jq') && jq_add('hoverIntent')) || (module_exists('hoverintent') && hoverintent_add())) {
+  if ((module_exists('jq') && jq_add('hoverIntent')) || (module_exists('hoverintent') && function_exists('hoverintent_add'))) {
     $options['hoverIntent'] = 'hoverIntent';
   }
   $form['views_slideshow_thumbnailhover']['pager_event'] = array(
