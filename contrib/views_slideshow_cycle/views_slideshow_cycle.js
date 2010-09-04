@@ -265,7 +265,8 @@ Drupal.theme.prototype.viewsSlideshowPagerthumbnails = function (classes, idx, s
   if (settings.pager_click_to_page) {
     href = $(slide).find('a').attr('href');
   }
-  return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(slide).find('img').attr('src') + '" /></a></div>';
+  var img = $(slide).find('img');
+  return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(img).attr('src') + '" alt="' + $(img).attr('alt') + '" title="' + $(img).attr('title') + '"/></a></div>';
 }
 
 Drupal.theme.prototype.viewsSlideshowPagernumbered = function (classes, idx, slide, settings) {
