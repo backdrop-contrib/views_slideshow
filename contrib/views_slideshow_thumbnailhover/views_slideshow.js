@@ -217,6 +217,9 @@ Drupal.behaviors.viewsSlideshowThumbnailHover = function (context) {
 
 // Pause the slideshow 
 viewsSlideshowThumbnailHoverPause = function (settings) {
+  // Make Resume translatable
+  var resume = Drupal.t('Resume');
+  
   $(settings.targetId).cycle('pause');
   if (settings.controls > 0) {
     $('#views_slideshow_thumbnailhover_playpause_' + settings.vss_id)
@@ -224,13 +227,16 @@ viewsSlideshowThumbnailHoverPause = function (settings) {
       .addClass('views_slideshow_play')
       .removeClass('views_slideshow_thumbnailhover_pause')
       .removeClass('views_slideshow_pause')
-      .text('Resume');
+      .text(resume);
   }
   settings.paused = true;
 }
 
 // Resume the slideshow
 viewsSlideshowThumbnailHoverResume = function (settings) {
+  // Make Pause translatable
+  var pause = Drupal.t('Pause');
+  
   $(settings.targetId).cycle('resume');
   if (settings.controls > 0) {
     $('#views_slideshow_thumbnailhover_playpause_' + settings.vss_id)
@@ -238,7 +244,7 @@ viewsSlideshowThumbnailHoverResume = function (settings) {
       .addClass('views_slideshow_pause')
       .removeClass('views_slideshow_thumbnailhover_play')
       .removeClass('views_slideshow_play')
-      .text('Pause');
+      .text(pause);
   }
   settings.paused = false;
 }
