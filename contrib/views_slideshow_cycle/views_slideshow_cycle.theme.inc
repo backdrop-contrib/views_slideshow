@@ -233,41 +233,57 @@ function theme_views_slideshow_cycle_control_next($vss_id, $view, $options) {
  * @ingroup themeable
  */
 function theme_views_slideshow_cycle_pager($vss_id, $view, $options) {
-  $pager_type = $options['views_slideshow_cycle']['pager_type'];
+  $output = '';
 
+  // Create some attributes
   $attributes['class'] = 'views_slideshow_cycle_pager views_slideshow_pager_' . $pager_type;
   $attributes['id'] = "views_slideshow_cycle_pager_" . $vss_id;
-  $attributes = drupal_attributes($attributes);
   
-  $output = '';
-  if ($pager_type == 'thumbnails' || $pager_type == 'numbered') {
-    $output = '<div' . $attributes . '></div>';
-  }
-  else if ($pager_type == 'fields') {
-    $output = '<div' . $attributes . '>';
-    foreach ($view->result as $count => $node) {
-      $rendered_fields = '';
-      foreach ($options['views_slideshow_cycle']['pager_fields'] as $field => $use) {
-        if ($use !== 0 && is_object($view->field[$field])) {
-          $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
-          if ($view->field[$field]->label()) {
-            $rendered_fields .= '<label class="view-label-'. views_css_safe($view->field[$field]->field) . '">';
-            $rendered_fields .= $view->field[$field]->label() . ':';
-            $rendered_fields .= '</label>';
-          }
-          $rendered_fields .= '<div class="views-content-'. views_css_safe($view->field[$field]->field) .'">';
-          $rendered_fields .=  $view->style_plugin->rendered_fields[$count][$field];
-          $rendered_fields .= '</div>';
-          $rendered_fields .= '</div>';
-        }
-      }
-  
-      $output .= theme('views_slideshow_cycle_pager_item', $rendered_fields, $vss_id, $count);
-    }
-    $output .= '</div>';
+  // Allow other modules change the output
+  // Using foreach instead of module_invoke_all because module_invoke_all
+  // doesn't support pass by reference.
+  foreach (module_implements('views_slideshow_cycle_pager_theme') as $module) {
+    $hook = $module . '_views_slideshow_cycle_pager_theme';
+    $hook($output, $vss_id, $view, $options['views_slideshow_cycle'], $attributes);
   }
 
   return $output;
+}
+
+/**
+ * Implementation of hook_views_slideshow_cycle_pager_theme.
+ */
+function views_slideshow_cycle_views_slideshow_cycle_pager_theme(&$output, $vss_id, $view, $options, $attributes) {
+  switch($options['pager_type']) {
+    case 'numbered':
+    case 'thumbnails':
+      $output = '<div' . drupal_attributes($attributes) . '></div>';
+      break;
+    
+    case 'fields':
+      $output = '<div' . drupal_attributes($attributes) . '>';
+      foreach ($view->result as $count => $node) {
+        $rendered_fields = '';
+        foreach ($options['pager_fields'] as $field => $use) {
+          if ($use !== 0 && is_object($view->field[$field])) {
+            $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
+            if ($view->field[$field]->label()) {
+              $rendered_fields .= '<label class="view-label-'. views_css_safe($view->field[$field]->field) . '">';
+              $rendered_fields .= $view->field[$field]->label() . ':';
+              $rendered_fields .= '</label>';
+            }
+            $rendered_fields .= '<div class="views-content-'. views_css_safe($view->field[$field]->field) .'">';
+            $rendered_fields .=  $view->style_plugin->rendered_fields[$count][$field];
+            $rendered_fields .= '</div>';
+            $rendered_fields .= '</div>';
+          }
+        }
+    
+        $output .= theme('views_slideshow_cycle_pager_item', $rendered_fields, $vss_id, $count);
+      }
+      $output .= '</div>';
+      break;
+  }
 }
 
 /**

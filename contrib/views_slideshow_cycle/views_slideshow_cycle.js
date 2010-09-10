@@ -37,13 +37,14 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
           classes += ' even';
         }
         
+        // Call the theme function for the pager.
         var theme = 'viewsSlideshowPager' + settings.pager_type;
         return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
       },
-      allowPagerClickBubble:(settings.pager_hover || settings.pager_click_to_page),
+      allowPagerClickBubble:(settings.pager_hover),
       prev:(settings.controls > 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
       next:(settings.controls > 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
-      pager:(settings.pager > 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
+      pager:(settings.pager != 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
       nowrap:settings.nowrap,
       after:function(curr, next, opts) {
         // Used for Slide Counter.
@@ -68,29 +69,6 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
       },
       cleartype:(settings.cleartype)? true : false,
       cleartypeNoBg:(settings.cleartypenobg)? true : false
-    }
-    
-    // Build the pager if we are using number or thumbnails.
-    if (settings.pager_type == 'numbered' || settings.pager_type == 'thumbnails') {
-      settings.opts.pagerAnchorBuilder = function(idx, slide) {
-        var classes = 'pager-item pager-num-' + (idx+1);
-        if (idx == 0) {
-          classes += ' first';
-        }
-        if ($(slide).siblings().length == idx) {
-          classes += ' last';
-        }
-
-        if (idx % 2) {
-          classes += ' odd';
-        }
-        else {
-          classes += ' even';
-        }
-        
-        var theme = 'viewsSlideshowPager' + settings.pager_type;
-        return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
-      }
     }
     
     // Set the starting slide if we are supposed to remember the slide
@@ -176,6 +154,14 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         else {
           settings.opts[prop] = value;
         }
+      }
+    }
+    
+    // Allow pagers to override settings.
+    if (settings.pager != 0) {
+      var pagerAlter = 'viewsSlideshowCyclePager' + settings.pager_type + 'SettingsAlter';
+      if (typeof window[pagerAlter] == 'function') {
+        settings = window[pagerAlter](settings);
       }
     }
     
@@ -266,23 +252,44 @@ viewsSlideshowCycleResume = function (settings) {
   settings.paused = false;
 }
 
+// Theme the thumbnails type pager.
 Drupal.theme.prototype.viewsSlideshowPagerthumbnails = function (classes, idx, slide, settings) {
   var href = '#';
-  if (settings.pager_click_to_page) {
+  if (settings.thumbnails_pager_click_to_page) {
     href = $(slide).find('a').attr('href');
   }
-  var img = $(slide).find('img');
+  var img = $(slide).find('img')
   return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(img).attr('src') + '" alt="' + $(img).attr('alt') + '" title="' + $(img).attr('title') + '"/></a></div>';
 }
 
+// Make some adjustments for thumbnails pagers.
+function viewsSlideshowCyclePagerthumbnailsSettingsAlter(settings) {
+  if (settings.thumbnails_pager_click_to_page) {
+    settings.opts.allowPagerClickBubble = true;
+    settings.opts.pagerEvent = "mouseover";
+  }
+  return settings;
+}
+
+// Theme the numbered type pager.
 Drupal.theme.prototype.viewsSlideshowPagernumbered = function (classes, idx, slide, settings) {
   var href = '#';
-  if (settings.pager_click_to_page) {
+  if (settings.numbered_pager_click_to_page) {
     href = $(slide).find('a').attr('href');
   }
   return '<div class="' + classes + '"><a href="' + href + '">' + (idx+1) + '</a></div>';
 }
 
+// Make some adjustments for numbered pagers.
+function viewsSlideshowCyclePagernumberedSettingsAlter(settings) {
+  if (settings.numbered_pager_click_to_page) {
+    settings.opts.allowPagerClickBubble = true;
+    settings.opts.pagerEvent = "mouseover";
+  }
+  return settings;
+}
+
+// Theme the fields type pager.
 Drupal.theme.prototype.viewsSlideshowPagerfields = function (classes, idx, slide, settings) {
   return '#views_slideshow_cycle_div_pager_item_' + settings.vss_id + '_' + idx;
 }

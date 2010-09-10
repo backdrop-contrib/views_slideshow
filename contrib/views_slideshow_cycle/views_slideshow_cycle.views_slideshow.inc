@@ -286,16 +286,30 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
       'bottom' => t('Bottom'),
     ),
     '#default_value' => $view->options['views_slideshow_cycle']['pager'],
-    '#description' => t('Determine if a pager for the slideshow (1|2|3) should appear, and if so whether they should appear before or after the slideshow.'),
+    '#description' => t('Determine if a pager should appear and if so whether they should appear before or after the slideshow.'),
   );
   
-  $options = array(
-    'numbered' => t('Numbered'),
-    'thumbnails' => t('Thumbnails'),
-  );
+  // Get all the pager info from other modules.
+  // hook_views_slideshow_pager_settings($view, $option_values, $dependency_prefix)
+  $pagers = module_invoke_all('views_slideshow_cycle_pager_settings', $view, $view->options['views_slideshow_cycle'], 'edit-style-options-views-slideshow-cycle-pager');
   
-  if ($view->row_plugin->uses_fields()) {
-    $options['fields'] = t('Fields');
+  // Prep the pager options and the fields
+  $options = array();
+  $pager_fields = array();
+  foreach ($pagers as $pager_key => $pager_info) {
+    $options[$pager_key] = $pager_info['title'];
+    if (isset($pager_info['fields'])) {
+      foreach ($pager_info['fields'] as $pager_field_key => $pager_field) {
+        $pager_field['#dependency']['edit-style-options-views-slideshow-cycle-pager'] = array('top', 'bottom');
+        $pager_field['#dependency']['edit-style-options-views-slideshow-cycle-pager-type'] = array($pager_key);
+        $pager_field['#dependency_count'] = count($pager_field['#dependency']);
+        if (!isset($pager_field['#process']) || !in_array('views_process_dependency', $pager_field['#process'])) {
+          $pager_field['#process'][] = 'views_process_dependency';
+        }
+        
+        $pager_fields[$pager_field_key] = $pager_field;
+      }
+    }
   }
   
   // Sort the options alphabetically.
@@ -305,50 +319,19 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#title' => t('Pager Type'),
     '#options' => $options,
     '#default_value' => $view->options['views_slideshow_cycle']['pager_type'],
-    '#description' => t('What the pager should look like.  Thumbnails grabs the first image in each slideshow item.'),
+    '#description' => t('Style of the pager.'),
     '#process' => array('views_process_dependency'),
     '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
   );
   
-  if ($view->row_plugin->uses_fields()) {
-    $options = array();
-    foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
-      $options[$field] = $handler->ui_name();
-    }
-
-    $form['views_slideshow_cycle']['pager_fields'] = array(
-      '#type' => 'checkboxes',
-      '#title' => t('Pager fields'),
-      '#options' => $options,
-      '#default_value' => $view->options['views_slideshow_cycle']['pager_fields'],
-      '#description' => t("Choose the fields that will appear in the pager."),
-      '#prefix' => '<div id="edit-style-options-views-slideshow-cycle-pager-fields-wrapper"><div id="edit-style-options-views-slideshow-cycle-pager-fields">',
-      '#process' => array(
-        'expand_checkboxes',
-        'views_process_dependency',
-      ),
-      '#dependency_count' => 2,
-      '#dependency' => array(
-        'edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom'),
-        'edit-style-options-views-slideshow-cycle-pager-type' => array('fields'),
-      ),
-      '#suffix' => '</div></div>',
-    );
-  }
+  // Add user defined pager fields to the form.
+  $form['views_slideshow_cycle'] = array_merge($form['views_slideshow_cycle'], $pager_fields);
   
   $form['views_slideshow_cycle']['pager_hover'] = array(
     '#type' => 'checkbox',
     '#title' => t('Activate Slide and Pause on Pager Hover'),
     '#default_value' => $view->options['views_slideshow_cycle']['pager_hover'],
     '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
-  );
-  $form['views_slideshow_cycle']['pager_click_to_page'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Make Pager Linked to Slide Link'),
-    '#default_value' => $view->options['views_slideshow_cycle']['pager_click_to_page'],
-    '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
     '#process' => array('views_process_dependency'),
     '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
   );
@@ -409,6 +392,63 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#process' => array('views_process_dependency'),
     '#dependency' => array('edit-style-options-views-slideshow-cycle-cycle-options' => array(1)),
   );
+}
+
+/**
+ * Implementation of hook_views_slideshow_cycle_pager_settings
+ */
+function views_slideshow_cycle_views_slideshow_cycle_pager_settings($view, $option_values, $dependency_prefix) {
+  // Settings for Numbered Pager
+  $return_value['numbered'] = array(
+    'title' => t('Numbered'),
+    'fields' => array(
+      'numbered_pager_click_to_page' => array(
+        '#type' => 'checkbox',
+        '#title' => t('Make Pager Linked to Slide Link'),
+        '#default_value' => $option_values['numbered_pager_click_to_page'],
+        '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
+      ),
+    ),
+  );
+  
+  // Settings for Thumbnails pager.
+  $return_value['thumbnails'] = array(
+    'title' => t('Thumbnails'),
+    'fields' => array(
+      'thumbnails_pager_click_to_page' => array(
+        '#type' => 'checkbox',
+        '#title' => t('Make Pager Linked to Slide Link'),
+        '#default_value' => $option_values['thumbnails_pager_click_to_page'],
+        '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
+      ),
+    ),
+  );
+  
+  if ($view->row_plugin->uses_fields()) {
+    $options = array();
+    foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
+      $options[$field] = $handler->ui_name();
+    }
+    $return_value['fields'] = array(
+      'title' => t('Fields'),
+      'fields' => array(
+        'pager_fields' => array(
+          '#type' => 'checkboxes',
+          '#title' => t('Pager fields'),
+          '#options' => $options,
+          '#default_value' => $option_values['pager_fields'],
+          '#description' => t("Choose the fields that will appear in the pager."),
+          '#prefix' => '<div id="edit-style-options-views-slideshow-cycle-pager-fields-wrapper"><div id="edit-style-options-views-slideshow-cycle-pager-fields">',
+          '#process' => array(
+            'expand_checkboxes',
+          ),
+          '#suffix' => '</div></div>',
+        ),
+      ),
+    );
+  }
+  
+  return $return_value;
 }
 
 function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {
