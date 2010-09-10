@@ -42,8 +42,8 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
       },
       allowPagerClickBubble:(settings.pager_hover),
-      prev:(settings.controls > 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
-      next:(settings.controls > 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
+      prev:(settings.controls != 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
+      next:(settings.controls != 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
       pager:(settings.pager != 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
       nowrap:settings.nowrap,
       after:function(curr, next, opts) {
@@ -201,7 +201,7 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     // Show image count for people who have js enabled.
     $('#views_slideshow_cycle_image_count_' + settings.vss_id).show();
 
-    if (settings.controls > 0) {
+    if (settings.controls != 0) {
       // Show controls for people who have js enabled browsers.
       $('#views_slideshow_cycle_controls_' + settings.vss_id).show();
       
@@ -224,7 +224,7 @@ viewsSlideshowCyclePause = function (settings) {
   var resume = Drupal.t('Resume');
   
   $(settings.targetId).cycle('pause');
-  if (settings.controls > 0) {
+  if (settings.controls != 0) {
     $('#views_slideshow_cycle_playpause_' + settings.vss_id)
       .addClass('views_slideshow_cycle_play')
       .addClass('views_slideshow_play')
@@ -241,7 +241,7 @@ viewsSlideshowCycleResume = function (settings) {
   var pause = Drupal.t('Pause');
   
   $(settings.targetId).cycle('resume');
-  if (settings.controls > 0) {
+  if (settings.controls != 0) {
     $('#views_slideshow_cycle_playpause_' + settings.vss_id)
       .addClass('views_slideshow_cycle_pause')
       .addClass('views_slideshow_pause')
