@@ -14,6 +14,31 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   $rows = $vars['rows'];
   $view = $vars['view'];
   $vss_id = $view->name . '-' . $view->current_display;
+  $settings = $options['views_slideshow_cycle'];
+
+  // Process advanced options
+  // Unset any advanced settings that we aren't using.
+  foreach ($settings as $key => $value) {
+    if (stristr($key, 'advanced_use_')) {
+      $cycle_value = str_replace('advanced_use_', '', $key);
+      if (!$value) {
+        unset($settings[$key]);
+        unset($settings['advanced_' . $cycle_value]);
+      }
+      else {
+        if (is_numeric($settings['advanced_' . $cycle_value])) {
+          $settings['advanced_' . $cycle_value] = intval($settings['advanced_' . $cycle_value]);
+        }
+        
+        if (strtolower($settings['advanced_' . $cycle_value]) == 'true') {
+          $settings['advanced_' . $cycle_value] = true;
+        }
+        elseif (strtolower($settings['advanced_' . $cycle_value]) == 'false') {
+          $settings['advanced_' . $cycle_value] = false;
+        }
+      }
+    }
+  }
 
   $settings = array_merge(
     array(
@@ -22,7 +47,7 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
       'div_prefix' => '#views_slideshow_cycle_div_',
       'vss_id' => $vss_id,
     ),
-    $options['views_slideshow_cycle']
+    $settings
   );
 
   // We need to go through the current js setting values to make sure the one we

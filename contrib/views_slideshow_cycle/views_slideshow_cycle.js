@@ -109,53 +109,6 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         viewsSlideshowCyclePause(settings);
       });
     }
-
-    // Add additional settings.
-		if (settings.advanced != "\n") {
-      var advanced = settings.advanced.split("\n");
-      for (i=0; i<advanced.length; i++) {
-        var prop = '';
-        var value = '';
-        var property = advanced[i].split(":");
-        for (j=0; j<property.length; j++) {
-          if (j == 0) {
-            prop = property[j];
-          }
-          else if (j == 1) {
-            value = property[j];
-          }
-          else {
-            value += ":" + property[j];
-          }
-        }
-
-        // Need to evaluate so true, false and numerics aren't a string.
-        if (value == 'true' || value == 'false' || IsNumeric(value)) {
-          value = eval(value);
-        }
-        else {
-          // Parse strings into functions.
-          var func = value.match(/function\s*\((.*?)\)\s*\{(.*)\}/i);
-          if (func) {
-            value = new Function(func[1].match(/(\w+)/g), func[2]);
-          }
-        }
-	
-        // Call both functions if prop was set previously.
-        if (typeof(value) == "function" && prop in settings.opts) {
-          var callboth = function(before_func, new_func) {
-            return function() {
-              before_func.apply(null, arguments);
-              new_func.apply(null, arguments);
-            };
-          };
-          settings.opts[prop] = callboth(settings.opts[prop], value);
-        }
-        else {
-          settings.opts[prop] = value;
-        }
-      }
-    }
     
     // Allow pagers to override settings.
     if (settings.pager != 0) {
@@ -164,6 +117,59 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         settings = window[pagerAlter](settings);
       }
     }
+    
+    // Advanced Settings
+    if (typeof(settings.advanced_fx) !== 'undefined') { settings.opts.fx = settings.advanced_fx; }
+    if (typeof(settings.advanced_timeout) !== 'undefined') { settings.opts.timeout = settings.advanced_timeout; }
+    if (typeof(settings.advanced_timeoutFn) !== 'undefined') { settings.opts.timeoutFn = settings.advanced_timeoutFn; } 
+    if (typeof(settings.advanced_continuous) !== 'undefined') { settings.opts.continuous = settings.advanced_continuous; }     // true to start next transition immediately after current one completes 
+    if (typeof(settings.advanced_speed) !== 'undefined') { settings.opts.speed = settings.advanced_speed; }  // speed of the transition (any valid fx speed value) 
+    if (typeof(settings.advanced_speedIn) !== 'undefined') { settings.opts.speedIn = settings.advanced_speedIn; }  // speed of the 'in' transition 
+    if (typeof(settings.advanced_speedOut) !== 'undefined') { settings.opts.speedOut = settings.advanced_speedOut; }  // speed of the 'out' transition 
+    if (typeof(settings.advanced_next) !== 'undefined') { settings.opts.next = settings.advanced_next; }  // selector for element to use as click trigger for next slide 
+    if (typeof(settings.advanced_prev) !== 'undefined') { settings.opts.prev = settings.advanced_prev; }  // selector for element to use as click trigger for previous slide 
+    if (typeof(settings.advanced_prevNextClick) !== 'undefined') { settings.opts.prevNextEvent = settings.advanced_prevNextClick; }  // callback fn for prev/next clicks:   function(isNext, zeroBasedSlideIndex, slideElement) 
+    if (typeof(settings.advanced_prevNextEvent) !== 'undefined') { settings.opts.prevNextEvent = settings.advanced_prevNextEvent; }// event which drives the manual transition to the previous or next slide 
+    if (typeof(settings.advanced_pager) !== 'undefined') { settings.opts.pager = settings.advanced_pager; }  // selector for element to use as pager container 
+    if (typeof(settings.advanced_pagerClick) !== 'undefined') { settings.opts.pagerClick = settings.advanced_pagerClick; }  // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement) 
+    if (typeof(settings.advanced_pagerEvent) !== 'undefined') { settings.opts.pagerEvent = settings.advanced_pagerEvent; } // name of event which drives the pager navigation 
+    if (typeof(settings.advanced_allowPagerClickBubble) !== 'undefined') { settings.opts.allowPagerClickBubble = settings.advanced_allowPagerClickBubble; }  // allows or prevents click event on pager anchors from bubbling 
+    if (typeof(settings.advanced_pagerAnchorBuilder) !== 'undefined') { settings.opts.pagerAnchorBuilder = settings.advanced_pagerAnchorBuilder; } // callback fn for building anchor links:  function(index, DOMelement) 
+    if (typeof(settings.advanced_before) !== 'undefined') { settings.opts.before = settings.advanced_before; }  // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag) 
+    if (typeof(settings.advanced_after) !== 'undefined') { settings.opts.after = settings.advanced_after; }  // transition callback (scope set to element that was shown):  function(currSlideElement, nextSlideElement, options, forwardFlag) 
+    if (typeof(settings.advanced_end) !== 'undefined') { settings.opts.end = settings.advanced_end; }  // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options) 
+    if (typeof(settings.advanced_easing) !== 'undefined') { settings.opts.easing = settings.advanced_easing; }  // easing method for both in and out transitions 
+    if (typeof(settings.advanced_easeIn) !== 'undefined') { settings.opts.easeIn = settings.advanced_easeIn; }  // easing for "in" transition 
+    if (typeof(settings.advanced_easeOut) !== 'undefined') { settings.opts.easeOut = settings.advanced_easeOut; }  // easing for "out" transition 
+    if (typeof(settings.advanced_shuffle) !== 'undefined') { settings.opts.shuffle = settings.advanced_shuffle; }  // coords for shuffle animation, ex: { top:15, left: 200 } 
+    if (typeof(settings.advanced_animIn) !== 'undefined') { settings.opts.animIn = settings.advanced_animIn; }  // properties that define how the slide animates in 
+    if (typeof(settings.advanced_animOut) !== 'undefined') { settings.opts.animOut = settings.advanced_animOut; }  // properties that define how the slide animates out 
+    if (typeof(settings.advanced_cssBefore) !== 'undefined') { settings.opts.cssBefore = settings.advanced_cssBefore; }  // properties that define the initial state of the slide before transitioning in 
+    if (typeof(settings.advanced_cssAfter) !== 'undefined') { settings.opts.cssAfter = settings.advanced_cssAfter; }  // properties that defined the state of the slide after transitioning out 
+    if (typeof(settings.advanced_fxFn) !== 'undefined') { settings.opts.fxFn = settings.advanced_fxFn; }  // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) 
+    if (typeof(settings.advanced_height) !== 'undefined') { settings.opts.height = settings.advanced_height; } // container height 
+    if (typeof(settings.advanced_startingSlide) !== 'undefined') { settings.opts.startingSlide = settings.advanced_startingSlide; }     // zero-based index of the first slide to be displayed 
+    if (typeof(settings.advanced_sync) !== 'undefined') { settings.opts.sync = settings.advanced_sync; }     // true if in/out transitions should occur simultaneously 
+    if (typeof(settings.advanced_random) !== 'undefined') { settings.opts.random = settings.advanced_random; }     // true for random, false for sequence (not applicable to shuffle fx) 
+    if (typeof(settings.advanced_fit) !== 'undefined') { settings.opts.fit = settings.advanced_fit; }     // force slides to fit container 
+    if (typeof(settings.advanced_containerResize) !== 'undefined') { settings.opts.containerResize = settings.advanced_containerResize; }     // resize container to fit largest slide 
+    if (typeof(settings.advanced_pause) !== 'undefined') { settings.opts.pause = settings.advanced_pause; }     // true to enable "pause on hover" 
+    if (typeof(settings.advanced_pauseOnPagerHover) !== 'undefined') { settings.opts.pauseOnPagerHover = settings.advanced_pauseOnPagerHover; }   // true to pause when hovering over pager link 
+    if (typeof(settings.advanced_autostop) !== 'undefined') { settings.opts.autostop = settings.advanced_autostop; }     // true to end slideshow after X transitions (where X == slide count) 
+    if (typeof(settings.advanced_autostopCount) !== 'undefined') { settings.opts.autostopCount = settings.advanced_autostopCount; }     // number of transitions (optionally used with autostop to define X) 
+    if (typeof(settings.advanced_delay) !== 'undefined') { settings.opts.delay = settings.advanced_delay; }     // additional delay (in ms) for first transition (hint: can be negative) 
+    if (typeof(settings.advanced_slideExpr) !== 'undefined') { settings.opts.slideExpr = settings.advanced_slideExpr; }  // expression for selecting slides (if something other than all children is required) 
+    if (typeof(settings.advanced_cleartype) !== 'undefined') { settings.opts.cleartype = settings.advanced_cleartype; }  // true if clearType corrections should be applied (for IE) 
+    if (typeof(settings.advanced_cleartypeNoBg) !== 'undefined') { settings.opts.cleartypeNoBg = settings.advanced_cleartypeNoBg; } // set to true to disable extra cleartype fixing (leave false to force background color setting on slides) 
+    if (typeof(settings.advanced_nowrap) !== 'undefined') { settings.opts.nowrap = settings.advanced_nowrap; }     // true to prevent slideshow from wrapping 
+    if (typeof(settings.advanced_fastOnEvent) !== 'undefined') { settings.opts.fastOnEvent = settings.advanced_fastOnEvent; }     // force fast transitions when triggered manually (via pager or prev/next); value == time in ms 
+    if (typeof(settings.advanced_randomizeEffects) !== 'undefined') { settings.opts.randomizeEffects = settings.advanced_randomizeEffects; }     // valid when multiple effects are used; true to make the effect sequence random 
+    if (typeof(settings.advanced_rev) !== 'undefined') { settings.opts.rev = settings.advanced_rev; }     // causes animations to transition in reverse 
+    if (typeof(settings.advanced_manualTrump) !== 'undefined') { settings.opts.manualTrump = settings.advanced_manualTrump; }  // causes manual transition to stop an active transition instead of being ignored 
+    if (typeof(settings.advanced_requeueOnImageNotLoaded) !== 'undefined') { settings.opts.requeueOnImageLoaded = settings.advanced_requeueOnImageLoaded; } // requeue the slideshow if any image slides are not yet loaded 
+    if (typeof(settings.advanced_requeueTimeout) !== 'undefined') { settings.opts.requeueTimeout = settings.advanced_requeueTimeout; }   // ms delay for requeue 
+    if (typeof(settings.advanced_activePagerClass) !== 'undefined') { settings.opts.activePagerClass = settings.advanced_activePagerClass; } // class name used for the active pager link 
+    if (typeof(settings.advanced_updateActivePagerLink) !== 'undefined') { settings.opts.updateActivePagerLink = settings.advanced_updateActivePagerLink; } // callback fn invoked to update the active pager link (adds/removes activePagerClass style) 
     
     $(settings.targetId).cycle(settings.opts);
 
