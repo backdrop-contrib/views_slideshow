@@ -247,7 +247,7 @@ function views_slideshow_singleframe_views_slideshow_options_form(&$form, &$form
     '#title' => t('Effect'),
     '#options' => $options,
     '#default_value' => $view->options['views_slideshow_singleframe']['effect'],
-    '#description' => t('The transition effect that will be used to change between images. Not all options below may be relevant depending on the effect.'),
+    '#description' => t('The transition effect that will be used to change between images. Not all options below may be relevant depending on the effect. ' . l('Follow this link to see examples of each effect.', 'http://jquery.malsup.com/cycle/browser.html', array('attributes' => array('target' => '_blank')))),
   );
   $form['views_slideshow_singleframe']['sync'] = array(
     '#type' => 'radios',
