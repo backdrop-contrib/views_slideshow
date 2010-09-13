@@ -68,7 +68,8 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         }
       },
       cleartype:(settings.cleartype)? true : false,
-      cleartypeNoBg:(settings.cleartypenobg)? true : false
+      cleartypeNoBg:(settings.cleartypenobg)? true : false,
+      activePagerClass:'active-slide'
     }
     
     // Set the starting slide if we are supposed to remember the slide
