@@ -94,3 +94,14 @@ function views_slideshow_cycle_help($path, $arg) {
       return $output;
   }
 }
+
+/**
+ * Implementation of hook_views_cycle_skins().
+ */
+function views_slideshow_cycle_views_slideshow_cycle_skins() {
+  $skins['default'] = array(
+    'title' => t('Default'),
+  );
+
+  return $skins;
+}

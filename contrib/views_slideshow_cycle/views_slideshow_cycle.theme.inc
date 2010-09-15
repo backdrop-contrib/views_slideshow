@@ -69,6 +69,15 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
     $settings['vss_id'] = $vss_id;  
   }
 
+  // Enqueue any stylesheets set for the skin on this view are added.
+  $skin_path = drupal_get_path('module', $options['views_slideshow_cycle']['skin_info']['module']);
+  if ($options['views_slideshow_cycle']['skin_info']['path']) {
+    $skin_path .= '/'. $options['views_slideshow_cycle']['skin_info']['path'];
+  }
+  foreach ($options['views_slideshow_cycle']['skin_info']['stylesheets'] as $stylesheet) {
+    drupal_add_css($skin_path .'/'. $stylesheet);
+  }
+  
   drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
 
   $hidden_elements = theme('views_slideshow_cycle_no_display_section', $view, $rows, $vss_id, $options['mode']);
@@ -97,6 +106,18 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   if ($cycle['slide_counter']) {
     $vars['slide_counter'] = theme('views_slideshow_cycle_slide_counter', $vss_id, $view, $options);
   }
+  
+  if (isset($options['views_slideshow_cycle']['skin_info']['pager_location'])) {
+    $vars['pager_location'] = $options['views_slideshow_cycle']['skin_info']['pager_location'];
+  }
+  
+  if (isset($options['views_slideshow_cycle']['skin_info']['controls_location'])) {
+    $vars['controls_location'] = $options['views_slideshow_cycle']['skin_info']['controls_location'];
+  }
+  
+  if (isset($options['views_slideshow_cycle']['skin_info']['slide_counter_location'])) {
+    $vars['slide_counter_location'] = $options['views_slideshow_cycle']['skin_info']['slide_counter_location'];
+  }
 }
 
 /**
@@ -105,12 +126,15 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
  * @ingroup themeable
  */
 function theme_views_slideshow_cycle_no_display_section($view, $rows, $vss_id, $mode) {
-  // Retrive the number of itmes per frame
-  if (isset($view->display_handler->display->display_options['style_options']['views_slideshow_cycle']['items_per_slide']) && $view->display_handler->display->display_options['style_options']['views_slideshow_cycle']['items_per_slide'] > 0) {
-    $items_per_slide = $view->display_handler->display->display_options['style_options']['views_slideshow_cycle']['items_per_slide'];
+  $styles = $view->display_handler->display->display_options['style_options']['views_slideshow_cycle'];
+  $styles_default = $view->display['default']->display_options['style_options']['views_slideshow_cycle'];
+  
+  // Retrive the number of items per frame
+  if (isset($styles['items_per_slide']) && $styles['items_per_slide'] > 0) {
+    $items_per_slide = $styles['items_per_slide'];
   }
-  elseif (isset($view->display['default']->display_options['style_options']['views_slideshow_cycle']['items_per_slide']) && $view->display['default']->display_options['style_options']['views_slideshow_cycle']['items_per_slide'] > 0) {
-    $items_per_slide = $view->display['default']->display_options['style_options']['views_slideshow_cycle']['items_per_slide'];
+  elseif (isset($styles_default['items_per_slide']) && $styles_default['items_per_slide'] > 0) {
+    $items_per_slide = $styles_default['items_per_slide'];
   }
   else {
     $items_per_slide = 1;

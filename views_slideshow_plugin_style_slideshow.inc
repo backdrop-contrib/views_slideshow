@@ -97,4 +97,12 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
       call_user_func_array($function, array(&$form, &$form_state, &$this));
     }
   }
+  
+  function options_submit($form, &$form_state) {
+    module_load_all_includes('views_slideshow.inc');
+    foreach (module_implements('views_slideshow_options_form_submit') as $module) {
+      $function = $module . '_views_slideshow_options_form_submit';
+      call_user_func_array($function, array($form, &$form_state));
+    }
+  }
 }

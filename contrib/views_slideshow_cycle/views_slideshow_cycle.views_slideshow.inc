@@ -163,6 +163,27 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
 
 function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state, &$view) {
   
+  // Style
+  $form['views_slideshow_cycle']['style'] = array(
+    '#value' => '<h2>' . t('Style') . '</h2>',
+  );
+  
+  // Get a list of all available stylesheet plugins.
+  $skin_info = views_slideshow_cycle_get_skins();
+  foreach ($skin_info as $skin => $info) {
+    $skins[$skin] = $info['title'];
+  }
+  asort($skins);
+
+  // And now our own form additions.
+  $form['views_slideshow_cycle']['skin'] = array(
+    '#type' => 'select',
+    '#title' => t('Skin'),
+    '#options' => $skins,
+    '#default_value' => $view->options['views_slideshow_cycle']['skin'],
+    '#description' => t('Select the skin to use for this display.  Skins allow for easily swappable layouts of things like next/prev links and thumbnails.  Note that not all skins support thumbnails, so mis-matching skins and thumbnails may lead to unpredictable results.'),
+  );
+  
   // Transition
   $form['views_slideshow_cycle']['transition'] = array(
     '#value' => '<h2>' . t('Transition') . '</h2>',
@@ -639,4 +660,40 @@ function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$f
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['remember_slide_days'])) {
     form_error($form['views_slideshow_cycle']['remember_slide_days'], t('!setting must be numeric!',array('Slide days')));
   }
+}
+
+function views_slideshow_cycle_views_slideshow_options_form_submit($form, &$form_state) {
+  // In addition to the skin, we also pre-save the definition that
+  // correspond to it.  That lets us avoid a hook lookup on every page.
+  $skins = views_slideshow_cycle_get_skins();
+  $form_state['values']['style_options']['views_slideshow_cycle']['skin_info'] = $skins[$form_state['values']['style_options']['views_slideshow_cycle']['skin']];
+}
+
+/**
+ * Retrieve a list of all available skins in the system.
+ */
+function views_slideshow_cycle_get_skins() {
+  static $skins;
+
+  if (empty($skins)) {
+    $skins = array();
+    foreach (module_implements('views_slideshow_cycle_skins') as $module) {
+      $skin_items = call_user_func($module .'_views_slideshow_cycle_skins');
+      if (isset($skin_items) && is_array($skin_items)) {
+        foreach (array_keys($skin_items) as $skin) {
+          // Ensure that the definition is complete, so we don't need lots
+          // of error checking later.
+          $skin_items[$skin] += array(
+            'title' => t('Untitled skin'),
+            'module' => $module,
+            'path' => '',
+            'stylesheets' => array(),
+          );
+        }
+        $skins = array_merge($skins, $skin_items);
+      }
+    }
+  }
+
+  return $skins;
 }
