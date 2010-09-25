@@ -15,6 +15,7 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   $view = $vars['view'];
   $vss_id = $view->name . '-' . $view->current_display;
   $settings = $options['views_slideshow_cycle'];
+  $skin_info = $settings['skin_info'];
 
   // Process advanced options
   // Unset any advanced settings that we aren't using.
@@ -70,53 +71,62 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   }
 
   // Enqueue any stylesheets set for the skin on this view are added.
-  $skin_path = drupal_get_path('module', $options['views_slideshow_cycle']['skin_info']['module']);
-  if ($options['views_slideshow_cycle']['skin_info']['path']) {
-    $skin_path .= '/'. $options['views_slideshow_cycle']['skin_info']['path'];
+  $skin_path = drupal_get_path('module', $skin_info['module']);
+  if ($skin_info['path']) {
+    $skin_path .= '/'. $skin_info['path'];
   }
-  foreach ($options['views_slideshow_cycle']['skin_info']['stylesheets'] as $stylesheet) {
-    drupal_add_css($skin_path .'/'. $stylesheet);
+  
+  if (!empty($skin_info['stylesheets'])) {
+    foreach ($skin_info['stylesheets'] as $stylesheet) {
+      drupal_add_css($skin_path .'/'. $stylesheet);
+    }
   }
   
   drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
 
   $hidden_elements = theme('views_slideshow_cycle_no_display_section', $view, $rows, $vss_id, $options['mode']);
   $vars['slideshow'] = theme('views_slideshow_main_section', $vss_id, $hidden_elements, 'views_slideshow_cycle');
-
-  $cycle = $vars['options']['views_slideshow_cycle'];
-
-  // Only show controls when there is more than one result.
-  $vars['controls_location'] = 0;
-  $vars['controls'] = '';
-  if ($settings['num_divs'] > 1) {
-    $vars['controls_location'] = $cycle['controls'];
-    if ($cycle['controls']) {
-      $vars['controls'] = theme('views_slideshow_cycle_controls', $vss_id, $view, $options);
-    }
-  }
-
-  $vars['pager_location'] = $cycle['pager'];
+  
+  $weight = array(
+    'top' => array(),
+    'bottom' => array(),
+  );
+  
+  // Put our pager in the right location.
+  $vars['pager_location'] = (isset($skin_info['pager_location'])) ? $skin_info['pager_location'] : $settings['pager'];  
   $vars['pager'] = '';
-  if ($cycle['pager']) {
-    $vars['pager'] = theme('views_slideshow_cycle_pager', $vss_id, $view, $options);
+  if ($vars['pager_location']) {
+    $weight[$vars['pager_location']]['pager'] = (isset($skin_info['pager_weight'])) ? $skin_info['pager_weight'] : $settings['pager_weight'];
+  }
+
+  // Put our controls in the right location.
+  // Only show controls when there is more than one result.
+  $vars['controls_location'] = (isset($skin_info['controls_location'])) ? $skin_info['controls_location'] : $settings['controls'];
+  $vars['controls_location'] = ($settings['num_divs'] > 1) ? $vars['controls_location'] : 0;
+  $vars['controls'] = '';
+  if ($vars['controls_location']) {
+    $weight[$vars['controls_location']]['controls'] = (isset($skin_info['controls_weight'])) ? $skin_info['controls_weight'] : $settings['controls_weight'];
   }
   
-  $vars['slide_counter_location'] = $cycle['slide_counter'];
+  // Put our slide counter in the right location.
+  $vars['slide_counter_location'] = (isset($skin_info['slide_counter_location'])) ? $skin_info['slide_counter_location'] : $settings['slide_counter'];  
   $vars['slide_counter'] = '';
-  if ($cycle['slide_counter']) {
-    $vars['slide_counter'] = theme('views_slideshow_cycle_slide_counter', $vss_id, $view, $options);
+  if ($vars['slide_counter_location']) {
+    $weight[$vars['slide_counter_location']]['slide_counter'] = (isset($skin_info['slide_counter_weight'])) ? $skin_info['slide_counter_weight'] : $settings['slide_counter_weight'];
   }
   
-  if (isset($options['views_slideshow_cycle']['skin_info']['pager_location'])) {
-    $vars['pager_location'] = $options['views_slideshow_cycle']['skin_info']['pager_location'];
-  }
-  
-  if (isset($options['views_slideshow_cycle']['skin_info']['controls_location'])) {
-    $vars['controls_location'] = $options['views_slideshow_cycle']['skin_info']['controls_location'];
-  }
-  
-  if (isset($options['views_slideshow_cycle']['skin_info']['slide_counter_location'])) {
-    $vars['slide_counter_location'] = $options['views_slideshow_cycle']['skin_info']['slide_counter_location'];
+  // Build our widgets
+  foreach ($weight as $location => $data) {
+    // Build our top widgets
+    if (!empty($data)) {
+      asort($data);
+      
+      $vars[$location . '_widget_rendered'] = '';
+      foreach ($data as $type => $order) {
+        $vars[$type] = theme('views_slideshow_cycle_' . $type, $vss_id, $view, $options);
+        $vars[$location . '_widget_rendered'] .= $vars[$type];
+      }
+    }
   }
 }
 

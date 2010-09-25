@@ -45,8 +45,11 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'pager_fields' => array('default' => array()),
       'pager_hover' => array('default' => 0),
       'pager_click_to_page' => array('default' => 0),
+      'pager_weight' => array('default' => 1),
       'controls' => array('default' => 0),
+      'controls_weight' => array('default' => 1),
       'slide_counter' => array('default' => 0),
+      'slide_counter_weight' => array('default' => 1),
 
       // Internet Explorer Tweaks
       'cleartype' => array('default' => 'true'),
@@ -458,6 +461,18 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#process' => array('views_process_dependency'),
     '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
   );
+  
+  $weights = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5);
+  $form['views_slideshow_cycle']['pager_weight'] = array(
+    '#type' => 'select',
+    '#title' => t('Weight of the Pager'),
+    '#options' => $weights,
+    '#default_value' => $view->options['views_slideshow_cycle']['pager_weight'],
+    '#description' => t('Determines in what order the pager appears.  A lower weight will cause the pager to be above higher weight items.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
+  );
+  
   $form['views_slideshow_cycle']['controls'] = array(
     '#type' => 'select',
     '#title' => t('Controls'),
@@ -469,6 +484,16 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#default_value' => $view->options['views_slideshow_cycle']['controls'],
     '#description' => t('Determine if controls for the slideshow (start/stop/next/previous) should appear, and if so whether they should appear before or after the slideshow.'),
   );
+  $form['views_slideshow_cycle']['controls_weight'] = array(
+    '#type' => 'select',
+    '#title' => t('Weight of the Controls'),
+    '#options' => $weights,
+    '#default_value' => $view->options['views_slideshow_cycle']['controls_weight'],
+    '#description' => t('Determines in what order the controls appear.  A lower weight will cause the controls to be above higher weight items.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-cycle-controls' => array('top', 'bottom')),
+  );
+  
   $form['views_slideshow_cycle']['slide_counter'] = array(
     '#type' => 'select',
     '#title' => t('Slide Counter'),
@@ -479,6 +504,16 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     ),
     '#default_value' => $view->options['views_slideshow_cycle']['slide_counter'],
     '#description' => t('Determine if the Slide Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
+  );
+  
+  $form['views_slideshow_cycle']['slide_counter_weight'] = array(
+    '#type' => 'select',
+    '#title' => t('Weight of the Slide Counter'),
+    '#options' => $weights,
+    '#default_value' => $view->options['views_slideshow_cycle']['slide_counter_weight'],
+    '#description' => t('Determines in what order the slide counter appears.  A lower weight will cause the slide counter to be above higher weight items.'),
+    '#process' => array('views_process_dependency'),
+    '#dependency' => array('edit-style-options-views-slideshow-cycle-slide-counter' => array('top', 'bottom')),
   );
   
   // Internet Explorer Tweaks
