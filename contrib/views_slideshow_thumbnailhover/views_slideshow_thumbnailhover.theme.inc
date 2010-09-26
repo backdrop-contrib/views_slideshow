@@ -14,6 +14,25 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
   $view = $vars['view'];
   $rows = $vars['rows'];
   $vss_id = $view->name . '-' . $view->current_display;
+  $settings = $options['views_slideshow_thumbnailhover'];
+  
+  // Cast the strings into int or bool as necessary.
+  $new_settings = array();
+  foreach ($settings as $key => $value) {
+    $value = trim($value);
+
+    if (is_numeric($value)) {
+      $value = (int)$value;
+    }
+    else if (strtolower($value) == 'true') {
+      $value = true;
+    }
+    else if (strtolower($value) == 'false') {
+      $value = false;
+    }
+    
+    $new_settings[$key] = $value;
+  }
 
   $settings = array_merge(
     array(
@@ -24,7 +43,7 @@ function template_preprocess_views_slideshow_thumbnailhover(&$vars) {
       'vss_id' => $vss_id,
       'view_id' => $vss_id,
     ),
-    $options['views_slideshow_thumbnailhover']
+    $new_settings
   );
 
   // We need to go through the current js setting values to make sure the one we

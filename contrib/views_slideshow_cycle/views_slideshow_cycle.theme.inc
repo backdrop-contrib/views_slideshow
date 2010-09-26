@@ -17,27 +17,33 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   $settings = $options['views_slideshow_cycle'];
   $skin_info = $settings['skin_info'];
 
-  // Process advanced options
-  // Unset any advanced settings that we aren't using.
+  // Cast the strings into int or bool as necessary.
+  $new_settings = array();
   foreach ($settings as $key => $value) {
-    if (stristr($key, 'advanced_use_')) {
-      $cycle_value = str_replace('advanced_use_', '', $key);
-      if (!$value) {
-        unset($settings[$key]);
-        unset($settings['advanced_' . $cycle_value]);
-      }
-      else {
-        if (is_numeric($settings['advanced_' . $cycle_value])) {
-          $settings['advanced_' . $cycle_value] = intval($settings['advanced_' . $cycle_value]);
-        }
-        
-        if (strtolower($settings['advanced_' . $cycle_value]) == 'true') {
-          $settings['advanced_' . $cycle_value] = true;
-        }
-        elseif (strtolower($settings['advanced_' . $cycle_value]) == 'false') {
-          $settings['advanced_' . $cycle_value] = false;
-        }
-      }
+    if (stristr($value, "\n")) {
+      $value = str_replace("\n", ' ', $value);
+    }
+    $value = trim($value);
+
+    if (is_numeric($value)) {
+      $value = (int)$value;
+    }
+    else if (strtolower($value) == 'true') {
+      $value = true;
+    }
+    else if (strtolower($value) == 'false') {
+      $value = false;
+    }
+    
+    $new_settings[$key] = $value;
+  }
+  
+  // Remove any unused advanced settings.
+  foreach ($settings as $key => $value) {
+    if (substr($key, 0, 13) == 'advanced_use_' && !$value) {
+      $setting_name = str_replace('advanced_use_', '', $key);
+      unset($new_settings[$key]);
+      unset($new_settings['advanced_' . $setting_name]);
     }
   }
 
@@ -48,7 +54,7 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
       'div_prefix' => '#views_slideshow_cycle_div_',
       'vss_id' => $vss_id,
     ),
-    $settings
+    $new_settings
   );
 
   // We need to go through the current js setting values to make sure the one we

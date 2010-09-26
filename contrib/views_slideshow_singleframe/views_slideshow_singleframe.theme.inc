@@ -14,6 +14,25 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
   $rows = $vars['rows'];
   $view = $vars['view'];
   $vss_id = $view->name . '-' . $view->current_display;
+  $settings = $options['views_slideshow_singleframe'];
+  
+  // Cast the strings into int or bool as necessary.
+  $new_settings = array();
+  foreach ($settings as $key => $value) {
+    $value = trim($value);
+
+    if (is_numeric($value)) {
+      $value = (int)$value;
+    }
+    else if (strtolower($value) == 'true') {
+      $value = true;
+    }
+    else if (strtolower($value) == 'false') {
+      $value = false;
+    }
+    
+    $new_settings[$key] = $value;
+  }
 
   $settings = array_merge(
     array(
@@ -22,7 +41,7 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
       'div_prefix' => '#views_slideshow_singleframe_div_',
       'vss_id' => $vss_id,
     ),
-    $options['views_slideshow_singleframe']
+    $new_settings
   );
 
   // We need to go through the current js setting values to make sure the one we
