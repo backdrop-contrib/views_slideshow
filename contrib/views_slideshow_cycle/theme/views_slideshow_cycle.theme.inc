@@ -75,6 +75,8 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
     $vss_id .= '-' . $slideshow_count;
     $settings['vss_id'] = $vss_id;  
   }
+  
+  drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
 
   // Enqueue any stylesheets set for the skin on this view are added.
   $skin_path = drupal_get_path('module', $skin_info['module']);
@@ -87,10 +89,8 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
       drupal_add_css($skin_path .'/'. $stylesheet);
     }
   }
-  
-  drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
 
-  $hidden_elements = theme('views_slideshow_cycle_no_display_section', $view, $rows, $vss_id, $options['mode']);
+  $hidden_elements = theme('views_slideshow_cycle_main_frame', $view, $rows, $vss_id, $options['mode']);
   $vars['slideshow'] = theme('views_slideshow_main_section', $vss_id, $hidden_elements, 'views_slideshow_cycle');
   
   $weight = array(
@@ -137,13 +137,18 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
 }
 
 /**
- * Add the HTML for the hidden slideshow elements.
+ * Views Slideshow: Theme the main frame wrapper.
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_no_display_section($view, $rows, $vss_id, $mode) {
-  $styles = $view->display_handler->display->display_options['style_options']['views_slideshow_cycle'];
-  $styles_default = $view->display['default']->display_options['style_options']['views_slideshow_cycle'];
+
+function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
+  // Add the slideshow elements.
+  $vars['attributes']['id'] = "views_slideshow_cycle_teaser_section_" . $vars['vss_id'];
+  $vars['attributes']['class'] = 'views_slideshow_cycle_teaser_section';
+  
+  $styles = $vars['view']->display_handler->display->display_options['style_options']['views_slideshow_cycle'];
+  $styles_default = $vars['view']->display['default']->display_options['style_options']['views_slideshow_cycle'];
   
   // Retrive the number of items per frame
   if (isset($styles['items_per_slide']) && $styles['items_per_slide'] > 0) {
@@ -156,35 +161,30 @@ function theme_views_slideshow_cycle_no_display_section($view, $rows, $vss_id, $
     $items_per_slide = 1;
   }
   
-  // Add the slideshow elements.
-  $attributes['id'] = "views_slideshow_cycle_teaser_section_" . $vss_id;
-  $attributes['class'] = 'views_slideshow_cycle_teaser_section';
-  $attributes = drupal_attributes($attributes);
-
-  $output = "<div$attributes>";
+  $vars['items_per_slide'] = $items_per_slide;
   
   $items = array();
   $slideshow_count = 0;
-  foreach ($rows as $count => $item) {
+  $rendered_rows = '';
+  foreach ($vars['rows'] as $count => $item) {
     $items[] = $item;
     if (count($items) == $items_per_slide || $count == (count($rows)-1)) {
-      $output .= theme('views_slideshow_cycle_no_display_teaser', $items, $vss_id, $slideshow_count);
+      $rendered_rows .= theme('views_slideshow_cycle_main_frame_row', $items, $vars['vss_id'], $slideshow_count);
       $items = array();
       $slideshow_count++;
     }
   }
-  $output .= "</div>\n";
-
-  return $output;
+  
+  $vars['rendered_rows'] = $rendered_rows;
 }
 
 /**
- * Views Slideshow slideshow elements.
+ * Views Slideshow slideshow rows.
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_no_display_teaser($items, $vss_id, $count) {
-  $current = $count + 1;
+function template_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
+  $current = $vars['count'] + 1;
   $classes = array(
     'views_slideshow_cycle_slide',
     "views_slideshow_slide views-row-$current",
@@ -194,29 +194,27 @@ function theme_views_slideshow_cycle_no_display_teaser($items, $vss_id, $count) 
   }
   $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
 
-  $attributes['class'] = implode(' ', $classes);
-  $attributes['id'] = "views_slideshow_cycle_div_" . $vss_id . "_" . $count;
-  $attributes = drupal_attributes($attributes);
+  $vars['attributes']['class'] = implode(' ', $classes);
+  $vars['attributes']['id'] = "views_slideshow_cycle_div_" . $vars['vss_id'] . "_" . $vars['count'];
 
-  $output = "<div$attributes>";
-  foreach ($items as $item_count => $item) {
-    $item_class = 'views-row views-row-' . $item_count;
-    if (!$item_count) {
-      $item_class .= ' views-row-first';
-    }
-    if ($item_count % 2) {
-      $item_class .= ' views-row-even';
-    }
-    else {
-      $item_class .= ' views-row-odd';
-    }
-    $output .= '<div class="' . $item_class . '">' . "\n";
-    $output .= $item . "\n";
-    $output .= '</div>' . "\n";
+  $vars['rendered_items'] = '';
+  foreach ($vars['items'] as $item_count => $item) {
+    $vars['rendered_items'] .= theme('views_slideshow_cycle_main_frame_row_item', $item, $item_count);
   }
+}
 
-  $output .= "</div>\n";
-  return $output;
+function template_preprocess_views_slideshow_cycle_main_frame_row_item(&$vars) {
+  $classes[] = array('views-row views-row-' . $item_count);
+  if (!$vars['item_count']) {
+    $classes[] = 'views-row-first';
+  }
+  if ($item_count % 2) {
+    $classes[] = 'views-row-even';
+  }
+  else {
+    $classes[] = 'views-row-odd';
+  }
+  $vars['attributes']['class'] = implode(' ', $classes);
 }
 
 /**
@@ -224,24 +222,23 @@ function theme_views_slideshow_cycle_no_display_teaser($items, $vss_id, $count) 
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_controls($vss_id, $view, $options) {
+function template_preprocess_views_slideshow_cycle_controls(&$vars) {
   $classes = array(
     'views_slideshow_cycle_controls',
     'views_slideshow_controls',
   );
 
-  $attributes['class'] = implode(' ', $classes);
-  $attributes['id'] = "views_slideshow_cycle_controls_" . $vss_id;
-  $attributes = drupal_attributes($attributes);
+  $vars['attributes']['class'] = implode(' ', $classes);
+  $vars['attributes']['id'] = "views_slideshow_cycle_controls_" . $vars['vss_id'];
+  
+  $vars['rendered_control_previous'] = theme('views_slideshow_cycle_control_previous', $vars['vss_id'], $vars['view'], $vars['options']);
 
-  $output = "<div$attributes>";
-  $output .= theme('views_slideshow_cycle_control_previous', $vss_id, $view, $options);
-  if ($options['views_slideshow_cycle']['timeout']) {
-    $output .= theme('views_slideshow_cycle_control_pause', $vss_id, $view, $options);
+  $vars['rendered_control_pause'] = '';
+  if ($vars['options']['views_slideshow_cycle']['timeout']) {
+    $vars['rendered_control_pause'] = theme('views_slideshow_cycle_control_pause', $vars['vss_id'], $vars['view'], $vars['options']);
   }
-  $output .= theme('views_slideshow_cycle_control_next', $vss_id, $view, $options);
-  $output .= "</div>\n";
-  return $output;
+  
+  $vars['rendered_control_next'] = theme('views_slideshow_cycle_control_next', $vars['vss_id'], $vars['view'], $vars['options']);
 }
 
 /**
@@ -249,11 +246,11 @@ function theme_views_slideshow_cycle_controls($vss_id, $view, $options) {
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_control_previous($vss_id, $view, $options) {
-  return l(t('Previous'), '#', array(
+function template_preprocess_views_slideshow_cycle_control_previous(&$vars) {
+  $vars['rendered_previous_link'] = l(t('Previous'), '#', array(
     'attributes' => array(
       'class' => 'views_slideshow_cycle_previous views_slideshow_previous',
-      'id' => "views_slideshow_cycle_prev_" . $vss_id,
+      'id' => "views_slideshow_cycle_prev_" . $vars['vss_id'],
     ),
     'fragment' => ' ',
     'external' => TRUE,
@@ -265,11 +262,11 @@ function theme_views_slideshow_cycle_control_previous($vss_id, $view, $options) 
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_control_pause($vss_id, $view, $options) {
-  return l(t('Pause'), '', array(
+function template_preprocess_views_slideshow_cycle_control_pause(&$vars) {
+  $vars['rendered_pause_link'] = l(t('Pause'), '', array(
     'attributes' => array(
       'class' => 'views_slideshow_cycle_pause views_slideshow_pause',
-      'id' => "views_slideshow_cycle_playpause_" . $vss_id,
+      'id' => "views_slideshow_cycle_playpause_" . $vars['vss_id'],
     ),
     'fragment' => ' ',
     'external' => TRUE,
@@ -281,11 +278,11 @@ function theme_views_slideshow_cycle_control_pause($vss_id, $view, $options) {
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_control_next($vss_id, $view, $options) {
-  return l(t('Next'), '#', array(
+function template_preprocess_views_slideshow_cycle_control_next(&$vars) {
+  $vars['rendered_next_link'] = l(t('Next'), '#', array(
     'attributes' => array(
       'class' => 'views_slideshow_cycle_next views_slideshow_next',
-      'id' => "views_slideshow_cycle_next_" . $vss_id,
+      'id' => "views_slideshow_cycle_next_" . $vars['vss_id'],
     ),
     'fragment' => ' ',
     'external' => TRUE,
@@ -321,33 +318,29 @@ function theme_views_slideshow_cycle_pager($vss_id, $view, $options) {
 function views_slideshow_cycle_views_slideshow_cycle_pager_theme(&$output, $vss_id, $view, $options, $attributes) {
   switch($options['pager_type']) {
     case 'numbered':
+      $output = theme('views_slideshow_cycle_pager_numbered', $view, $attributes, $options);
+      break;
+    
     case 'thumbnails':
-      $output = '<div' . drupal_attributes($attributes) . '></div>';
+      $output = theme('views_slideshow_cycle_pager_thumbnails', $view, $attributes, $options);
       break;
     
     case 'fields':
-      $output = '<div' . drupal_attributes($attributes) . '>';
-      foreach ($view->result as $count => $node) {
-        $rendered_fields = '';
-        foreach ($options['pager_fields'] as $field => $use) {
-          if ($use !== 0 && is_object($view->field[$field])) {
-            $rendered_fields .= '<div class="views-field-'. views_css_safe($view->field[$field]->field) .'">';
-            if ($view->field[$field]->label()) {
-              $rendered_fields .= '<label class="view-label-'. views_css_safe($view->field[$field]->field) . '">';
-              $rendered_fields .= $view->field[$field]->label() . ':';
-              $rendered_fields .= '</label>';
-            }
-            $rendered_fields .= '<div class="views-content-'. views_css_safe($view->field[$field]->field) .'">';
-            $rendered_fields .=  $view->style_plugin->rendered_fields[$count][$field];
-            $rendered_fields .= '</div>';
-            $rendered_fields .= '</div>';
-          }
-        }
-    
-        $output .= theme('views_slideshow_cycle_pager_item', $rendered_fields, $vss_id, $count);
-      }
-      $output .= '</div>';
+      $output = theme('views_slideshow_cycle_pager_field', $view, $attributes, $options);
       break;
+  }
+}
+
+function template_preprocess_views_slideshow_cycle_pager_field(&$vars) {
+  $vars['rendered_field_items'] = '';
+  foreach ($vars['view']->result as $count => $node) {
+    $rendered_fields = '';
+    foreach ($vars['options']['pager_fields'] as $field => $use) {
+      if ($use !== 0 && is_object($vars['view']->field[$field])) {
+        $rendered_fields .= theme('views_slideshow_cycle_pager_field_field', $vars['view'], $field, $count);
+      }
+    }
+    $vars['rendered_field_items'] .= theme('views_slideshow_cycle_pager_field_item', $rendered_fields, $vars['vss_id'], $vars['count']);
   }
 }
 
@@ -356,21 +349,18 @@ function views_slideshow_cycle_views_slideshow_cycle_pager_theme(&$output, $vss_
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_pager_item($item, $vss_id, $count) {
-  $current = $count + 1;
+function template_preprocess_views_slideshow_cycle_pager_field_item(&$vars) {
+  $current = $vars['count'] + 1;
   $classes = array(
     'views_slideshow_cycle_div_pager_item',
   );
   if (!$count) {
     $classes[] = 'views_slideshow_cycle_active_pager_item';
   }
-  $classes[] = ($count % 2) ? 'views-row-even' : 'views-row-odd';
+  $classes[] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
 
-  $attributes['class'] = implode(' ', $classes);
-  $attributes['id'] = 'views_slideshow_cycle_div_pager_item_' . $vss_id . '_' . $count;
-  $attributes = drupal_attributes($attributes);
-
-  return '<div' . $attributes . '>' . $item . '</div>' . "\n";
+  $vars['attributes']['class'] = implode(' ', $classes);
+  $vars['attributes']['id'] = 'views_slideshow_cycle_div_pager_item_' . $vars['vss_id'] . '_' . $vars['count'];
 }
 
 /**
@@ -378,12 +368,7 @@ function theme_views_slideshow_cycle_pager_item($item, $vss_id, $count) {
  *
  * @ingroup themeable
  */
-function theme_views_slideshow_cycle_slide_counter($vss_id, $view, $options) {
-  $attributes['class'] = 'views_slideshow_cycle_slide_counter views_slideshow_slide_counter';
-  $attributes['id'] = "views_slideshow_cycle_slide_counter_" . $vss_id;
-  $attributes = drupal_attributes($attributes);
-
-  $counter = '<span class="num">1</span> ' . t('of') . ' <span class="total">1</span>';
-
-  return "<div$attributes>$counter</div>";
+function template_preprocess_views_slideshow_cycle_slide_counter(&$vars) {
+  $vars['attributes']['class'] = 'views_slideshow_cycle_slide_counter views_slideshow_slide_counter';
+  $vars['attributes']['id'] = "views_slideshow_cycle_slide_counter_" . $vars['vss_id'];
 }
