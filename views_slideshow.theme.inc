@@ -2,6 +2,13 @@
 // $Id$
 
 /**
+ * @file
+ * The theme system, which controls the output of views slideshow.
+ *
+ * This just adds a wrapper div to the slideshow.
+ */
+
+/**
  * The current element of the slideshow.
  *
  * @ingroup themeable

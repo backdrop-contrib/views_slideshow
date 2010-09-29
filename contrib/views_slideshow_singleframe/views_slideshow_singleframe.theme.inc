@@ -24,11 +24,11 @@ function template_preprocess_views_slideshow_singleframe(&$vars) {
     if (is_numeric($value)) {
       $value = (int)$value;
     }
-    else if (strtolower($value) == 'true') {
-      $value = true;
+    elseif (strtolower($value) == 'true') {
+      $value = TRUE;
     }
-    else if (strtolower($value) == 'false') {
-      $value = false;
+    elseif (strtolower($value) == 'false') {
+      $value = FALSE;
     }
     
     $new_settings[$key] = $value;

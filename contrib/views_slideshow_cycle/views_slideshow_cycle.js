@@ -295,7 +295,7 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     
     // ms delay for requeue
     if (typeof(settings.advanced_requeueTimeout) !== 'undefined') { settings.opts.requeueTimeout = settings.advanced_requeueTimeout; }
-    
+
     // class name used for the active pager link
     if (typeof(settings.advanced_activePagerClass) !== 'undefined') { settings.opts.activePagerClass = settings.advanced_activePagerClass; }
     

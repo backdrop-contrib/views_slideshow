@@ -27,7 +27,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
 
     // Eveything below here is what's needed for views slideshow.
     if (in_array($options['mode'], array('singleframe', 'thumbnailhover', 'menu', 'slider', 'ddblock')) && is_array($options[$options['mode']])) {
-      foreach($options[$options['mode']] as $index => $value) {
+      foreach ($options[$options['mode']] as $index => $value) {
         $this->options['views_slideshow_' . $options['mode']][$index] = $value;
       }
     }

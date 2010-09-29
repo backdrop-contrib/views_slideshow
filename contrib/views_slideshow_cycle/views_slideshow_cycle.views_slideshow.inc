@@ -62,57 +62,57 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'advanced_use_timeout' => array('default' => 0),
       'advanced_timeout' => array('default' =>  4000),
       'advanced_use_timeoutFn' => array('default' => 0),
-      'advanced_timeoutFn' => array('default' =>  null),
+      'advanced_timeoutFn' => array('default' =>  NULL),
       'advanced_use_continuous' => array('default' => 0),
       'advanced_continuous' => array('default' =>  0),
       'advanced_use_speed' => array('default' => 0),
       'advanced_speed' => array('default' =>  1000),
       'advanced_use_speedIn' => array('default' => 0),
-      'advanced_speedIn' => array('default' =>  null),
+      'advanced_speedIn' => array('default' =>  NULL),
       'advanced_use_speedOut' => array('default' => 0),
-      'advanced_speedOut' => array('default' =>  null),
+      'advanced_speedOut' => array('default' =>  NULL),
       'advanced_use_next' => array('default' => 0),
-      'advanced_next' => array('default' =>  null),
+      'advanced_next' => array('default' =>  NULL),
       'advanced_use_prev' => array('default' => 0),
-      'advanced_prev' => array('default' =>  null),
+      'advanced_prev' => array('default' =>  NULL),
       'advanced_use_prevNextClick' => array('default' => 0),
-      'advanced_prevNextClick' => array('default' =>  null),
+      'advanced_prevNextClick' => array('default' =>  NULL),
       'advanced_use_prevNextEvent' => array('default' => 0),
       'advanced_prevNextEvent' => array('default' =>  'click.cycle'),
       'advanced_use_pager' => array('default' => 0),
-      'advanced_pager' => array('default' =>  null),
+      'advanced_pager' => array('default' =>  NULL),
       'advanced_use_pagerClick' => array('default' => 0),
-      'advanced_pagerClick' => array('default' =>  null),
+      'advanced_pagerClick' => array('default' =>  NULL),
       'advanced_use_pagerEvent' => array('default' => 0),
       'advanced_pagerEvent' => array('default' =>  'click.cycle'),
       'advanced_use_allowPagerClickBubble' => array('default' => 0),
       'advanced_allowPagerClickBubble' => array('default' => 0),
       'advanced_use_pagerAnchorBuilder' => array('default' => 0),
-      'advanced_pagerAnchorBuilder' => array('default' =>  null),
+      'advanced_pagerAnchorBuilder' => array('default' =>  NULL),
       'advanced_use_before' => array('default' => 0),
-      'advanced_before' => array('default' =>  null),
+      'advanced_before' => array('default' =>  NULL),
       'advanced_use_after' => array('default' => 0),
-      'advanced_after' => array('default' =>  null),
+      'advanced_after' => array('default' =>  NULL),
       'advanced_use_end' => array('default' => 0),
-      'advanced_end' => array('default' =>  null),
+      'advanced_end' => array('default' =>  NULL),
       'advanced_use_easing' => array('default' => 0),
-      'advanced_easing' => array('default' =>  null),
+      'advanced_easing' => array('default' =>  NULL),
       'advanced_use_easeIn' => array('default' => 0),
-      'advanced_easeIn' => array('default' =>  null),
+      'advanced_easeIn' => array('default' =>  NULL),
       'advanced_use_easeOut' => array('default' => 0),
-      'advanced_easeOut' => array('default' =>  null),
+      'advanced_easeOut' => array('default' =>  NULL),
       'advanced_use_shuffle' => array('default' => 0),
-      'advanced_shuffle' => array('default' =>  null),
+      'advanced_shuffle' => array('default' =>  NULL),
       'advanced_use_animIn' => array('default' => 0),
-      'advanced_animIn' => array('default' =>  null),
+      'advanced_animIn' => array('default' =>  NULL),
       'advanced_use_animOut' => array('default' => 0),
-      'advanced_animOut' => array('default' =>  null),
+      'advanced_animOut' => array('default' =>  NULL),
       'advanced_use_cssBefore' => array('default' => 0),
-      'advanced_cssBefore' => array('default' =>  null),
+      'advanced_cssBefore' => array('default' =>  NULL),
       'advanced_use_cssAfter' => array('default' => 0),
-      'advanced_cssAfter' => array('default' =>  null),
+      'advanced_cssAfter' => array('default' =>  NULL),
       'advanced_use_fxFn' => array('default' => 0),
-      'advanced_fxFn' => array('default' =>  null),
+      'advanced_fxFn' => array('default' =>  NULL),
       'advanced_use_height' => array('default' => 0),
       'advanced_height' => array('default' =>  'auto'),
       'advanced_use_startingSlide' => array('default' => 0),
@@ -136,7 +136,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'advanced_use_delay' => array('default' => 0),
       'advanced_delay' => array('default' =>  0),
       'advanced_use_slideExpr' => array('default' => 0),
-      'advanced_slideExpr' => array('default' =>  null),
+      'advanced_slideExpr' => array('default' =>  NULL),
       'advanced_use_cleartype' => array('default' => 0),
       'advanced_cleartype' => array('default' => 1),
       'advanced_use_cleartypeNoBg' => array('default' => 0),
@@ -158,7 +158,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'advanced_use_activePagerClass' => array('default' => 0),
       'advanced_activePagerClass' => array('default' =>  'activeSlide'),
       'advanced_use_updateActivePagerLink' => array('default' => 0),
-      'advanced_updateActivePagerLink' => array('default' =>  null),
+      'advanced_updateActivePagerLink' => array('default' =>  NULL),
     ),
   );
   return $options;
@@ -687,13 +687,13 @@ function views_slideshow_cycle_views_slideshow_cycle_pager_settings($view, $opti
 
 function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['speed'])) {
-    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!',array('Speed')));
+    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!', array('Speed')));
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['timeout'])) {
-    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!',array('timeout')));
+    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!', array('timeout')));
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['remember_slide_days'])) {
-    form_error($form['views_slideshow_cycle']['remember_slide_days'], t('!setting must be numeric!',array('Slide days')));
+    form_error($form['views_slideshow_cycle']['remember_slide_days'], t('!setting must be numeric!', array('Slide days')));
   }
 }
 

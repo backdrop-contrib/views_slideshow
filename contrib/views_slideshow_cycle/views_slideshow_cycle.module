@@ -40,22 +40,22 @@ function views_slideshow_cycle_theme($existing, $type, $theme, $path) {
       'template' => 'theme/views-slideshow-cycle',
       'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
-    'views_slideshow_cycle_controls' =>array(
+    'views_slideshow_cycle_controls' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'template' => 'theme/views-slideshow-cycle-controls',
       'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
-    'views_slideshow_cycle_control_previous' =>array(
+    'views_slideshow_cycle_control_previous' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'template' => 'theme/views-slideshow-cycle-control-previous',
       'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
-    'views_slideshow_cycle_control_pause' =>array(
+    'views_slideshow_cycle_control_pause' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'template' => 'theme/views-slideshow-cycle-control-pause',
       'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
-    'views_slideshow_cycle_control_next' =>array(
+    'views_slideshow_cycle_control_next' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'options' => array()),
       'template' => 'theme/views-slideshow-cycle-control-next',
       'file' => 'theme/views_slideshow_cycle.theme.inc',

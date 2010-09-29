@@ -15,7 +15,7 @@ function views_slideshow_thumbnailhover_views_slideshow_modes() {
 
 function views_slideshow_thumbnailhover_views_slideshow_option_definition() {
   $options['views_slideshow_thumbnailhover'] = array(
-    'contains' => array (
+    'contains' => array(
       'timeout' => array('default' => 5000),
       'sort' => array('default' => 1),
       'effect' => array('default' => 'fade'),
@@ -136,7 +136,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
   $form['views_slideshow_thumbnailhover']['fixed_height'] = array(
     '#type' => 'select',
     '#title' => t('Make the slide window height fit the largest slide'),
-    '#options' => array(1 => t('Yes'),0 => t('No')),
+    '#options' => array(1 => t('Yes'), 0 => t('No')),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['fixed_height'],
     '#description' => t('If this is set to no then if the slides are different sizes the height of the slide area will change as the slides change.'),
   );
@@ -150,7 +150,7 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
   $form['views_slideshow_thumbnailhover']['pause'] = array(
     '#type' => 'radios',
     '#title' => t('Pause'),
-    '#options' => array(1 => t('Yes'),2 => t('No')),
+    '#options' => array(1 => t('Yes'), 2 => t('No')),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['pause'],
     '#description' => t('Pause when hovering on the slideshow image.'),
   );
@@ -227,14 +227,14 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
   $form['views_slideshow_thumbnailhover']['controls'] = array(
     '#type' => 'select',
     '#title' => t('Controls'),
-    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
+    '#options' => array(0 => t('None'), 1 => t('Top'), 2 => t('Bottom')),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['controls'],
     '#description' => t('Determine if controls for the slideshow (start/stop/next/previous) should appear, and if so whether they should appear before or after the slideshow.'),
   );
   $form['views_slideshow_thumbnailhover']['image_count'] = array(
     '#type' => 'select',
     '#title' => t('Image Counter'),
-    '#options' => array(0 => t('None'),1 => t('Top'),2 => t('Bottom')),
+    '#options' => array(0 => t('None'), 1 => t('Top'), 2 => t('Bottom')),
     '#default_value' => $view->options['views_slideshow_thumbnailhover']['image_count'],
     '#description' => t('Determine if Image Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
   );
@@ -318,12 +318,12 @@ function views_slideshow_thumbnailhover_views_slideshow_options_form(&$form, &$f
 }
 function views_slideshow_thumbnailhover_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_thumbnailhover']['speed'])) {
-    form_error($form['views_slideshow_thumbnailhover']['speed'], t('!setting must be numeric!',array('!setting' => 'Speed')));
+    form_error($form['views_slideshow_thumbnailhover']['speed'], t('!setting must be numeric!', array('!setting' => 'Speed')));
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_thumbnailhover']['timeout'])) {
-    form_error($form['views_slideshow_thumbnailhover']['timeout'],t('!setting must be numeric!',array('!setting' => 'Timeout')));
+    form_error($form['views_slideshow_thumbnailhover']['timeout'], t('!setting must be numeric!', array('!setting' => 'Timeout')));
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_thumbnailhover']['remember_slide_days'])) {
-    form_error($form['views_slideshow_thumbnailhover']['remember_slide_days'], t('!setting must be numeric!',array('Slide days')));
+    form_error($form['views_slideshow_thumbnailhover']['remember_slide_days'], t('!setting must be numeric!', array('Slide days')));
   }
 }

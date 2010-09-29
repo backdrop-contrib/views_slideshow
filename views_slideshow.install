@@ -2,6 +2,12 @@
 // $Id$
 
 /**
+ * @file
+ * Install, update and uninstall functions for the views slideshow module.
+ */
+
+
+/**
  * Implements hook_install().
  */
 function views_slideshow_install() {
