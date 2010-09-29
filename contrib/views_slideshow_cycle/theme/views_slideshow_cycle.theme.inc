@@ -79,6 +79,19 @@ function template_preprocess_views_slideshow_cycle(&$vars) {
   }
   
   drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
+  
+  // Add the hoverIntent plugin.
+  if (isset($settings['advanced_pagerevent']) && $settings['advanced_pagerevent'] == 'hoverIntent') {
+    if (module_exists('jq')) {
+      $loaded_plugins = jq_plugins();
+      if (!empty($loaded_plugins['hoverIntent'])) {
+        jq_add('hoverIntent');
+      }
+    }
+    if (module_exists('hoverintent')) {
+      hoverintent_add();
+    }
+  }
 
   // Enqueue any stylesheets set for the skin on this view are added.
   $skin_path = drupal_get_path('module', $skin_info['module']);
