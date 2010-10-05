@@ -71,7 +71,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
 
         $form[$module] = array(
           '#type' => 'fieldset',
-          '#title' => t( $modules[$module] . ' options'),
+          '#title' => t('!module options', array('!module' => $modules[$module])),
           '#collapsible' => TRUE,
           '#attributes' => array('class' => $module),
         );
