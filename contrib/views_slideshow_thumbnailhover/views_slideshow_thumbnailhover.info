@@ -1,6 +1,0 @@
-; $Id$
-name = Views Slideshow: ThumbnailHover (Legacy)
-description = Adds a Thumbnail Hover slideshow mode to Views Slideshows.
-dependencies[] = views_slideshow
-package = Views
-core = 6.x
