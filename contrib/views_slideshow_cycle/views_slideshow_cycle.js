@@ -13,6 +13,7 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     var fullId = '#' + $(this).attr('id');
     var settings = Drupal.settings.viewsSlideshowCycle[fullId];
     settings.targetId = '#' + $(fullId + " :first").attr('id');
+    settings.slideshowId = settings.targetId.replace('#views_slideshow_cycle_teaser_section_', '');
     settings.paused = false;
 
     settings.opts = {
@@ -21,37 +22,16 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
       delay:settings.delay,
       sync:settings.sync,
       random:settings.random,
-      pagerAnchorBuilder:function(idx, slide) {
-        var classes = 'pager-item pager-num-' + (idx+1);
-        if (idx == 0) {
-          classes += ' first';
-        }
-        if ($(slide).siblings().length == idx) {
-          classes += ' last';
-        }
-
-        if (idx % 2) {
-          classes += ' odd';
-        }
-        else {
-          classes += ' even';
-        }
-        
-        // Call the theme function for the pager.
-        var theme = 'viewsSlideshowPager' + settings.pager_type;
-        return Drupal.theme.prototype[theme] ? Drupal.theme(theme, classes, idx, slide, settings) : '';
-      },
-      allowPagerClickBubble:(settings.pager_hover),
-      prev:(settings.controls != 0)?'#views_slideshow_cycle_prev_' + settings.vss_id:null,
-      next:(settings.controls != 0)?'#views_slideshow_cycle_next_' + settings.vss_id:null,
-      pager:(settings.pager != 0)?'#views_slideshow_cycle_pager_' + settings.vss_id:null,
       nowrap:settings.nowrap,
       after:function(curr, next, opts) {
-        // Used for Slide Counter.
-        if (settings.slide_counter) {
-          $('#views_slideshow_cycle_slide_counter_' + settings.vss_id + ' span.num').html(opts.currSlide + 1);
-          $('#views_slideshow_cycle_slide_counter_' + settings.vss_id + ' span.total').html(opts.slideCount);
+        // Need to do some special handling on first load.
+        var slideNum = opts.currSlide;
+        if (typeof settings.processedAfter == 'undefined' || !settings.processedAfter) {
+          settings.processedAfter = 1;
+          slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
         }
+        
+        viewsSlideshowTransitionEnd(settings.slideshowId, '', slideNum);
       },
       before:function(curr, next, opts) {
         // Remember last slide.
@@ -66,10 +46,18 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
           //set the container's height to that of the current slide
           $(this).parent().animate({height: $ht});
         }
+        
+        // Need to do some special handling on first load.
+        var slideNum = opts.nextSlide;
+        if (typeof settings.processedBefore == 'undefined' || !settings.processedBefore) {
+          settings.processedBefore = 1;
+          slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
+        }
+        
+        viewsSlideshowTransitionBegin(settings.slideshowId, '', slideNum);
       },
       cleartype:(settings.cleartype)? true : false,
-      cleartypeNoBg:(settings.cleartypenobg)? true : false,
-      activePagerClass:'active-slide'
+      cleartypeNoBg:(settings.cleartypenobg)? true : false
     }
     
     // Set the starting slide if we are supposed to remember the slide
@@ -79,11 +67,6 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         startSlide = 0;
       }
       settings.opts.startingSlide =  startSlide;
-    }
-
-    if (settings.pager_hover) {
-      settings.opts.pagerEvent = 'mouseover';
-      settings.opts.pauseOnPagerHover = true;
     }
 
     if (settings.effect == 'none') {
@@ -96,27 +79,19 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     // Pause on hover.
     if (settings.pause) {
       $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
-        $(settings.targetId).cycle('pause');
+        viewsSlideshowPause(settings.slideshowID, '');
       }, function() {
         if (!settings.paused) {
-          $(settings.targetId).cycle('resume');
+          viewsSlideshowPlay(settings.slideshowID, '');
         }
       });
     }
 
     // Pause on clicking of the slide.
     if (settings.pause_on_click) {
-      $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() { 
-        viewsSlideshowCyclePause(settings);
+      $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
+        viewsSlideshowPause(settings.slideshowId, '');
       });
-    }
-    
-    // Allow pagers to override settings.
-    if (settings.pager != 0) {
-      var pagerAlter = 'viewsSlideshowCyclePager' + settings.pager_type + 'SettingsAlter';
-      if (typeof window[pagerAlter] == 'function') {
-        settings = window[pagerAlter](settings);
-      }
     }
     
     // Advanced Settings
@@ -306,7 +281,7 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
 
     // Start Paused
     if (settings.start_paused) {
-      viewsSlideshowCyclePause(settings);
+      viewsSlideshowPause(settings.slideshowId, '');
     }
     
     // Pause if hidden.
@@ -317,10 +292,10 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         // pause it.
         var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
         if (visible && settings.paused) {
-          viewsSlideshowCycleResume(settings);
+          viewsSlideshowPlay(settings.slideshowId, '');
         }
         else if (!visible && !settings.paused) {
-          viewsSlideshowCyclePause(settings);
+          viewsSlideshowPause(settings.slideshowId, '');
         }
       }
      
@@ -334,101 +309,23 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         checkPause(settings);
       });
     }
-
-    // Show image count for people who have js enabled.
-    $('#views_slideshow_cycle_image_count_' + settings.vss_id).show();
-
-    if (settings.controls != 0) {
-      // Show controls for people who have js enabled browsers.
-      $('#views_slideshow_cycle_controls_' + settings.vss_id).show();
-      
-      $('#views_slideshow_cycle_playpause_' + settings.vss_id).click(function(e) {
-      	if (settings.paused) {
-      	  viewsSlideshowCycleResume(settings);
-      	}
-      	else {
-      	  viewsSlideshowCyclePause(settings);
-      	}
-        e.preventDefault();
-      });
-    }
   });
 }
 
-// Pause the slideshow 
-viewsSlideshowCyclePause = function (settings) {
-  // Make Resume translatable
-  var resume = Drupal.t('Resume');
-  
-  $(settings.targetId).cycle('pause');
-  if (settings.controls != 0) {
-    $('#views_slideshow_cycle_playpause_' + settings.vss_id)
-      .addClass('views_slideshow_cycle_play')
-      .addClass('views_slideshow_play')
-      .removeClass('views_slideshow_cycle_pause')
-      .removeClass('views_slideshow_pause')
-      .text(resume);
-  }
-  settings.paused = true;
+views_slideshow_cycle_viewsSlideshowPause = function (slideshowID) {
+  $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('pause');
 }
 
-// Resume the slideshow
-viewsSlideshowCycleResume = function (settings) {
-  // Make Pause translatable
-  var pause = Drupal.t('Pause');
-  
-  $(settings.targetId).cycle('resume');
-  if (settings.controls != 0) {
-    $('#views_slideshow_cycle_playpause_' + settings.vss_id)
-      .addClass('views_slideshow_cycle_pause')
-      .addClass('views_slideshow_pause')
-      .removeClass('views_slideshow_cycle_play')
-      .removeClass('views_slideshow_play')
-      .text(pause);
-  }
-  settings.paused = false;
+views_slideshow_cycle_viewsSlideshowPlay = function (slideshowID) {
+  $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('resume');
 }
 
-// Theme the thumbnails type pager.
-Drupal.theme.prototype.viewsSlideshowPagerthumbnails = function (classes, idx, slide, settings) {
-  var href = '#';
-  if (settings.thumbnails_pager_click_to_page) {
-    href = $(slide).find('a').attr('href');
-  }
-  var img = $(slide).find('img')
-  return '<div class="' + classes + '"><a href="' + href + '"><img src="' + $(img).attr('src') + '" alt="' + $(img).attr('alt') + '" title="' + $(img).attr('title') + '"/></a></div>';
+views_slideshow_cycle_viewsSlideshowPreviousSlide = function (slideshowID) {
+  $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('prev');
 }
 
-// Make some adjustments for thumbnails pagers.
-function viewsSlideshowCyclePagerthumbnailsSettingsAlter(settings) {
-  if (settings.thumbnails_pager_click_to_page) {
-    settings.opts.allowPagerClickBubble = true;
-    settings.opts.pagerEvent = "mouseover";
-  }
-  return settings;
-}
-
-// Theme the numbered type pager.
-Drupal.theme.prototype.viewsSlideshowPagernumbered = function (classes, idx, slide, settings) {
-  var href = '#';
-  if (settings.numbered_pager_click_to_page) {
-    href = $(slide).find('a').attr('href');
-  }
-  return '<div class="' + classes + '"><a href="' + href + '">' + (idx+1) + '</a></div>';
-}
-
-// Make some adjustments for numbered pagers.
-function viewsSlideshowCyclePagernumberedSettingsAlter(settings) {
-  if (settings.numbered_pager_click_to_page) {
-    settings.opts.allowPagerClickBubble = true;
-    settings.opts.pagerEvent = "mouseover";
-  }
-  return settings;
-}
-
-// Theme the fields type pager.
-Drupal.theme.prototype.viewsSlideshowPagerfields = function (classes, idx, slide, settings) {
-  return '#views_slideshow_cycle_div_pager_item_' + settings.vss_id + '_' + idx;
+views_slideshow_cycle_viewsSlideshowNextSlide = function (slideshowID) {
+  $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('next');
 }
 
 // Verify that the value is a number.

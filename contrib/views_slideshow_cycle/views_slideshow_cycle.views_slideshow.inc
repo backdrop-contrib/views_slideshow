@@ -6,7 +6,7 @@
  * The default options available with Views Slideshow: cycle.
  */
 
-function views_slideshow_cycle_views_slideshow_modes() {
+function views_slideshow_cycle_views_slideshow_slideshow_types() {
   $options = array(
     'views_slideshow_cycle' => t('Cycle'),
   );
@@ -38,18 +38,6 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'nowrap' => array('default' => 0),
       'fixed_height' => array('default' => 1),
       'items_per_slide' => array('default' => 1),
-
-      // Pager and Controls
-      'pager' => array('default' => 0),
-      'pager_type' => array('default' => 'numbered'),
-      'pager_fields' => array('default' => array()),
-      'pager_hover' => array('default' => 0),
-      'pager_click_to_page' => array('default' => 0),
-      'pager_weight' => array('default' => 1),
-      'controls' => array('default' => 0),
-      'controls_weight' => array('default' => 1),
-      'slide_counter' => array('default' => 0),
-      'slide_counter_weight' => array('default' => 1),
 
       // Internet Explorer Tweaks
       'cleartype' => array('default' => 'true'),
@@ -164,28 +152,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
   return $options;
 }
 
-function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state, &$view) {
-  
-  // Style
-  $form['views_slideshow_cycle']['style'] = array(
-    '#value' => '<h2>' . t('Style') . '</h2>',
-  );
-  
-  // Get a list of all available stylesheet plugins.
-  $skin_info = views_slideshow_cycle_get_skins();
-  foreach ($skin_info as $skin => $info) {
-    $skins[$skin] = $info['title'];
-  }
-  asort($skins);
-
-  // And now our own form additions.
-  $form['views_slideshow_cycle']['skin'] = array(
-    '#type' => 'select',
-    '#title' => t('Skin'),
-    '#options' => $skins,
-    '#default_value' => $view->options['views_slideshow_cycle']['skin'],
-    '#description' => t('Select the skin to use for this display.  Skins allow for easily swappable layouts of things like next/prev links and thumbnails.  Note that not all skins support thumbnails, so mis-matching skins and thumbnails may lead to unpredictable results.'),
-  );
+function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$form_state, &$view) {
   
   // Transition
   $form['views_slideshow_cycle']['transition'] = array(
@@ -399,123 +366,6 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
     '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
   );
   
-  // Pager and Controls
-  $form['views_slideshow_cycle']['pager_and_controls'] = array(
-    '#value' => '<h2>' . t('Pager and Controls') . '</h2>',
-  );
-  $form['views_slideshow_cycle']['pager'] = array(
-    '#type' => 'select',
-    '#title' => t('Pager'),
-    '#options' => array(
-      0 => t('None'),
-      'top' => t('Top'),
-      'bottom' => t('Bottom'),
-    ),
-    '#default_value' => $view->options['views_slideshow_cycle']['pager'],
-    '#description' => t('Determine if a pager should appear and if so whether they should appear before or after the slideshow.'),
-  );
-  
-  // Get all the pager info from other modules.
-  // hook_views_slideshow_pager_settings($view, $option_values, $dependency_prefix)
-  $pagers = module_invoke_all('views_slideshow_cycle_pager_settings', $view, $view->options['views_slideshow_cycle'], 'edit-style-options-views-slideshow-cycle-pager');
-  
-  // Prep the pager options and the fields
-  $options = array();
-  $pager_fields = array();
-  foreach ($pagers as $pager_key => $pager_info) {
-    $options[$pager_key] = $pager_info['title'];
-    if (isset($pager_info['fields'])) {
-      foreach ($pager_info['fields'] as $pager_field_key => $pager_field) {
-        $pager_field['#dependency']['edit-style-options-views-slideshow-cycle-pager'] = array('top', 'bottom');
-        $pager_field['#dependency']['edit-style-options-views-slideshow-cycle-pager-type'] = array($pager_key);
-        $pager_field['#dependency_count'] = count($pager_field['#dependency']);
-        if (!isset($pager_field['#process']) || !in_array('views_process_dependency', $pager_field['#process'])) {
-          $pager_field['#process'][] = 'views_process_dependency';
-        }
-        
-        $pager_fields[$pager_field_key] = $pager_field;
-      }
-    }
-  }
-  
-  // Sort the options alphabetically.
-  asort($options);
-  $form['views_slideshow_cycle']['pager_type'] = array(
-    '#type' => 'select',
-    '#title' => t('Pager Type'),
-    '#options' => $options,
-    '#default_value' => $view->options['views_slideshow_cycle']['pager_type'],
-    '#description' => t('Style of the pager.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
-  );
-  
-  // Add user defined pager fields to the form.
-  $form['views_slideshow_cycle'] = array_merge($form['views_slideshow_cycle'], $pager_fields);
-  
-  $form['views_slideshow_cycle']['pager_hover'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Activate Slide and Pause on Pager Hover'),
-    '#default_value' => $view->options['views_slideshow_cycle']['pager_hover'],
-    '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
-  );
-  
-  $weights = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5);
-  $form['views_slideshow_cycle']['pager_weight'] = array(
-    '#type' => 'select',
-    '#title' => t('Weight of the Pager'),
-    '#options' => $weights,
-    '#default_value' => $view->options['views_slideshow_cycle']['pager_weight'],
-    '#description' => t('Determines in what order the pager appears.  A lower weight will cause the pager to be above higher weight items.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-pager' => array('top', 'bottom')),
-  );
-  
-  $form['views_slideshow_cycle']['controls'] = array(
-    '#type' => 'select',
-    '#title' => t('Controls'),
-    '#options' => array(
-      0 => t('None'),
-      'top' => t('Top'),
-      'bottom' => t('Bottom'),
-    ),
-    '#default_value' => $view->options['views_slideshow_cycle']['controls'],
-    '#description' => t('Determine if controls for the slideshow (start/stop/next/previous) should appear, and if so whether they should appear before or after the slideshow.'),
-  );
-  $form['views_slideshow_cycle']['controls_weight'] = array(
-    '#type' => 'select',
-    '#title' => t('Weight of the Controls'),
-    '#options' => $weights,
-    '#default_value' => $view->options['views_slideshow_cycle']['controls_weight'],
-    '#description' => t('Determines in what order the controls appear.  A lower weight will cause the controls to be above higher weight items.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-controls' => array('top', 'bottom')),
-  );
-  
-  $form['views_slideshow_cycle']['slide_counter'] = array(
-    '#type' => 'select',
-    '#title' => t('Slide Counter'),
-    '#options' => array(
-      0 => t('None'),
-      'top' => t('Top'),
-      'bottom' => t('Bottom'),
-    ),
-    '#default_value' => $view->options['views_slideshow_cycle']['slide_counter'],
-    '#description' => t('Determine if the Slide Counter (1 of 4) should be displayed and if so whether they should appear before or after the slideshow.'),
-  );
-  
-  $form['views_slideshow_cycle']['slide_counter_weight'] = array(
-    '#type' => 'select',
-    '#title' => t('Weight of the Slide Counter'),
-    '#options' => $weights,
-    '#default_value' => $view->options['views_slideshow_cycle']['slide_counter_weight'],
-    '#description' => t('Determines in what order the slide counter appears.  A lower weight will cause the slide counter to be above higher weight items.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-slide-counter' => array('top', 'bottom')),
-  );
-  
   // Internet Explorer Tweaks
   $form['views_slideshow_cycle']['ie_tweaks'] = array(
     '#value' => '<h2>' . t('Internet Explorer Tweaks') . '</h2>',
@@ -628,63 +478,6 @@ function views_slideshow_cycle_views_slideshow_options_form(&$form, &$form_state
   }
 }
 
-/**
- * Implementation of hook_views_slideshow_cycle_pager_settings
- */
-function views_slideshow_cycle_views_slideshow_cycle_pager_settings($view, $option_values, $dependency_prefix) {
-  // Settings for Numbered Pager
-  $return_value['numbered'] = array(
-    'title' => t('Numbered'),
-    'fields' => array(
-      'numbered_pager_click_to_page' => array(
-        '#type' => 'checkbox',
-        '#title' => t('Make Pager Linked to Slide Link'),
-        '#default_value' => $option_values['numbered_pager_click_to_page'],
-        '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
-      ),
-    ),
-  );
-  
-  // Settings for Thumbnails pager.
-  $return_value['thumbnails'] = array(
-    'title' => t('Thumbnails'),
-    'fields' => array(
-      'thumbnails_pager_click_to_page' => array(
-        '#type' => 'checkbox',
-        '#title' => t('Make Pager Linked to Slide Link'),
-        '#default_value' => $option_values['thumbnails_pager_click_to_page'],
-        '#description' => t('Should the pager use the main frame link so when it is clicked it goes to the same url that the main frame goes to when clicked.'),
-      ),
-    ),
-  );
-  
-  if ($view->row_plugin->uses_fields()) {
-    $options = array();
-    foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
-      $options[$field] = $handler->ui_name();
-    }
-    $return_value['fields'] = array(
-      'title' => t('Fields'),
-      'fields' => array(
-        'pager_fields' => array(
-          '#type' => 'checkboxes',
-          '#title' => t('Pager fields'),
-          '#options' => $options,
-          '#default_value' => $option_values['pager_fields'],
-          '#description' => t("Choose the fields that will appear in the pager."),
-          '#prefix' => '<div id="edit-style-options-views-slideshow-cycle-pager-fields-wrapper"><div id="edit-style-options-views-slideshow-cycle-pager-fields">',
-          '#process' => array(
-            'expand_checkboxes',
-          ),
-          '#suffix' => '</div></div>',
-        ),
-      ),
-    );
-  }
-  
-  return $return_value;
-}
-
 function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['speed'])) {
     form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!', array('Speed')));
@@ -695,40 +488,4 @@ function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$f
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['remember_slide_days'])) {
     form_error($form['views_slideshow_cycle']['remember_slide_days'], t('!setting must be numeric!', array('Slide days')));
   }
-}
-
-function views_slideshow_cycle_views_slideshow_options_form_submit($form, &$form_state) {
-  // In addition to the skin, we also pre-save the definition that
-  // correspond to it.  That lets us avoid a hook lookup on every page.
-  $skins = views_slideshow_cycle_get_skins();
-  $form_state['values']['style_options']['views_slideshow_cycle']['skin_info'] = $skins[$form_state['values']['style_options']['views_slideshow_cycle']['skin']];
-}
-
-/**
- * Retrieve a list of all available skins in the system.
- */
-function views_slideshow_cycle_get_skins() {
-  static $skins;
-
-  if (empty($skins)) {
-    $skins = array();
-    foreach (module_implements('views_slideshow_cycle_skins') as $module) {
-      $skin_items = call_user_func($module .'_views_slideshow_cycle_skins');
-      if (isset($skin_items) && is_array($skin_items)) {
-        foreach (array_keys($skin_items) as $skin) {
-          // Ensure that the definition is complete, so we don't need lots
-          // of error checking later.
-          $skin_items[$skin] += array(
-            'title' => t('Untitled skin'),
-            'module' => $module,
-            'path' => '',
-            'stylesheets' => array(),
-          );
-        }
-        $skins = array_merge($skins, $skin_items);
-      }
-    }
-  }
-
-  return $skins;
 }
