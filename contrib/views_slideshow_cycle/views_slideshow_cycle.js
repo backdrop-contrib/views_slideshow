@@ -79,10 +79,10 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
     // Pause on hover.
     if (settings.pause) {
       $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
-        viewsSlideshowPause(settings.slideshowID, '');
+        viewsSlideshowPause(settings.slideshowId, '');
       }, function() {
         if (!settings.paused) {
-          viewsSlideshowPlay(settings.slideshowID, '');
+          viewsSlideshowPlay(settings.slideshowId, '');
         }
       });
     }
@@ -326,6 +326,10 @@ views_slideshow_cycle_viewsSlideshowPreviousSlide = function (slideshowID) {
 
 views_slideshow_cycle_viewsSlideshowNextSlide = function (slideshowID) {
   $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('next');
+}
+
+views_slideshow_cycle_viewsSlideshowGoToSlide = function (slideshowID, slideNum) {
+  $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle(slideNum);
 }
 
 // Verify that the value is a number.

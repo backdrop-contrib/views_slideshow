@@ -114,7 +114,24 @@ function theme_views_slideshow_pager_widget_render($vss_id, $view, $rows, $setti
  * Theme pager fields
  */
 function template_preprocess_views_slideshow_pager_fields_render(&$vars) {
+  // Build our javascript settings.
+  $js_vars = array(
+    'viewsSlideshowPagerFields' => array(
+      $vars['vss_id'] => array(
+        $vars['location'] => array(
+          'activatePauseOnHover' => $vars['settings']['views_slideshow_pager_fields_hover'],
+        ),
+      ),
+    ),
+  );
+  
+  // Add the settings to the page.
+  drupal_add_js($js_vars, 'setting');
+  
+  // Add our class to the wrapper.
   $vars['attributes']['class'] .= ' views_slideshow_pager_field';
+  
+  // Render all the fields.
   $vars['rendered_field_items'] = '';
   foreach ($vars['view']->result as $count => $node) {
     $rendered_fields = '';
