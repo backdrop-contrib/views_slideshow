@@ -171,7 +171,7 @@ function template_preprocess_views_slideshow_pager_field_item(&$vars) {
 function theme_views_slideshow_controls_widget_render($vss_id, $view, $rows, $settings, $location) {
   $output = '';
   if (count($rows) > 1) {
-    $output = theme('views_slideshow_controls', $vss_id, $view, $rows, $settings, $location);
+    $output = theme($settings['type'] . '_render', $vss_id, $view, $rows, $settings, $location);
   }
   
   return $output;
@@ -182,15 +182,15 @@ function theme_views_slideshow_controls_widget_render($vss_id, $view, $rows, $se
  *
  * @ingroup themeable
  */
-function template_preprocess_views_slideshow_controls(&$vars) {
-  $vars['attributes']['class'] = 'views_slideshow_controls';
-  $vars['attributes']['id'] = "views_slideshow_controls_" . $vars['vss_id'];
+function template_preprocess_views_slideshow_controls_text_render(&$vars) {
+  $vars['attributes']['class'] = 'views_slideshow_controls_text';
+  $vars['attributes']['id'] = "views_slideshow_controls_text_" . $vars['vss_id'];
   
-  $vars['rendered_control_previous'] = theme('views_slideshow_controls_previous', $vars['vss_id'], $vars['view'], $vars['settings']);
+  $vars['rendered_control_previous'] = theme('views_slideshow_controls_text_previous', $vars['vss_id'], $vars['view'], $vars['settings']);
 
-  $vars['rendered_control_pause'] = theme('views_slideshow_controls_pause', $vars['vss_id'], $vars['view'], $vars['settings']);
+  $vars['rendered_control_pause'] = theme('views_slideshow_controls_text_pause', $vars['vss_id'], $vars['view'], $vars['settings']);
   
-  $vars['rendered_control_next'] = theme('views_slideshow_controls_next', $vars['vss_id'], $vars['view'], $vars['settings']);
+  $vars['rendered_control_next'] = theme('views_slideshow_controls_text_next', $vars['vss_id'], $vars['view'], $vars['settings']);
 }
 
 /**
@@ -198,9 +198,9 @@ function template_preprocess_views_slideshow_controls(&$vars) {
  *
  * @ingroup themeable
  */
-function template_preprocess_views_slideshow_controls_previous(&$vars) {
-  $vars['attributes']['class'] = 'views_slideshow_controls_previous';
-  $vars['attributes']['id'] = 'views_slideshow_controls_previous_' . $vars['vss_id'];
+function template_preprocess_views_slideshow_controls_text_previous(&$vars) {
+  $vars['attributes']['class'] = 'views_slideshow_controls_text_previous';
+  $vars['attributes']['id'] = 'views_slideshow_controls_text_previous_' . $vars['vss_id'];
 }
 
 /**
@@ -208,9 +208,9 @@ function template_preprocess_views_slideshow_controls_previous(&$vars) {
  *
  * @ingroup themeable
  */
-function template_preprocess_views_slideshow_controls_pause(&$vars) {
-  $vars['attributes']['class'] = 'views_slideshow_controls_pause';
-  $vars['attributes']['id'] = 'views_slideshow_controls_pause_' . $vars['vss_id'];
+function template_preprocess_views_slideshow_controls_text_pause(&$vars) {
+  $vars['attributes']['class'] = 'views_slideshow_controls_text_pause';
+  $vars['attributes']['id'] = 'views_slideshow_controls_text_pause_' . $vars['vss_id'];
   $vars['start_text'] = t('Pause');
 }
 
@@ -219,9 +219,9 @@ function template_preprocess_views_slideshow_controls_pause(&$vars) {
  *
  * @ingroup themeable
  */
-function template_preprocess_views_slideshow_controls_next(&$vars) {
-  $vars['attributes']['class'] = 'views_slideshow_controls_next';
-  $vars['attributes']['id'] = 'views_slideshow_controls_next_' . $vars['vss_id'];
+function template_preprocess_views_slideshow_controls_text_next(&$vars) {
+  $vars['attributes']['class'] = 'views_slideshow_controls_text_next';
+  $vars['attributes']['id'] = 'views_slideshow_controls_text_next_' . $vars['vss_id'];
 }
 
 /**

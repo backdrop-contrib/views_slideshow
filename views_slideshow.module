@@ -38,24 +38,24 @@ function views_slideshow_theme($existing, $type, $theme, $path) {
       'arguments' => array('vss_id' => NULL, 'view' => NULL, 'rows' => array(), 'settings' => array(), 'location' => NULL),
       'file' => 'theme/views_slideshow.theme.inc',
     ),
-    'views_slideshow_controls' => array(
+    'views_slideshow_controls_text_render' => array(
       'arguments' => array('vss_id' => NULL, 'view' => NULL, 'rows' => array(), 'settings' => array(), 'location' => NULL),
-      'template' => 'theme/views-slideshow-controls',
+      'template' => 'theme/views-slideshow-controls-text',
       'file' => 'theme/views_slideshow.theme.inc',
     ),
-    'views_slideshow_controls_previous' => array(
+    'views_slideshow_controls_text_previous' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'settings' => array()),
-      'template' => 'theme/views-slideshow-controls-previous',
+      'template' => 'theme/views-slideshow-controls-text-previous',
       'file' => 'theme/views_slideshow.theme.inc',
     ),
-    'views_slideshow_controls_pause' => array(
+    'views_slideshow_controls_text_pause' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'settings' => array()),
-      'template' => 'theme/views-slideshow-controls-pause',
+      'template' => 'theme/views-slideshow-controls-text-pause',
       'file' => 'theme/views_slideshow.theme.inc',
     ),
-    'views_slideshow_controls_next' => array(
+    'views_slideshow_controls_text_next' => array(
       'arguments' => array('vss_id' => '', 'view' => NULL, 'settings' => array()),
-      'template' => 'theme/views-slideshow-controls-next',
+      'template' => 'theme/views-slideshow-controls-text-next',
       'file' => 'theme/views_slideshow.theme.inc',
     ),
     'views_slideshow_slide_counter_widget_render' => array(
@@ -106,7 +106,7 @@ function views_slideshow_init() {
 function views_slideshow_views_slideshow_js_method_register() {
   return array(
     'views_slideshow_pager_fields',
-    'views_slideshow_controls',
+    'views_slideshow_controls_text',
     'views_slideshow_slide_counter',
   );
 }
@@ -168,7 +168,9 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
     
     foreach ($pagers as $pager_key => $pager_title) {
       $function = $pager_key . '_views_slideshow_widget_pager_form_options';
-      call_user_func_array($function, $arguments);
+      if (function_exists($function)) {
+        call_user_func_array($function, $arguments);
+      }
     }
   }
   else {
@@ -246,6 +248,64 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
 }
 
 /**
+ * Implements [widget]_views_slideshow_widget_form_options().
+ */
+function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
+  // Get all the pager info from other modules.
+  // hook_views_slideshow_controls_settings($view, $option_values, $dependency_prefix)
+  $controls = module_invoke_all('views_slideshow_widget_controls_settings', $view);
+  
+  if (!empty($controls)) {
+    asort($controls);
+    
+    // Create the widget type field.
+    $form['type'] = array(
+      '#type' => 'select',
+      '#title' => t('Controls Type'),
+      '#description' => t('Style of the controls'),
+      '#default_value' => $defaults['type'],
+      '#options' => $controls,
+      '#process' => array('views_process_dependency'),
+      '#dependency' => array($dependency . '-enable' => array(1)),
+    );
+    
+    // Add any additional form elements
+    // Build our arguments to pass to
+    // [pager-type]_views_slideshow_widget_pager_form_options
+    $arguments = array(
+      &$form,
+      &$form_state,
+      &$view,
+      $defaults,
+      $dependency,
+    );
+    
+    foreach ($controls as $control_key => $control_title) {
+      $function = $control_key . '_views_slideshow_widget_controls_form_options';
+      if (function_exists($function)) {
+        call_user_func_array($function, $arguments);
+      }
+    }
+  }
+  else {
+    $form['enable_controls'] = array(
+      '#value' => 'There are no controls available.',
+    );
+  }
+}
+
+/**
+ * Implementation of hook_views_slideshow_controls_settings
+ */
+function views_slideshow_views_slideshow_widget_controls_settings($view) {
+  $settings = array(
+    'views_slideshow_controls_text' => t('Text'),
+  );
+  
+  return $settings;
+}
+
+/**
  * Implements hook_views_slideshow_option_definition.
  */
 function views_slideshow_views_slideshow_option_definition() {
@@ -275,6 +335,8 @@ function views_slideshow_views_slideshow_option_definition() {
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_thumbnails_click_to_page'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_fields'] = array('default' => array());
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_hover'] = array('default' => 0);
+    
+    $options['widgets']['contains'][$location]['contains']['views_slideshow_controls']['contains']['type'] = array('default' => 0);
   }
   
   return $options;

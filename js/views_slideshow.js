@@ -1,26 +1,26 @@
 Drupal.behaviors.viewsSlideshow = function (context) {
   
   // Process previous link
-  $('.views_slideshow_controls_previous:not(.views-slideshow-controls-previous-processed)', context).addClass('views-slideshow-controls-previous-processed').each(function() {
-    var uniqueID = $(this).attr('id').replace('views_slideshow_controls_previous_', '');
+  $('.views_slideshow_controls_text_previous:not(.views-slideshow-controls-text-previous-processed)', context).addClass('views-slideshow-controls-text-previous-processed').each(function() {
+    var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_previous_', '');
     $(this).click(function() {
-      viewsSlideshowPreviousSlide(uniqueID, 'views_slideshow_controls');
+      viewsSlideshowPreviousSlide(uniqueID, '');
       return false;
     });
   });
   
   // Process next link
-  $('.views_slideshow_controls_next:not(.views-slideshow-controls-next-processed)', context).addClass('views-slideshow-controls-next-processed').each(function() {
-    var uniqueID = $(this).attr('id').replace('views_slideshow_controls_next_', '');
+  $('.views_slideshow_controls_text_next:not(.views-slideshow-controls-text-next-processed)', context).addClass('views-slideshow-controls-text-next-processed').each(function() {
+    var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_next_', '');
     $(this).click(function() {
-      viewsSlideshowNextSlide(uniqueID, 'views_slideshow_controls');
+      viewsSlideshowNextSlide(uniqueID, '');
       return false;
     });
   });
   
   // Process pause link
-  $('.views_slideshow_controls_pause:not(.views-slideshow-controls-pause-processed)', context).addClass('views-slideshow-controls-pause-processed').each(function() {
-    var uniqueID = $(this).attr('id').replace('views_slideshow_controls_pause_', '');
+  $('.views_slideshow_controls_text_pause:not(.views-slideshow-controls-text-pause-processed)', context).addClass('views-slideshow-controls-text-pause-processed').each(function() {
+    var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_pause_', '');
     $(this).click(function() {
       if (Drupal.settings.viewsSlideshow[uniqueID].paused) {
         viewsSlideshowPlay(uniqueID, '');
@@ -56,19 +56,19 @@ Drupal.behaviors.viewsSlideshow = function (context) {
 }
 
 /**
- * Implement hook_viewsSlideshowPause for pager fields pager.
+ * Implement hook_viewsSlideshowPause for text controls.
  */
-function views_slideshow_pager_fields_viewsSlideshowPause(slideshowID) {
+function views_slideshow_controls_text_viewsSlideshowPause(slideshowID) {
   var pauseText = Drupal.theme.prototype['viewsSlideshowControlsPause'] ? Drupal.theme('viewsSlideshowControlsPause') : '';
-  $('#views_slideshow_controls_pause_' + slideshowID).text(pauseText);
+  $('#views_slideshow_controls_text_pause_' + slideshowID).text(pauseText);
 }
 
 /**
- * Implement hook_viewsSlideshowPlay for pager fields pager.
+ * Implement hook_viewsSlideshowPlay for text controls.
  */
-function views_slideshow_pager_fields_viewsSlideshowPlay(slideshowID) {
+function views_slideshow_controls_text_viewsSlideshowPlay(slideshowID) {
   var playText = Drupal.theme.prototype['viewsSlideshowControlsPlay'] ? Drupal.theme('viewsSlideshowControlsPlay') : '';
-  $('#views_slideshow_controls_pause_' + slideshowID).text(playText);
+  $('#views_slideshow_controls_text_pause_' + slideshowID).text(playText);
 }
 
 // Theme control pause.
