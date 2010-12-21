@@ -136,7 +136,13 @@ function hook_views_slideshow_js_method_register() {
 /**
  * Hook called by the pager widget to configure it, the fields that should be shown.
  */
-function hook_views_slideshow_pager_settings($view, $option_values, $dependency_prefix) {
+function hook_views_slideshow_widget_pager_settings($view) {
+}
+
+/**
+ * Hook called by the pager widget to add form items.
+ */
+function [widget-type]_views_slideshow_widget_pager_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {  
 }
 
 /**

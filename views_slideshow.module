@@ -136,43 +136,13 @@ function views_slideshow_views_slideshow_widget_info() {
 /**
  * Implements [widget]_views_slideshow_widget_form_options().
  */
-function views_slideshow_pager_views_slideshow_widget_form_options($form, $form_state, $view, $defaults, $dependency) {
+function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
   // Get all the pager info from other modules.
   // hook_views_slideshow_pager_settings($view, $option_values, $dependency_prefix)
-  $pagers = module_invoke_all('views_slideshow_pager_settings', $view, $defaults, $dependency . '-type');
+  $pagers = module_invoke_all('views_slideshow_widget_pager_settings', $view);
   
   if (!empty($pagers)) {
-    // Prep the pager options and the fields
-    foreach ($pagers as $pager_key => $pager_info) {
-      $pager_options[$pager_key] = $pager_info['title'];
-      if (isset($pager_info['fields'])) {
-        foreach ($pager_info['fields'] as $pager_field_key => $pager_field) {
-          $pager_field['#dependency'][$dependency . '-enable'] = array(1);
-          $pager_field['#dependency'][$dependency . '-type'] = array($pager_key);
-          $pager_field['#dependency_count'] = count($pager_field['#dependency']);
-          if (!isset($pager_field['#process']) || !in_array('views_process_dependency', $pager_field['#process'])) {
-            $pager_field['#process'][] = 'views_process_dependency';
-          }
-          
-          if ($pager_field['#type'] == 'checkboxes' || $pager_field['#type'] == 'checkbox') {
-            $old_prefix = '';
-            if (isset($pager_field['#prefix'])) {
-              $old_prefix = $pager_field['#prefix'];
-            }
-            $pager_field['#prefix'] = '<div id="' . $dependency . '-' . str_replace('_', '-', $pager_field_key) . '-wrapper">' . $old_prefix;
-            
-            $old_suffix = '';
-            if (isset($pager_field['#suffix'])) {
-              $old_suffix = $pager_field['#suffix'];
-            }
-            $pager_field['#suffix'] = $old_suffix . '</div>';
-          }
-          
-          $pager_fields[$pager_field_key] = $pager_field;
-        }
-      }
-    }
-    asort($pager_options);
+    asort($pagers);
     
     // Create the widget type field.
     $form['type'] = array(
@@ -180,14 +150,26 @@ function views_slideshow_pager_views_slideshow_widget_form_options($form, $form_
       '#title' => t('Pager Type'),
       '#description' => t('Style of the pager'),
       '#default_value' => $defaults['type'],
-      '#options' => $pager_options,
+      '#options' => $pagers,
       '#process' => array('views_process_dependency'),
       '#dependency' => array($dependency . '-enable' => array(1)),
     );
     
-    // Add user defined pager fields to the form.
-    $form = array_merge($form, $pager_fields);
+    // Add any additional form elements
+    // Build our arguments to pass to
+    // [pager-type]_views_slideshow_widget_pager_form_options
+    $arguments = array(
+      &$form,
+      &$form_state,
+      &$view,
+      $defaults,
+      $dependency,
+    );
     
+    foreach ($pagers as $pager_key => $pager_title) {
+      $function = $pager_key . '_views_slideshow_widget_pager_form_options';
+      call_user_func_array($function, $arguments);
+    }
   }
   else {
     $form['enable_pager'] = array(
@@ -199,39 +181,68 @@ function views_slideshow_pager_views_slideshow_widget_form_options($form, $form_
 /**
  * Implementation of hook_views_slideshow_pager_settings
  */
-function views_slideshow_views_slideshow_pager_settings($view, $defaults, $dependency_prefix) { 
+function views_slideshow_views_slideshow_widget_pager_settings($view) {
+  $settings = array();
   // Settings for fields pager.
   // First verfiy that the view is using fields.
   if ($view->row_plugin->uses_fields()) {
-    $options = array();
-    // Get each field and it's name. 
-    foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
-      $options[$field] = $handler->ui_name();
-    }
-    $return_value['views_slideshow_pager_fields'] = array(
-      'title' => t('Fields'),
-      'fields' => array(
-        'views_slideshow_pager_fields_fields' => array(
-          '#type' => 'checkboxes',
-          '#title' => t('Pager fields'),
-          '#options' => $options,
-          '#default_value' => $defaults['views_slideshow_pager_fields_fields'],
-          '#description' => t("Choose the fields that will appear in the pager."),
-          '#process' => array(
-            'expand_checkboxes',
-          ),
-        ),
-        'views_slideshow_pager_fields_hover' => array(
-          '#type' => 'checkbox',
-          '#title' => t('Activate Slide and Pause on Pager Hover'),
-          '#default_value' => $defaults['views_slideshow_pager_fields_hover'],
-          '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
-        ),
-      ),
+    $settings = array(
+      'views_slideshow_pager_fields' => t('Fields'),
     );
   }
   
-  return $return_value;
+  return $settings;
+}
+
+/**
+ * Implementation [widget-type]_views_slideshow_pager_form_options
+ */
+function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
+  // Settings for fields pager.
+  $options = array();
+  // Get each field and it's name. 
+  foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
+    $options[$field] = $handler->ui_name();
+  }
+  
+  // Add ability to choose which fields to show in the pager.
+  $form['views_slideshow_pager_fields_fields'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Pager fields'),
+    '#options' => $options,
+    '#default_value' => $defaults['views_slideshow_pager_fields_fields'],
+    '#description' => t("Choose the fields that will appear in the pager."),
+    '#prefix' => '<div id="' . $dependency . '-views-slideshow-pager-fields-fields-wrapper">',
+    '#suffix' => '</div>',
+    '#process' => array(
+      'expand_checkboxes',
+      'views_process_dependency',
+    ),
+    '#dependency_count' => 2,
+    '#dependency' => array(
+      $dependency . '-enable' => array(1),
+      $dependency . '-type' => array('views_slideshow_pager_fields'),
+    )
+  );
+  
+  // Add field to see if they would like to activate slide and pause on pager
+  // hover
+  $form['views_slideshow_pager_fields_hover'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Activate Slide and Pause on Pager Hover'),
+    '#default_value' => $defaults['views_slideshow_pager_fields_hover'],
+    '#description' => t('Should the slide be activated and paused when hovering over a pager item.'),
+    '#prefix' => '<div id="' . $dependency . '-views-slideshow-pager-fields-hover-wrapper">',
+    '#suffix' => '</div>',
+    '#process' => array(
+      'views_process_dependency',
+    ),
+    '#dependency_count' => 2,
+    '#dependency' => array(
+      $dependency . '-enable' => array(1),
+      $dependency . '-type' => array('views_slideshow_pager_fields'),
+    ),
+  );
 }
 
 /**

@@ -71,6 +71,12 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
         '#default_value' => $this->options['slideshow_type'],
       );
       
+      $arguments = array(
+        &$form,
+        &$form_state,
+        &$this,
+      );
+      
       foreach (module_implements('views_slideshow_slideshow_type_form') as $module) {
         // We wrap our fieldsets in a div so we can use dependent.js to
         // show/hide our fieldsets.
@@ -90,7 +96,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
         );
 
         $function = $module .'_views_slideshow_slideshow_type_form';
-        call_user_func_array($function, array(&$form, &$form_state, &$this));
+        call_user_func_array($function, $arguments);
 
         $form[$module . '-suffix']  = array(
           '#value' => '</div></div>',
@@ -159,7 +165,14 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
           
           // Add all the widget settings.
           if (function_exists($widget_id . '_views_slideshow_widget_form_options')) {
-            call_user_func_array($widget_id . '_views_slideshow_widget_form_options', array(&$form['widgets'][$location_id][$widget_id], $form_state, $this, $this->options['widgets'][$location_id][$widget_id], $widget_dependency));
+            $arguments = array(
+              &$form['widgets'][$location_id][$widget_id],
+              &$form_state,
+              &$this,
+              $this->options['widgets'][$location_id][$widget_id],
+              $widget_dependency,
+            );
+            call_user_func_array($widget_id . '_views_slideshow_widget_form_options', $arguments);
           }
         }
       }
@@ -170,10 +183,16 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
   function options_validate(&$form, &$form_state) {
     module_load_all_includes('views_slideshow.inc');
     
+    $arguments = array(
+      &$form,
+      &$form_state,
+      &$this,
+    );
+    
     // Call all modules that use hook_views_slideshow_options_form_validate
     foreach (module_implements('views_slideshow_options_form_validate') as $module) {
       $function = $module . '_views_slideshow_options_form_validate';
-      call_user_func_array($function, array(&$form, &$form_state, &$this));
+      call_user_func_array($function, $arguments);
     }
   }
   
@@ -181,10 +200,15 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
   function options_submit($form, &$form_state) {
     module_load_all_includes('views_slideshow.inc');
     
+    $arguments = array(
+      $form,
+      &$form_state,
+    );
+    
     // Call all modules that use hook_views_slideshow_options_form_submit
     foreach (module_implements('views_slideshow_options_form_submit') as $module) {
       $function = $module . '_views_slideshow_options_form_submit';
-      call_user_func_array($function, array($form, &$form_state));
+      call_user_func_array($function, $arguments);
     }
     
     // In addition to the skin, we also pre-save the definition that
