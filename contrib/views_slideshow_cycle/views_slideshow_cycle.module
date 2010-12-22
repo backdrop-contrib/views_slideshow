@@ -19,14 +19,15 @@ function views_slideshow_cycle_init() {
       $js = jq_add('cycle');
     }
   }
+  
+  $module_path = drupal_get_path('module', 'views_slideshow_cycle');
 
   // Otherwise, we'll add the version included with this module.
-  if (!$js) {
-    drupal_add_js(drupal_get_path('module', 'views_slideshow') . '/js/jquery.cycle.all.min.js');
+  if (!$js && file_exists($module_path . '/js/jquery.cycle.all.min.js')) {
+    drupal_add_js($module_path . '/js/jquery.cycle.all.min.js');
   }
 
-  $module_path = drupal_get_path('module', 'views_slideshow_cycle');
-  drupal_add_js($module_path . '/views_slideshow_cycle.js', 'module');
+  drupal_add_js($module_path . '/js/views_slideshow_cycle.js', 'module');
   drupal_add_css($module_path . '/views_slideshow_cycle.css', 'module');
 }
 

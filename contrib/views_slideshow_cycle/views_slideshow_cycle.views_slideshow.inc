@@ -154,6 +154,12 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
 
 function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$form_state, &$view) {
   
+  if (!file_exists(drupal_get_path('module', 'views_slideshow_cycle') . '/js/jquery.cycle.all.min.js')) {
+    $form['views_slideshow_cycle']['no_cycle_js'] = array(
+      '#value' => '<div style="color: red">' . t('You need to download jQuery cycle plugin and copy jquery.cycle.all.min.js to views_slideshow/contrib/views_slideshow_cycle/js You can find the module at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
+    );
+  }
+  
   // Transition
   $form['views_slideshow_cycle']['transition'] = array(
     '#value' => '<h2>' . t('Transition') . '</h2>',
