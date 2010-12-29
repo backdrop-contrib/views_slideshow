@@ -42,7 +42,7 @@ function views_slideshow_cycle_theme($existing, $type, $theme, $path) {
       'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
     'views_slideshow_cycle_main_frame' => array(
-      'arguments' => array('vss_id' => NULL, 'view' => NULL, 'settings' => NULL, 'rows' => NULL, 'mode' => NULL),
+      'arguments' => array('vss_id' => NULL, 'view' => NULL, 'settings' => NULL, 'rows' => NULL),
       'template' => 'theme/views-slideshow-cycle-main-frame',
       'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),    

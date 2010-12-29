@@ -80,7 +80,7 @@ function template_preprocess_views_slideshow(&$vars) {
   /**
    * Process Slideshow
    */
-  $slides = theme($main_frame_module . '_main_frame', $vss_id, $view, $settings, $rows, $main_frame_module);
+  $slides = theme($main_frame_module . '_main_frame', $vss_id, $view, $settings, $rows);
   $vars['slideshow'] = theme('views_slideshow_main_section', $vss_id, $slides, $main_frame_module);
 }
 
