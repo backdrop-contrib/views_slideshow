@@ -127,7 +127,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   foreach ($rows as $count => $item) {
     $items[] = $item;
     if (count($items) == $items_per_slide || $count == (count($rows)-1)) {
-      $rendered_rows .= theme('views_slideshow_cycle_main_frame_row', $items, $vss_id, $slideshow_count);
+      $rendered_rows .= theme('views_slideshow_cycle_main_frame_row', $vss_id, $items, $slideshow_count);
       $items = array();
       $slideshow_count++;
     }

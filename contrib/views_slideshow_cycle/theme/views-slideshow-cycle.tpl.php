@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class="skin-<?php print $options['views_slideshow_cycle']['skin']; ?>">
+<div class="skin-<?php print $settings['views_slideshow_cycle']['skin']; ?>">
   <?php if (isset($top_widget_rendered)): ?>
     <div class="views-slideshow-controls-top clear-block">
       <?php print $top_widget_rendered; ?>
