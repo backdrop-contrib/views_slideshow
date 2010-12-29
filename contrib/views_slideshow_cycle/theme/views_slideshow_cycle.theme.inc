@@ -40,15 +40,6 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
     
     $new_settings[$key] = $value;
   }
-  
-  // Remove any unused advanced settings.
-  foreach ($settings as $key => $value) {
-    if (substr($key, 0, 13) == 'advanced_use_' && !$value) {
-      $setting_name = str_replace('advanced_use_', '', $key);
-      unset($new_settings[$key]);
-      unset($new_settings['advanced_' . $setting_name]);
-    }
-  }
 
   $settings = array_merge(
     array(

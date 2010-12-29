@@ -44,109 +44,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'cleartypenobg' => array('default' => 'false'),
 
       // Advanced
-      'cycle_options' => array('default' => 0),
-      'advanced_use_fx' => array('default' => 0),
-      'advanced_fx' => array('default' => 'fade'),
-      'advanced_use_timeout' => array('default' => 0),
-      'advanced_timeout' => array('default' =>  4000),
-      'advanced_use_timeoutFn' => array('default' => 0),
-      'advanced_timeoutFn' => array('default' =>  NULL),
-      'advanced_use_continuous' => array('default' => 0),
-      'advanced_continuous' => array('default' =>  0),
-      'advanced_use_speed' => array('default' => 0),
-      'advanced_speed' => array('default' =>  1000),
-      'advanced_use_speedIn' => array('default' => 0),
-      'advanced_speedIn' => array('default' =>  NULL),
-      'advanced_use_speedOut' => array('default' => 0),
-      'advanced_speedOut' => array('default' =>  NULL),
-      'advanced_use_next' => array('default' => 0),
-      'advanced_next' => array('default' =>  NULL),
-      'advanced_use_prev' => array('default' => 0),
-      'advanced_prev' => array('default' =>  NULL),
-      'advanced_use_prevNextClick' => array('default' => 0),
-      'advanced_prevNextClick' => array('default' =>  NULL),
-      'advanced_use_prevNextEvent' => array('default' => 0),
-      'advanced_prevNextEvent' => array('default' =>  'click.cycle'),
-      'advanced_use_pager' => array('default' => 0),
-      'advanced_pager' => array('default' =>  NULL),
-      'advanced_use_pagerClick' => array('default' => 0),
-      'advanced_pagerClick' => array('default' =>  NULL),
-      'advanced_use_pagerEvent' => array('default' => 0),
-      'advanced_pagerEvent' => array('default' =>  'click.cycle'),
-      'advanced_use_allowPagerClickBubble' => array('default' => 0),
-      'advanced_allowPagerClickBubble' => array('default' => 0),
-      'advanced_use_pagerAnchorBuilder' => array('default' => 0),
-      'advanced_pagerAnchorBuilder' => array('default' =>  NULL),
-      'advanced_use_before' => array('default' => 0),
-      'advanced_before' => array('default' =>  NULL),
-      'advanced_use_after' => array('default' => 0),
-      'advanced_after' => array('default' =>  NULL),
-      'advanced_use_end' => array('default' => 0),
-      'advanced_end' => array('default' =>  NULL),
-      'advanced_use_easing' => array('default' => 0),
-      'advanced_easing' => array('default' =>  NULL),
-      'advanced_use_easeIn' => array('default' => 0),
-      'advanced_easeIn' => array('default' =>  NULL),
-      'advanced_use_easeOut' => array('default' => 0),
-      'advanced_easeOut' => array('default' =>  NULL),
-      'advanced_use_shuffle' => array('default' => 0),
-      'advanced_shuffle' => array('default' =>  NULL),
-      'advanced_use_animIn' => array('default' => 0),
-      'advanced_animIn' => array('default' =>  NULL),
-      'advanced_use_animOut' => array('default' => 0),
-      'advanced_animOut' => array('default' =>  NULL),
-      'advanced_use_cssBefore' => array('default' => 0),
-      'advanced_cssBefore' => array('default' =>  NULL),
-      'advanced_use_cssAfter' => array('default' => 0),
-      'advanced_cssAfter' => array('default' =>  NULL),
-      'advanced_use_fxFn' => array('default' => 0),
-      'advanced_fxFn' => array('default' =>  NULL),
-      'advanced_use_height' => array('default' => 0),
-      'advanced_height' => array('default' =>  'auto'),
-      'advanced_use_startingSlide' => array('default' => 0),
-      'advanced_startingSlide' => array('default' =>  0),
-      'advanced_use_sync' => array('default' => 0),
-      'advanced_sync' => array('default' =>  1),
-      'advanced_use_random' => array('default' => 0),
-      'advanced_random' => array('default' =>  0),
-      'advanced_use_fit' => array('default' => 0),
-      'advanced_fit' => array('default' =>  0),
-      'advanced_use_containerResize' => array('default' => 0),
-      'advanced_containerResize' => array('default' =>  1),
-      'advanced_use_pause' => array('default' => 0),
-      'advanced_pause' => array('default' =>  0),
-      'advanced_use_pauseOnPagerHover' => array('default' => 0),
-      'advanced_pauseOnPagerHover' => array('default' =>  0),
-      'advanced_use_autostop' => array('default' => 0),
-      'advanced_autostop' => array('default' =>  0),
-      'advanced_use_autostopCount' => array('default' => 0),
-      'advanced_autostopCount' => array('default' =>  0),
-      'advanced_use_delay' => array('default' => 0),
-      'advanced_delay' => array('default' =>  0),
-      'advanced_use_slideExpr' => array('default' => 0),
-      'advanced_slideExpr' => array('default' =>  NULL),
-      'advanced_use_cleartype' => array('default' => 0),
-      'advanced_cleartype' => array('default' => 1),
-      'advanced_use_cleartypeNoBg' => array('default' => 0),
-      'advanced_cleartypeNoBg' => array('default' => 0),
-      'advanced_use_nowrap' => array('default' => 0),
-      'advanced_nowrap' => array('default' =>  0),
-      'advanced_use_fastOnEvent' => array('default' => 0),
-      'advanced_fastOnEvent' => array('default' =>  0),
-      'advanced_use_randomizeEffects' => array('default' => 0),
-      'advanced_randomizeEffects' => array('default' =>  1),
-      'advanced_use_rev' => array('default' => 0),
-      'advanced_rev' => array('default' =>  0),
-      'advanced_use_manualTrump' => array('default' => 0),
-      'advanced_manualTrump' => array('default' =>  1),
-      'advanced_use_requeueOnImageNotLoaded' => array('default' => 0),
-      'advanced_requeueOnImageNotLoaded' => array('default' => 1),
-      'advanced_use_requeueTimeout' => array('default' => 0),
-      'advanced_requeueTimeout' => array('default' =>  250),
-      'advanced_use_activePagerClass' => array('default' => 0),
-      'advanced_activePagerClass' => array('default' =>  'activeSlide'),
-      'advanced_use_updateActivePagerLink' => array('default' => 0),
-      'advanced_updateActivePagerLink' => array('default' =>  NULL),
+      'advanced_options' => array('default' => '{}'),
     ),
   );
   return $options;
@@ -393,93 +291,179 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
   
   
   // Advanced Options
-  $form['views_slideshow_cycle']['advanced_options'] = array(
+  $form['views_slideshow_cycle']['advanced_options_header'] = array(
     '#value' => '<h2>' . t('jQuery Cycle Custom Options') . '</h2>',
   );
-  $form['views_slideshow_cycle']['cycle_options'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('View All jQuery Cycle Options'),
-    '#default_value' => $view->options['views_slideshow_cycle']['cycle_options'], 
-  );
   
-  // All the jquery cycle options according to
-  // http://malsup.com/jquery/cycle/options.html
-  $cycle_options = array(
-    'activePagerClass' => t('class name used for the active pager link'),
-    'after' => t('transition callback (scope set to element that was shown):     function(currSlideElement, nextSlideElement, options, forwardFlag)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'allowPagerClickBubble' => t('allows or prevents click event on pager anchors from bubbling'),
-    'animIn' => t('properties that define how the slide animates in'),
-    'animOut' => t('properties that define how the slide animates out'),
-    'autostop' => t('true to end slideshow after X transitions (where X == slide count)'),
-    'autostopCount' => t('number of transitions (optionally used with autostop to define X)'),
-    'before' => t('transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'cleartype' => t('true if clearType corrections should be applied (for IE)'),
-    'cleartypeNoBg' => t('set to true to disable extra cleartype fixing (leave false to force background color setting on slides)'),
-    'containerResize' => t('resize container to fit largest slide'),
-    'continuous' => t('true to start next transition immediately after current one completes'),
-    'cssAfter' => t('properties that defined the state of the slide after transitioning out'),
-    'cssBefore' => t('properties that define the initial state of the slide before transitioning in'),
-    'delay' => t('additional delay (in ms) for first transition (hint: can be negative)'),
-    'easing' => t('easing method for both in and out transitions'),
-    'easingIn' => t('easing for "in" transition'),
-    'easingOut' => t('easing for "out" transition'),
-    'end' => t('callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'fastOnEvent' => t('force fast transitions when triggered manually (via pager or prev/next); value == time in ms'),
-    'fit' => t('force slides to fit container'),
-    'fx' => t('name of transition effect (or comma separated names, ex: fade,scrollUp,shuffle)'),
-    'fxFn' => t('function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'height' => t('container height'),
-    'manualTrump' => t('causes manual transition to stop an active transition instead of being ignored'),
-    'next' => t('selector for element to use as click trigger for next slide'),
-    'nowrap' => t('true to prevent slideshow from wrapping'),
-    'pager' => t('selector for element to use as pager container'),
-    'pagerAnchorBuilder' => t('callback fn for building anchor links:  function(index, DOMelement)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'pagerClick' => t('callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'pagerEvent' => t('name of event which drives the pager navigation'),
-    'pause' => t('true to enable "pause on hover"'),
-    'pauseOnPagerHover' => t('true to pause when hovering over pager link'),
-    'prev' => t('selector for element to use as click trigger for previous slide'),
-    'prevNextClick' => t('callback fn for prev/next clicks:    function(isNext, zeroBasedSlideIndex, slideElement)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'prevNextEvent' => t('event which drives the manual transition to the previous or next slide'),
-    'random' => t('true for random, false for sequence (not applicable to shuffle fx)'),
-    'randomizeEffects' => t('valid when multiple effects are used; true to make the effect sequence random'),
-    'requeueOnImageNotLoaded' => t('requeue the slideshow if any image slides are not yet loaded'),
-    'requeueTimeout' => t('ms delay for requeue'),
-    'rev' => t('causes animations to transition in reverse'),
-    'shuffle' => t('coords for shuffle animation, ex: { top:15, left: 200 }'),
-    'slideExpr' => t('expression for selecting slides (if something other than all children is required)'),
-    'speed' => t('speed of the transition (any valid fx speed value)'),
-    'speedIn' => t('speed of the "in" transition'),
-    'speedOut' => t('speed of the "out" transition'),
-    'startingSlide' => t('zero-based index of the first slide to be displayed'),
-    'sync' => t('true if in/out transitions should occur simultaneously'),
-    'timeout' => t('milliseconds between slide transitions (0 to disable auto advance)'),
-    'timeoutFn' => t('callback for determining per-slide timeout value:  function(currSlideElement, nextSlideElement, options, forwardFlag)  Do not enter the function in this box.  Only enter what you would have entered within the function.'),
-    'updateActivePagerLink' => t('callback fn invoked to update the active pager link (adds/removes activePagerClass style)'),
-  );
-  
-  foreach ($cycle_options as $name => $description) {
-    $lower_name = strtolower($name);
-    // fx
-    $form['views_slideshow_cycle']['advanced_use_' . $lower_name] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Override !name setting', array('!name' => $name)),
-      '#default_value' => $view->options['views_slideshow_cycle']['advanced_use_' . $lower_name],
-      '#process' => array('views_process_dependency'),
-      '#dependency' => array('edit-style-options-views-slideshow-cycle-cycle-options' => array(1)),
+  if (!file_exists(drupal_get_path('module', 'views_slideshow_cycle') . '/js/json2.js')) {
+    $form['views_slideshow_cycle']['no_json_js'] = array(
+      '#value' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to views_slideshow/contrib/views_slideshow_cycle/js', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
+    );
+  }
+  else {
+    $form['views_slideshow_cycle']['advanced_options_info'] = array(
+      '#value' => '<p>' . t('You can find a list of all the available options at !url.  If one of the options you add uses a function, example fxFn, then you need to only enter what goes inside the function call. The variables that are in the documentation on the jquery cycle site will be available to you.', array('!url' => l('http://malsup.com/jquery/cycle/options.html', 'http://malsup.com/jquery/cycle/options.html'))) . '</p>',
     );
     
-    $form['views_slideshow_cycle']['advanced_' . $lower_name] = array(
+    // All the jquery cycle options according to
+    // http://malsup.com/jquery/cycle/options.html
+    $cycle_options = array(
+      0 => 'Select One',
+      'activePagerClass' => 'activePagerClass',
+      'after' => 'after',
+      'allowPagerClickBubble' => 'allowPagerClickBubble',
+      'animIn' => 'animIn',
+      'animOut' => 'animOut',
+      'autostop' => 'autostop',
+      'autostopCount' => 'autostopCount',
+      'before' => 'before',
+      'backwards' => 'backwards',
+      'bounce' => 'bounce',
+      'cleartype' => 'cleartype',
+      'cleartypeNoBg' => 'cleartypeNoBg',
+      'containerResize' => 'containerResize',
+      'continuous' => 'continuous',
+      'cssAfter' => 'cssAfter',
+      'cssBefore' => 'cssBefore',
+      'delay' => 'delay',
+      'easeIn' => 'easeIn',
+      'easeOut' => 'easeOut',
+      'easing' => 'easing',
+      'end' => 'end',
+      'fastOnEvent' => 'fastOnEvent',
+      'fit' => 'fit',
+      'fx' => 'fx',
+      'fxFn' => 'fxFn',
+      'height' => 'height',
+      'manualTrump' => 'manualTrump',
+      'next' => 'next',
+      'nowrap' => 'nowrap',
+      'onPagerEvent' => 'onPagerEvent',
+      'onPrevNextEvent' => 'onPrevNextEvent',
+      'pager' => 'pager',
+      'pagerAnchorBuilder' => 'pagerAnchorBuilder',
+      'pagerEvent' => 'pagerEvent',
+      'pause' => 'pause',
+      'pauseOnPagerHover' => 'pauseOnPagerHover',
+      'prev' => 'prev',
+      'prevNextEvent' => 'prevNextEvent',
+      'random' => 'random',
+      'randomizeEffects' => 'randomizeEffects',
+      'requeueOnImageNotLoaded' => 'requeueOnImageNotLoaded',
+      'requeueTimeout' => 'requeueTimeout',
+      'rev' => 'rev',
+      'shuffle' => 'shuffle',
+      'slideExpr' => 'slideExpr',
+      'slideResize' => 'slideResize',
+      'speed' => 'speed',
+      'speedIn' => 'speedIn',
+      'speedOut' => 'speedOut',
+      'startingSlide' => 'startingSlide',
+      'sync' => 'sync',
+      'timeout' => 'timeout',
+      'timeoutFn' => 'timeoutFn',
+      'updateActivePagerLink' => 'updateActivePagerLink',
+    );
+    
+    $form['views_slideshow_cycle']['advanced_options_choices'] = array(
+      '#type' => 'select',
+      '#title' => t('Advanced Options'),
+      '#options' => $cycle_options,
+    );
+    
+    $form['views_slideshow_cycle']['advanced_options_entry'] = array(
       '#type' => 'textarea',
-      '#title' => t('!lower_name', array('!lower_name' => $lower_name)),
-      '#default_value' => $view->options['views_slideshow_cycle']['advanced_' . $lower_name],
-      '#description' => $description,  // Don't need to wrap in t() since it's done above.
-      '#process' => array('views_process_dependency'),
-      '#dependency_count' => 2,
-      '#dependency' => array(
-        'edit-style-options-views-slideshow-cycle-cycle-options' => array(1),
-        'edit-style-options-views-slideshow-cycle-advanced-use-' . $lower_name => array(1),
-      ),
+      '#title' => t('Advanced Option Value'),
+      '#description' => t('It is important that you click the Update link when you make any changes to the options or those changes will not be saved when you save the form.'),
+    );
+    
+    $form['views_slideshow_cycle']['advanced_options'] = array(
+      '#type' => 'textarea',
+      '#default_value' => $view->options['views_slideshow_cycle']['advanced_options'],
+    );
+    
+    $form['views_slideshow_cycle']['advanced_options_table'] = array(
+      '#value' => '<table style="width: 400px; margin-left: 10px;" id="edit-style-options-views-slideshow-cycle-advanced-options-table"></table>'
+    );
+    
+    $form['views_slideshow_cycle']['advanced_options_js'] = array(
+      '#value' => "
+      <script type='text/javascript'>
+        Drupal.behaviors.viewsSlideshowCycleOptions = function (context) {
+          $('#edit-style-options-views-slideshow-cycle-advanced-options-wrapper').hide();
+          
+          $('#edit-style-options-views-slideshow-cycle-advanced-options-entry-wrapper').after(
+            '<div style=\"margin-left: 10px; padding: 10px 0;\">' + 
+              '<a id=\"edit-style-options-views-slideshow-cycle-advanced-options-update-link\" href=\"#\">' + Drupal.t('Update Advanced Option') + '</a>' +
+            '</div>'
+          );
+          
+          $('#edit-style-options-views-slideshow-cycle-advanced-options-table').append('<tr><th colspan=\"2\">' + Drupal.t('Applied Options') + '</th><tr>')
+          
+          var initialValue = $('#edit-style-options-views-slideshow-cycle-advanced-options').val();
+          var advancedOptions = JSON.parse(initialValue);
+          for (var option in advancedOptions) {
+            viewsSlideshowCycleAdvancedOptionsAddRow(option);
+          }
+          
+          // Add the remove event to the adanced items.
+          viewsSlideshowCycleAdvancedOptionsRemoveEvent();
+          
+          $('#edit-style-options-views-slideshow-cycle-advanced-options-choices').change(function() {
+            var selectedValue = $('select#edit-style-options-views-slideshow-cycle-advanced-options-choices option:selected').val();
+            if (typeof advancedOptions[selectedValue] !== 'undefined') {
+              $('#edit-style-options-views-slideshow-cycle-advanced-options-entry').val(advancedOptions[selectedValue]);
+            }
+            else {
+              $('#edit-style-options-views-slideshow-cycle-advanced-options-entry').val('');
+            }
+          });
+    
+          $('#edit-style-options-views-slideshow-cycle-advanced-options-update-link').click(function() {
+            var option = $('#edit-style-options-views-slideshow-cycle-advanced-options-choices').val();
+            if (option !== 0) {
+              var value = $('#edit-style-options-views-slideshow-cycle-advanced-options-entry').val();
+            
+              if (typeof advancedOptions[option] == 'undefined') {
+                viewsSlideshowCycleAdvancedOptionsAddRow(option);
+                viewsSlideshowCycleAdvancedOptionsRemoveEvent()
+              }
+              advancedOptions[option] = value;
+              viewsSlideshowCycleAdvancedOptionsSave();
+            }
+            
+            return false;
+          });
+          
+          function viewsSlideshowCycleAdvancedOptionsAddRow(option) {
+            $('#edit-style-options-views-slideshow-cycle-advanced-options-table').append(
+              '<tr id=\"views-slideshow-cycle-advanced-options-table-row-' + option + '\">' +
+                '<td>' + option + '</td>' +
+                '<td style=\"width: 20px;\">' +
+                  '<a style=\"margin-top: 6px\" title=\"Remove ' + option + '\" alt=\"Remove ' + option + '\" class=\"views-hidden views-button-remove views-slideshow-cycle-advanced-options-table-remove\" id=\"views-slideshow-cycle-advanced-options-table-remove-' + option + '\" href=\"#\"><span>Remove</span></a>' +
+                '</td>' +
+              '</tr>'
+            );
+          }
+          
+          function viewsSlideshowCycleAdvancedOptionsRemoveEvent() {
+            $('.views-slideshow-cycle-advanced-options-table-remove').unbind().click(function() {
+              var itemID = $(this).attr('id');
+              var uniqueID = itemID.replace('views-slideshow-cycle-advanced-options-table-remove-', '');
+              delete advancedOptions[uniqueID];
+              $('#views-slideshow-cycle-advanced-options-table-row-' + uniqueID).remove();
+              viewsSlideshowCycleAdvancedOptionsSave();
+              return false;
+            });
+          }
+          
+          function viewsSlideshowCycleAdvancedOptionsSave() {
+            var advancedOptionsString = JSON.stringify(advancedOptions);
+            $('#edit-style-options-views-slideshow-cycle-advanced-options').val(advancedOptionsString);
+          }
+        }
+      </script>
+      "
     );
   }
 }

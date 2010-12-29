@@ -93,189 +93,146 @@ Drupal.behaviors.viewsSlideshowCycle = function (context) {
         viewsSlideshowPause(settings.slideshowId, '');
       });
     }
-    
-    // Advanced Settings
-    if (typeof(settings.advanced_fx) !== 'undefined') { settings.opts.fx = settings.advanced_fx; }
-    
-    if (typeof(settings.advanced_timeout) !== 'undefined') { settings.opts.timeout = settings.advanced_timeout; }
-    
-    if (typeof(settings.advanced_timeoutfn) !== 'undefined') {
-      settings.opts.timeoutFn = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-        eval(settings.advanced_timeoutfn);
-      }
-    }
-    
-    // true to start next transition immediately after current one completes 
-    if (typeof(settings.advanced_continuous) !== 'undefined') { settings.opts.continuous = settings.advanced_continuous; }
-    
-    // speed of the transition (any valid fx speed value)
-    if (typeof(settings.advanced_speed) !== 'undefined') { settings.opts.speed = settings.advanced_speed; }
-    
-    // speed of the 'in' transition
-    if (typeof(settings.advanced_speedin) !== 'undefined') { settings.opts.speedIn = settings.advanced_speedin; }
-    
-    // speed of the 'out' transition
-    if (typeof(settings.advanced_speedout) !== 'undefined') { settings.opts.speedOut = settings.advanced_speedout; }
-    
-    // selector for element to use as click trigger for next slide
-    if (typeof(settings.advanced_next) !== 'undefined') { settings.opts.next = settings.advanced_next; }
-    
-    // selector for element to use as click trigger for previous slide
-    if (typeof(settings.advanced_prev) !== 'undefined') { settings.opts.prev = settings.advanced_prev; }
-    
-    // callback fn for prev/next clicks:   function(isNext, zeroBasedSlideIndex, slideElement) 
-    if (typeof(settings.advanced_prevnextclick) !== 'undefined') {
-      settings.opts.prevNextClick = function(isNext, zeroBasedSlideIndex, slideElement) {
-        eval(settings.advanced_prevnextclick);
-      }
-    }
-    
-    // event which drives the manual transition to the previous or next slide
-    if (typeof(settings.advanced_prevnextevent) !== 'undefined') { settings.opts.prevNextEvent = settings.advanced_prevnextevent; }
-    
-    // selector for element to use as pager container
-    if (typeof(settings.advanced_pager) !== 'undefined') { settings.opts.pager = settings.advanced_pager; }
-    
-    // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
-    if (typeof(settings.advanced_pagerclick) !== 'undefined') {
-      settings.opts.pagerClick = function(zeroBasedSlideIndex, slideElement) {
-        eval(settings.advanced_pagerclick);
-      }
-    }
-    
-    // name of event which drives the pager navigation
-    if (typeof(settings.advanced_pagerevent) !== 'undefined') { settings.opts.pagerEvent = settings.advanced_pagerevent; }
-    
-    // allows or prevents click event on pager anchors from bubbling
-    if (typeof(settings.advanced_allowpagerclickbubble) !== 'undefined') { settings.opts.allowPagerClickBubble = settings.advanced_allowpagerclickbubble; }
-    
-     // callback fn for building anchor links:  function(index, DOMelement)
-    if (typeof(settings.advanced_pageranchorbuilder) !== 'undefined') {
-      settings.opts.pagerAnchorBuilder = function(index, DOMelement) {
-        eval(settings.advanced_pageranchorbuilder);
-      }
-    }
-    
-    // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag) 
-    if (typeof(settings.advanced_before) !== 'undefined') {
-      settings.opts.before = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-        eval(settings.advanced_before);
-      }
-    }
-    
-    // transition callback (scope set to element that was shown):  function(currSlideElement, nextSlideElement, options, forwardFlag)
-    if (typeof(settings.advanced_after) !== 'undefined') {
-      settings.opts.after = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-        eval(settings.advanced_after);
-      }
-    }
-    
-    // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
-    if (typeof(settings.advanced_end) !== 'undefined') {
-      settings.opts.end = function(options) {
-        eval(settings.advanced_end);
-      }
-    }
-    
-    // easing method for both in and out transitions
-    if (typeof(settings.advanced_easing) !== 'undefined') { settings.opts.easing = settings.advanced_easing; }
-    
-    // easing for "in" transition
-    if (typeof(settings.advanced_easein) !== 'undefined') { settings.opts.easeIn = settings.advanced_easein; }
-    
-    // easing for "out" transition
-    if (typeof(settings.advanced_easeout) !== 'undefined') { settings.opts.easeOut = settings.advanced_easeout; }
-    
-    // coords for shuffle animation, ex: { top:15, left: 200 }
-    if (typeof(settings.advanced_shuffle) !== 'undefined') { settings.opts.shuffle = settings.advanced_shuffle; }
-    
-    // properties that define how the slide animates in
-    if (typeof(settings.advanced_animin) !== 'undefined') { settings.opts.animIn = settings.advanced_animin; }
-    
-    // properties that define how the slide animates out
-    if (typeof(settings.advanced_animout) !== 'undefined') { settings.opts.animOut = settings.advanced_animout; }
-    
-    // properties that define the initial state of the slide before transitioning in
-    if (typeof(settings.advanced_cssbefore) !== 'undefined') { settings.opts.cssBefore = settings.advanced_cssbefore; }
-    
-    // properties that defined the state of the slide after transitioning out
-    if (typeof(settings.advanced_cssafter) !== 'undefined') { settings.opts.cssAfter = settings.advanced_cssafter; }
-    
-    // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
-    if (typeof(settings.advanced_fxfn) !== 'undefined') {
-      settings.opts.fxFn = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
-        eval(settings.advanced_fxfn);
-      }
-    }
-    
-    // container height
-    if (typeof(settings.advanced_height) !== 'undefined') { settings.opts.height = settings.advanced_height; }
-    
-    // zero-based index of the first slide to be displayed
-    if (typeof(settings.advanced_startingslide) !== 'undefined') { settings.opts.startingSlide = settings.advanced_startingslide; }
-    
-    // true if in/out transitions should occur simultaneously
-    if (typeof(settings.advanced_sync) !== 'undefined') { settings.opts.sync = settings.advanced_sync; }
-    
-    // true for random, false for sequence (not applicable to shuffle fx)
-    if (typeof(settings.advanced_random) !== 'undefined') { settings.opts.random = settings.advanced_random; }
-    
-    // force slides to fit container
-    if (typeof(settings.advanced_fit) !== 'undefined') { settings.opts.fit = settings.advanced_fit; }
-    
-    // resize container to fit largest slide
-    if (typeof(settings.advanced_containerresize) !== 'undefined') { settings.opts.containerResize = settings.advanced_containerresize; }
-    
-    // true to enable "pause on hover"
-    if (typeof(settings.advanced_pause) !== 'undefined') { settings.opts.pause = settings.advanced_pause; }
-    
-    // true to pause when hovering over pager link
-    if (typeof(settings.advanced_pauseonpagerhover) !== 'undefined') { settings.opts.pauseOnPagerHover = settings.advanced_pauseonpagerhover; }
-    
-    // true to end slideshow after X transitions (where X == slide count)
-    if (typeof(settings.advanced_autostop) !== 'undefined') { settings.opts.autostop = settings.advanced_autostop; }
-    
-    // number of transitions (optionally used with autostop to define X)
-    if (typeof(settings.advanced_autostopcount) !== 'undefined') { settings.opts.autostopCount = settings.advanced_autostopcount; }
-    
-    // additional delay (in ms) for first transition (hint: can be negative)
-    if (typeof(settings.advanced_delay) !== 'undefined') { settings.opts.delay = settings.advanced_delay; }
-    
-    // expression for selecting slides (if something other than all children is required)
-    if (typeof(settings.advanced_slideexpr) !== 'undefined') { settings.opts.slideExpr = settings.advanced_slideexpr; }
-    
-    // true if clearType corrections should be applied (for IE)
-    if (typeof(settings.advanced_cleartype) !== 'undefined') { settings.opts.cleartype = settings.advanced_cleartype; }
-    
-    // set to true to disable extra cleartype fixing (leave false to force background color setting on slides)
-    if (typeof(settings.advanced_cleartypenobg) !== 'undefined') { settings.opts.cleartypeNoBg = settings.advanced_cleartypenobg; }
-    
-    // true to prevent slideshow from wrapping
-    if (typeof(settings.advanced_nowrap) !== 'undefined') { settings.opts.nowrap = settings.advanced_nowrap; }
-    
-    // force fast transitions when triggered manually (via pager or prev/next); value == time in ms
-    if (typeof(settings.advanced_fastonevent) !== 'undefined') { settings.opts.fastOnEvent = settings.advanced_fastonevent; }
-    
-    // valid when multiple effects are used; true to make the effect sequence random
-    if (typeof(settings.advanced_randomizeeffects) !== 'undefined') { settings.opts.randomizeEffects = settings.advanced_randomizeeffects; }
-    
-    // causes animations to transition in reverse
-    if (typeof(settings.advanced_rev) !== 'undefined') { settings.opts.rev = settings.advanced_rev; }
-    
-    // causes manual transition to stop an active transition instead of being ignored
-    if (typeof(settings.advanced_manualtrump) !== 'undefined') { settings.opts.manualTrump = settings.advanced_manualtrump; }
-    
-    // requeue the slideshow if any image slides are not yet loaded
-    if (typeof(settings.advanced_requeueonimagenotloaded) !== 'undefined') { settings.opts.requeueOnImageNotLoaded = settings.advanced_requeueonimagenotloaded; }
-    
-    // ms delay for requeue
-    if (typeof(settings.advanced_requeuetimeout) !== 'undefined') { settings.opts.requeueTimeout = settings.advanced_requeuetimeout; }
 
-    // class name used for the active pager link
-    if (typeof(settings.advanced_activepagerclass) !== 'undefined') { settings.opts.activePagerClass = settings.advanced_activepagerclass; }
+    var advancedOptions = JSON.parse(settings.advanced_options);
+    for (var option in advancedOptions) {
+      advancedOptions[option] = $.trim(advancedOptions[option]);
+      advancedOptions[option] = advancedOptions[option].replace(/\n/g, '');
+      if (!isNaN(parseInt(advancedOptions[option]))) {
+        advancedOptions[option] = parseInt(advancedOptions[option]);
+      }
+      else if (advancedOptions[option].toLowerCase() == 'true') {
+        advancedOptions[option] = true;
+      }
+      else if (advancedOptions[option].toLowerCase() == 'false') {
+        advancedOptions[option] = false;
+      }
+      
+      switch(option) {
+        
+        // Standard Options
+        case "activePagerClass":
+        case "allowPagerClickBubble":
+        case "autostop":
+        case "autostopCount":
+        case "backwards":
+        case "bounce":
+        case "cleartype":
+        case "cleartypeNoBg":
+        case "containerResize":
+        case "continuous":
+        case "delay":
+        case "easeIn":
+        case "easeOut":
+        case "easing":
+        case "fastOnEvent":
+        case "fit":
+        case "fx":
+        case "height":
+        case "manualTrump":
+        case "next":
+        case "nowrap":
+        case "pager":
+        case "pagerEvent":
+        case "pause":
+        case "pauseOnPagerHover":
+        case "prev":
+        case "prevNextEvent":
+        case "random":
+        case "randomizeEffects":
+        case "requeueOnImageNotLoaded":
+        case "requeueTimeout":
+        case "rev":
+        case "slideExpr":
+        case "slideResize":
+        case "speed":
+        case "speedIn":
+        case "speedOut":
+        case "startingSlide":
+        case "sync":
+        case "timeout":
+          settings.opts[option] = advancedOptions[option];
+          break;
+        
+        // These process options that look like {top:50, bottom:20}
+        case "animIn":
+        case "animOut":
+        case "cssBefore":
+        case "cssAfter":
+        case "shuffle":
+          settings.opts[option] = eval('(' + advancedOptions[option] + ')');
+          break;
+        
+        // These options have their own functions.
+        case "after":
+          // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag) 
+          settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "before":
+          // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag) 
+          settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "end":
+          // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
+          settings.opts[option] = function(options) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "fxFn":
+          // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
+          settings.opts[option] = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "onPagerEvent":
+          settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "onPrevNextEvent":
+          settings.opts[option] = function(isNext, zeroBasedSlideIndex, slideElement) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "pagerAnchorBuilder":
+          // callback fn for building anchor links:  function(index, DOMelement)
+          settings.opts[option] = function(index, DOMelement) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "pagerClick":
+          // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
+          settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
+            eval(advancedOptions[option]);
+          }
+          break;
+        
+        case "timeoutFn":
+          settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+            eval(advancedOptions[option]);
+          }
+          break;
     
-    // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
-    if (typeof(settings.advanced_updateactivepagerlink) !== 'undefined') { settings.opts.updateActivePagerLink = eval(settings.advanced_updateactivepagerlink); }
+        case "updateActivePagerLink":
+          // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
+          settings.opts[option] = function(pager, currSlideIndex) {
+            eval(advancedOptions[option]);
+          }
+          break;
+      }
+    }
+    
     
     $(settings.targetId).cycle(settings.opts);
 
