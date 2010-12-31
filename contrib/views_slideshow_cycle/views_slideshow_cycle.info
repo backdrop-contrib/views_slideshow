@@ -3,4 +3,8 @@ name = Views Slideshow: Cycle
 description = Adds a Rotating slideshow mode to Views Slideshow.
 dependencies[] = views_slideshow
 package = Views
-core = 6.x
+core = 7.x
+
+files[] = views_slideshow_cycle.module
+files[] = views_slideshow_cycle.views_slideshow.inc
+files[] = theme/views_slideshow_cycle.theme.inc

@@ -54,13 +54,13 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
   
   if (!file_exists(drupal_get_path('module', 'views_slideshow_cycle') . '/js/jquery.cycle.all.min.js')) {
     $form['views_slideshow_cycle']['no_cycle_js'] = array(
-      '#value' => '<div style="color: red">' . t('You need to download jQuery cycle plugin and copy jquery.cycle.all.min.js to views_slideshow/contrib/views_slideshow_cycle/js You can find the module at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
+      '#markup' => '<div style="color: red">' . t('You need to download jQuery cycle plugin and copy jquery.cycle.all.min.js to views_slideshow/contrib/views_slideshow_cycle/js You can find the module at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );
   }
   
   // Transition
   $form['views_slideshow_cycle']['transition'] = array(
-    '#value' => '<h2>' . t('Transition') . '</h2>',
+    '#markup' => '<h2>' . t('Transition') . '</h2>',
   );
   
   $effects = array(
@@ -112,45 +112,60 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('Timer delay'),
     '#default_value' => $view->options['views_slideshow_cycle']['timeout'],
     '#description' => t('Amount of time in milliseconds between transitions. Set the value to 0 to not rotate the slideshow automatically.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-transition-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['speed'] = array(
     '#type' => 'textfield',
     '#title' => t('Speed'),
     '#default_value' => $view->options['views_slideshow_cycle']['speed'],
     '#description' => t('Time in milliseconds that each transition lasts. Numeric only!'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-transition-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['delay'] = array(
     '#type' => 'textfield',
     '#title' => t('Initial slide delay offset'),
     '#default_value' => $view->options['views_slideshow_cycle']['delay'],
     '#description' => t('Amount of time in milliseconds for the first slide to transition. This number will be added to Timer delay to create the initial delay.  For example if Timer delay is 4000 and Initial delay is 2000 then the first slide will change at 6000ms (6 seconds).  If Initial delay is -2000 then the first slide will change at 2000ms (2 seconds).'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-transition-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['sync'] = array(
     '#type' => 'checkbox',
     '#title' => t('Sync'),
     '#default_value' => $view->options['views_slideshow_cycle']['sync'],
     '#description' => t('The sync option controls whether the slide transitions occur simultaneously. The default is selected which means that the current slide transitions out as the next slide transitions in. By unselecting this option you can get some interesting twists on your transitions.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-transition-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['random'] = array(
     '#type' => 'checkbox',
     '#title' => t('Random'),
     '#description' => t('This option controls the order items are displayed. The default setting, unselected, uses the views ordering. Selected will cause the images to display in a random order.'),
     '#default_value' => $view->options['views_slideshow_cycle']['random'],
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-transition-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
-  
+
   // Action
   $form['views_slideshow_cycle']['action'] = array(
-    '#value' => '<h2>' . t('Action') . '</h2>',
+    '#markup' => '<h2>' . t('Action') . '</h2>',
   );
   $form['views_slideshow_cycle']['pause'] = array(
     '#type' => 'checkbox',
@@ -176,16 +191,22 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('Start Slideshow Paused'),
     '#default_value' => $view->options['views_slideshow_cycle']['start_paused'],
     '#description' => t('Start the slideshow in the paused state.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['remember_slide'] = array(
     '#type' => 'checkbox',
     '#title' => t('Start On Last Slide Viewed'),
     '#default_value' => $view->options['views_slideshow_cycle']['remember_slide'],
     '#description' => t('When the user leaves a page with a slideshow and comes back start them on the last slide viewed.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['remember_slide_days'] = array(
     '#type' => 'textfield',
@@ -193,11 +214,11 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#default_value' => $view->options['views_slideshow_cycle']['remember_slide_days'],
     '#description' => t('The number of days to have the site remember the last slide. Default is 1'),
     '#size' => 4,
-    '#process' => array('views_process_dependency'),
-    '#dependency_count' => 2,
-    '#dependency' => array(
-      'edit-style-options-views-slideshow-cycle-action-advanced' => array(1),
-      'edit-style-options-views-slideshow-cycle-remember-slide' => array(1),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+        ':input[name="style_options[views_slideshow_cycle][remember_slide]"]' => array('checked' => TRUE),
+      ),
     ),
   );
   $form['views_slideshow_cycle']['pause_when_hidden'] = array(
@@ -205,8 +226,11 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('Pause When the Slideshow is Not Visible'),
     '#default_value' => $view->options['views_slideshow_cycle']['pause_when_hidden'],
     '#description' => t('When the slideshow is scrolled out of view or when a window is resized that hides the slideshow, this will pause the slideshow.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['pause_when_hidden_type'] = array(
     '#type' => 'select',
@@ -219,11 +243,11 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     ),
     '#default_value' => $view->options['views_slideshow_cycle']['pause_when_hidden_type'],
     '#description' => t('Choose how to calculate how much of the slide has to be shown. Entire Slide: All the slide has to be shown. Vertical: Set amount of height that has to be shown. Horizontal: Set amount of width that has to be shown. Area: Set total area that has to be shown.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency_count' => 2,
-    '#dependency' => array(
-      'edit-style-options-views-slideshow-cycle-action-advanced' => array(1),
-      'edit-style-options-views-slideshow-cycle-pause-when-hidden' => array(1),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+        ':input[name="style_options[views_slideshow_cycle][pause_when_hidden]"]' => array('checked' => TRUE),
+      ),
     ),
   );
   $form['views_slideshow_cycle']['amount_allowed_visible'] = array(
@@ -232,33 +256,29 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#default_value' => $view->options['views_slideshow_cycle']['amount_allowed_visible'],
     '#description' => t("The amount of the slide that needs to be shown to have it rotate. You can set the value in percentage (ex: 50%) or in pixels (ex: 250). The slidehsow will not rotate until it's height/width/total area, depending on the calculation method you have chosen above, is less than the value you have entered in this field."),
     '#size' => 4,
-    '#process' => array('views_process_dependency'),
-    '#dependency_count' => 3,
-    '#dependency' => array(
-      'edit-style-options-views-slideshow-cycle-action-advanced' => array(1),
-      'edit-style-options-views-slideshow-cycle-pause-when-hidden' => array(1),
-      'edit-style-options-views-slideshow-cycle-pause-when-hidden-type' => array(
-        'vertical',
-        'horizontal',
-        'area',
-      ),
-    ),
+    '#process' => array('views_slideshow_cycle_form_options_js'),
   );
   $form['views_slideshow_cycle']['nowrap'] = array(
     '#type' => 'checkbox',
     '#title' => t('End slideshow after last slide'),
     '#default_value' => $view->options['views_slideshow_cycle']['nowrap'],
     '#description' => t('If selected the slideshow will end when it gets to the last slide.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['fixed_height'] = array(
     '#type' => 'checkbox',
     '#title' => t('Make the slide window height fit the largest slide'),
     '#default_value' => $view->options['views_slideshow_cycle']['fixed_height'],
     '#description' => t('If unselected then if the slides are different sizes the height of the slide area will change as the slides change.'),
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   $form['views_slideshow_cycle']['items_per_slide'] = array(
     '#type' => 'textfield',
@@ -266,13 +286,16 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#default_value' => $view->options['views_slideshow_cycle']['items_per_slide'],
     '#description' => t('The number of items per slide'),
     '#size' => 4,
-    '#process' => array('views_process_dependency'),
-    '#dependency' => array('edit-style-options-views-slideshow-cycle-action-advanced' => array(1)),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
   );
   
   // Internet Explorer Tweaks
   $form['views_slideshow_cycle']['ie_tweaks'] = array(
-    '#value' => '<h2>' . t('Internet Explorer Tweaks') . '</h2>',
+    '#markup' => '<h2>' . t('Internet Explorer Tweaks') . '</h2>',
   );
   $form['views_slideshow_cycle']['cleartype'] = array(
     '#type' => 'checkbox',
@@ -292,17 +315,17 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
   
   // Advanced Options
   $form['views_slideshow_cycle']['advanced_options_header'] = array(
-    '#value' => '<h2>' . t('jQuery Cycle Custom Options') . '</h2>',
+    '#markup' => '<h2>' . t('jQuery Cycle Custom Options') . '</h2>',
   );
   
   if (!file_exists(drupal_get_path('module', 'views_slideshow_cycle') . '/js/json2.js')) {
     $form['views_slideshow_cycle']['no_json_js'] = array(
-      '#value' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to views_slideshow/contrib/views_slideshow_cycle/js', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
+      '#markup' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to views_slideshow/contrib/views_slideshow_cycle/js', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );
   }
   else {
     $form['views_slideshow_cycle']['advanced_options_info'] = array(
-      '#value' => '<p>' . t('You can find a list of all the available options at !url.  If one of the options you add uses a function, example fxFn, then you need to only enter what goes inside the function call. The variables that are in the documentation on the jquery cycle site will be available to you.', array('!url' => l('http://malsup.com/jquery/cycle/options.html', 'http://malsup.com/jquery/cycle/options.html'))) . '</p>',
+      '#markup' => '<p>' . t('You can find a list of all the available options at !url.  If one of the options you add uses a function, example fxFn, then you need to only enter what goes inside the function call. The variables that are in the documentation on the jquery cycle site will be available to you.', array('!url' => l('http://malsup.com/jquery/cycle/options.html', 'http://malsup.com/jquery/cycle/options.html'))) . '</p>',
     );
     
     // All the jquery cycle options according to
@@ -369,6 +392,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
       '#type' => 'select',
       '#title' => t('Advanced Options'),
       '#options' => $cycle_options,
+      '#process' => array('views_slideshow_cycle_form_options_js'),
     );
     
     $form['views_slideshow_cycle']['advanced_options_entry'] = array(
@@ -383,89 +407,14 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     );
     
     $form['views_slideshow_cycle']['advanced_options_table'] = array(
-      '#value' => '<table style="width: 400px; margin-left: 10px;" id="edit-style-options-views-slideshow-cycle-advanced-options-table"></table>'
-    );
-    
-    $form['views_slideshow_cycle']['advanced_options_js'] = array(
-      '#value' => "
-      <script type='text/javascript'>
-        Drupal.behaviors.viewsSlideshowCycleOptions = function (context) {
-          $('#edit-style-options-views-slideshow-cycle-advanced-options-wrapper').hide();
-          
-          $('#edit-style-options-views-slideshow-cycle-advanced-options-entry-wrapper').after(
-            '<div style=\"margin-left: 10px; padding: 10px 0;\">' + 
-              '<a id=\"edit-style-options-views-slideshow-cycle-advanced-options-update-link\" href=\"#\">' + Drupal.t('Update Advanced Option') + '</a>' +
-            '</div>'
-          );
-          
-          $('#edit-style-options-views-slideshow-cycle-advanced-options-table').append('<tr><th colspan=\"2\">' + Drupal.t('Applied Options') + '</th><tr>')
-          
-          var initialValue = $('#edit-style-options-views-slideshow-cycle-advanced-options').val();
-          var advancedOptions = JSON.parse(initialValue);
-          for (var option in advancedOptions) {
-            viewsSlideshowCycleAdvancedOptionsAddRow(option);
-          }
-          
-          // Add the remove event to the adanced items.
-          viewsSlideshowCycleAdvancedOptionsRemoveEvent();
-          
-          $('#edit-style-options-views-slideshow-cycle-advanced-options-choices').change(function() {
-            var selectedValue = $('select#edit-style-options-views-slideshow-cycle-advanced-options-choices option:selected').val();
-            if (typeof advancedOptions[selectedValue] !== 'undefined') {
-              $('#edit-style-options-views-slideshow-cycle-advanced-options-entry').val(advancedOptions[selectedValue]);
-            }
-            else {
-              $('#edit-style-options-views-slideshow-cycle-advanced-options-entry').val('');
-            }
-          });
-    
-          $('#edit-style-options-views-slideshow-cycle-advanced-options-update-link').click(function() {
-            var option = $('#edit-style-options-views-slideshow-cycle-advanced-options-choices').val();
-            if (option !== 0) {
-              var value = $('#edit-style-options-views-slideshow-cycle-advanced-options-entry').val();
-            
-              if (typeof advancedOptions[option] == 'undefined') {
-                viewsSlideshowCycleAdvancedOptionsAddRow(option);
-                viewsSlideshowCycleAdvancedOptionsRemoveEvent()
-              }
-              advancedOptions[option] = value;
-              viewsSlideshowCycleAdvancedOptionsSave();
-            }
-            
-            return false;
-          });
-          
-          function viewsSlideshowCycleAdvancedOptionsAddRow(option) {
-            $('#edit-style-options-views-slideshow-cycle-advanced-options-table').append(
-              '<tr id=\"views-slideshow-cycle-advanced-options-table-row-' + option + '\">' +
-                '<td>' + option + '</td>' +
-                '<td style=\"width: 20px;\">' +
-                  '<a style=\"margin-top: 6px\" title=\"Remove ' + option + '\" alt=\"Remove ' + option + '\" class=\"views-hidden views-button-remove views-slideshow-cycle-advanced-options-table-remove\" id=\"views-slideshow-cycle-advanced-options-table-remove-' + option + '\" href=\"#\"><span>Remove</span></a>' +
-                '</td>' +
-              '</tr>'
-            );
-          }
-          
-          function viewsSlideshowCycleAdvancedOptionsRemoveEvent() {
-            $('.views-slideshow-cycle-advanced-options-table-remove').unbind().click(function() {
-              var itemID = $(this).attr('id');
-              var uniqueID = itemID.replace('views-slideshow-cycle-advanced-options-table-remove-', '');
-              delete advancedOptions[uniqueID];
-              $('#views-slideshow-cycle-advanced-options-table-row-' + uniqueID).remove();
-              viewsSlideshowCycleAdvancedOptionsSave();
-              return false;
-            });
-          }
-          
-          function viewsSlideshowCycleAdvancedOptionsSave() {
-            var advancedOptionsString = JSON.stringify(advancedOptions);
-            $('#edit-style-options-views-slideshow-cycle-advanced-options').val(advancedOptionsString);
-          }
-        }
-      </script>
-      "
+      '#markup' => '<table style="width: 400px; margin-left: 10px;" id="edit-style-options-views-slideshow-cycle-advanced-options-table"></table>'
     );
   }
+}
+
+function views_slideshow_cycle_form_options_js($element, &$form_state, &$form) {
+  ctools_add_js('formoptions', 'views_slideshow_cycle');
+  return $element;
 }
 
 function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {

@@ -118,7 +118,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   foreach ($rows as $count => $item) {
     $items[] = $item;
     if (count($items) == $items_per_slide || $count == (count($rows)-1)) {
-      $rendered_rows .= theme('views_slideshow_cycle_main_frame_row', $vss_id, $items, $slideshow_count);
+      $rendered_rows .= theme('views_slideshow_cycle_main_frame_row', array('vss_id' => $vss_id, 'items' => $items, 'count' => $slideshow_count));
       $items = array();
       $slideshow_count++;
     }
@@ -134,34 +134,31 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
  */
 function template_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
   $current = $vars['count'] + 1;
-  $classes = array(
-    'views_slideshow_cycle_slide',
-    "views_slideshow_slide views-row-$current",
-  );
-  if ($vars['count']) {
-    $classes[] = 'views_slideshow_cycle_hidden';
-  }
-  $classes[] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
+  $vars['attributes']['class'][] = 'views_slideshow_cycle_slide';
+  $vars['attributes']['class'][] = 'views_slideshow_slide views-row-' . $current;
 
-  $vars['attributes']['class'] = implode(' ', $classes);
-  $vars['attributes']['id'] = "views_slideshow_cycle_div_" . $vars['vss_id'] . "_" . $vars['count'];
+  if ($vars['count']) {
+    $vars['attributes']['class'][] =  'views_slideshow_cycle_hidden';
+  }
+  $vars['attributes']['class'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
+
+  $vars['attributes']['id'][] = "views_slideshow_cycle_div_" . $vars['vss_id'] . "_" . $vars['count'];
 
   $vars['rendered_items'] = '';
   foreach ($vars['items'] as $item_count => $item) {
-    $vars['rendered_items'] .= theme('views_slideshow_cycle_main_frame_row_item', $item, $item_count);
+    $vars['rendered_items'] .= theme('views_slideshow_cycle_main_frame_row_item', array('item' => $item, 'item_count' => $item_count));
   }
 }
 
 function template_preprocess_views_slideshow_cycle_main_frame_row_item(&$vars) {
-  $classes = array('views-row views-row-' . $vars['item_count']);
+  $vars['attributes']['class'][] = 'views-row views-row-' . $vars['item_count'];
   if (!$vars['item_count']) {
-    $classes[] = 'views-row-first';
+    $vars['attributes']['class'][] = 'views-row-first';
   }
   if ($vars['item_count'] % 2) {
-    $classes[] = 'views-row-even';
+    $vars['attributes']['class'][] = 'views-row-even';
   }
   else {
-    $classes[] = 'views-row-odd';
+    $vars['attributes']['class'][] = 'views-row-odd';
   }
-  $vars['attributes']['class'] = implode(' ', $classes);
 }
