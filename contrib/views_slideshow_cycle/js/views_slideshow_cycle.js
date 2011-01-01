@@ -32,8 +32,7 @@
               settings.processedAfter = 1;
               slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
             }
-            
-            viewsSlideshowTransitionEnd(settings.slideshowId, '', slideNum);
+            Drupal.viewsSlideshow.transitionEnd(settings.slideshowId, '', slideNum);
           },
           before:function(curr, next, opts) {
             // Remember last slide.
@@ -56,7 +55,7 @@
               slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
             }
             
-            viewsSlideshowTransitionBegin(settings.slideshowId, '', slideNum);
+            Drupal.viewsSlideshow.transitionBegin(settings.slideshowId, '', slideNum);
           },
           cleartype:(settings.cleartype)? true : false,
           cleartypeNoBg:(settings.cleartypenobg)? true : false
@@ -81,10 +80,10 @@
         // Pause on hover.
         if (settings.pause) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
-            viewsSlideshowPause(settings.slideshowId, '');
+            Drupal.viewsSlideshow.pause(settings.slideshowId, '');
           }, function() {
             if (!settings.paused) {
-              viewsSlideshowPlay(settings.slideshowId, '');
+              Drupal.viewsSlideshow.play(settings.slideshowId, '');
             }
           });
         }
@@ -92,7 +91,7 @@
         // Pause on clicking of the slide.
         if (settings.pause_on_click) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
-            viewsSlideshowPause(settings.slideshowId, '');
+            Drupal.viewsSlideshow.pause(settings.slideshowId, '');
           });
         }
     
@@ -240,7 +239,7 @@
     
         // Start Paused
         if (settings.start_paused) {
-          viewsSlideshowPause(settings.slideshowId, '');
+          Drupal.viewsSlideshow.pause(settings.slideshowId, '');
         }
         
         // Pause if hidden.
@@ -251,10 +250,10 @@
             // pause it.
             var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
             if (visible && settings.paused) {
-              viewsSlideshowPlay(settings.slideshowId, '');
+              Drupal.viewsSlideshow.play(settings.slideshowId, '');
             }
             else if (!visible && !settings.paused) {
-              viewsSlideshowPause(settings.slideshowId, '');
+              Drupal.viewsSlideshow.pause(settings.slideshowId, '');
             }
           }
          
@@ -272,23 +271,25 @@
     }
   };
   
-  views_slideshow_cycle_viewsSlideshowPause = function (slideshowID) {
+  Drupal.viewsSlideshowCycle = Drupal.viewsSlideshowCycle || {};
+  
+  Drupal.viewsSlideshowCycle.pause = function (slideshowID) {
     $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('pause');
   }
   
-  views_slideshow_cycle_viewsSlideshowPlay = function (slideshowID) {
+  Drupal.viewsSlideshowCycle.play = function (slideshowID) {
     $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('resume');
   }
   
-  views_slideshow_cycle_viewsSlideshowPreviousSlide = function (slideshowID) {
+  Drupal.viewsSlideshowCycle.previousSlide = function (slideshowID) {
     $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('prev');
   }
   
-  views_slideshow_cycle_viewsSlideshowNextSlide = function (slideshowID) {
+  Drupal.viewsSlideshowCycle.nextSlide = function (slideshowID) {
     $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('next');
   }
   
-  views_slideshow_cycle_viewsSlideshowGoToSlide = function (slideshowID, slideNum) {
+  Drupal.viewsSlideshowCycle.goToSlide = function (slideshowID, slideNum) {
     $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle(slideNum);
   }
   

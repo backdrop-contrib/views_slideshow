@@ -105,9 +105,9 @@ function views_slideshow_init() {
 
 function views_slideshow_views_slideshow_js_method_register() {
   return array(
-    'views_slideshow_pager_fields',
-    'views_slideshow_controls_text',
-    'views_slideshow_slide_counter',
+    'viewsSlideshowPagerFields',
+    'viewsSlideshowControlsText',
+    'viewsSlideshowSlideCounter',
   );
 }
 
@@ -320,7 +320,7 @@ function views_slideshow_views_slideshow_option_definition() {
     $locations = array('top', 'bottom');
     foreach ($locations as $location) {
       foreach ($widgets as $widget_id => $widget_name) {
-        $options['widgets']['contains'][$location]['contains'][$widget_id . '_enable'] = array('default' => 0);
+        $options['widgets']['contains'][$location]['contains'][$widget_id]['enable'] = array('default' => 0);
         $options['widgets']['contains'][$location]['contains'][$widget_id]['contains']['weight'] = array('default' => 1);
       }
     }

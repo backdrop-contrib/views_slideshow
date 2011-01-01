@@ -56,7 +56,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   // to the id to make it unique.
   $slideshow_count = 1;
   $current_settings = drupal_add_js();
-  foreach ($current_settings['setting'] AS $current_setting) {
+  foreach ($current_settings['settings']['data'] AS $current_setting) {
     if (isset($current_setting['viewsSlideshowCycle'])) {
       $current_keys = array_keys($current_setting['viewsSlideshowCycle']);
       if (stristr($current_keys[0], '#views_slideshow_cycle_main_' . $vss_id)) {
@@ -86,8 +86,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   }
   
   // Add the slideshow elements.
-  $vars['attributes']['id'] = "views_slideshow_cycle_teaser_section_" . $vss_id;
-  $vars['attributes']['class'] = 'views_slideshow_cycle_teaser_section';
+  $vars['classes_array'][] = 'views_slideshow_cycle_teaser_section';
   
   $styles = '';
   if (isset($view->display_handler->display->display_options['style_options']['views_slideshow_cycle'])) {
@@ -134,15 +133,13 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
  */
 function template_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
   $current = $vars['count'] + 1;
-  $vars['attributes']['class'][] = 'views_slideshow_cycle_slide';
-  $vars['attributes']['class'][] = 'views_slideshow_slide views-row-' . $current;
+  $vars['classes_array'][] = 'views_slideshow_cycle_slide';
+  $vars['classes_array'][] = 'views_slideshow_slide views-row-' . $current;
 
   if ($vars['count']) {
-    $vars['attributes']['class'][] =  'views_slideshow_cycle_hidden';
+    $vars['classes_array'][] =  'views_slideshow_cycle_hidden';
   }
-  $vars['attributes']['class'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
-
-  $vars['attributes']['id'][] = "views_slideshow_cycle_div_" . $vars['vss_id'] . "_" . $vars['count'];
+  $vars['classes_array'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
 
   $vars['rendered_items'] = '';
   foreach ($vars['items'] as $item_count => $item) {
@@ -151,14 +148,14 @@ function template_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
 }
 
 function template_preprocess_views_slideshow_cycle_main_frame_row_item(&$vars) {
-  $vars['attributes']['class'][] = 'views-row views-row-' . $vars['item_count'];
+  $vars['classes_array'][] = 'views-row views-row-' . $vars['item_count'];
   if (!$vars['item_count']) {
-    $vars['attributes']['class'][] = 'views-row-first';
+    $vars['classes_array'][] = 'views-row-first';
   }
   if ($vars['item_count'] % 2) {
-    $vars['attributes']['class'][] = 'views-row-even';
+    $vars['classes_array'][] = 'views-row-even';
   }
   else {
-    $vars['attributes']['class'][] = 'views-row-odd';
+    $vars['classes_array'][] = 'views-row-odd';
   }
 }

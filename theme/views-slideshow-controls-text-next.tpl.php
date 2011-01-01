@@ -1,1 +1,1 @@
-<span <?php print drupal_attributes($attributes); ?>><?php print t('Next'); ?></span>
+<span id="views_slideshow_controls_text_next_<?php print $variables['vss_id']; ?>" class="<?php print $classes; ?>"><?php print t('Next'); ?></span>
