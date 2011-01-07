@@ -234,44 +234,80 @@
           }
         }
         
-        
-        $(settings.targetId).cycle(settings.opts);
-    
-        // Start Paused
-        if (settings.start_paused) {
-          Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+        // If selected wait for the images to be loaded.
+        // Otherwise just load the slideshow.
+        if (settings.wait_for_image_load) {
+          // For IE/Chrome/Opera we need to make sure the images are loaded before
+          // starting the slideshow.
+          settings.totalImages = $(settings.targetId + ' img').length;
+          settings.loadedImages = 0;
+  
+          // Add a load event for each image.
+          $(settings.targetId + ' img').each(function() {
+            var $imageElement = $(this);
+            $imageElement.bind('load', function () {
+              Drupal.viewsSlideshowCycle.imageWait(fullId);
+            });
+            
+            // Removing the source and adding it again will fire the load event.
+            var imgSrc = $imageElement.attr('src');
+            $imageElement.attr('src', '');
+            $imageElement.attr('src', imgSrc);
+          });
         }
-        
-        // Pause if hidden.
-        if (settings.pause_when_hidden) {
-          var checkPause = function(settings) {
-            // If the slideshow is visible and it is paused then resume.
-            // otherwise if the slideshow is not visible and it is not paused then
-            // pause it.
-            var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
-            if (visible && settings.paused) {
-              Drupal.viewsSlideshow.play(settings.slideshowId, '');
-            }
-            else if (!visible && !settings.paused) {
-              Drupal.viewsSlideshow.pause(settings.slideshowId, '');
-            }
-          }
-         
-          // Check when scrolled.
-          $(window).scroll(function() {
-           checkPause(settings);
-          });
-          
-          // Check when the window is resized.
-          $(window).resize(function() {
-            checkPause(settings);
-          });
+        else {
+          Drupal.viewsSlideshowCycle.load(fullId);
         }
       });
     }
   };
   
   Drupal.viewsSlideshowCycle = Drupal.viewsSlideshowCycle || {};
+  
+  // This checks to see if all the images have been loaded.
+  // If they have then it starts the slideshow.
+  Drupal.viewsSlideshowCycle.imageWait = function(fullId) {
+    if (++Drupal.settings.viewsSlideshowCycle[fullId].loadedImages == Drupal.settings.viewsSlideshowCycle[fullId].totalImages) {
+      Drupal.viewsSlideshowCycle.load(fullId);
+    }
+  }
+  
+  // Start the slideshow.
+  Drupal.viewsSlideshowCycle.load = function (fullId) {
+    var settings = Drupal.settings.viewsSlideshowCycle[fullId];
+    $(settings.targetId).cycle(settings.opts);
+    
+    // Start Paused
+    if (settings.start_paused) {
+      Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+    }
+    
+    // Pause if hidden.
+    if (settings.pause_when_hidden) {
+      var checkPause = function(settings) {
+        // If the slideshow is visible and it is paused then resume.
+        // otherwise if the slideshow is not visible and it is not paused then
+        // pause it.
+        var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
+        if (visible && settings.paused) {
+          Drupal.viewsSlideshow.play(settings.slideshowId, '');
+        }
+        else if (!visible && !settings.paused) {
+          Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+        }
+      }
+     
+      // Check when scrolled.
+      $(window).scroll(function() {
+       checkPause(settings);
+      });
+      
+      // Check when the window is resized.
+      $(window).resize(function() {
+        checkPause(settings);
+      });
+    }
+  }
   
   Drupal.viewsSlideshowCycle.pause = function (slideshowID) {
     $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('pause');
