@@ -94,143 +94,145 @@
             Drupal.viewsSlideshow.pause(settings.slideshowId, '');
           });
         }
-    
-        var advancedOptions = JSON.parse(settings.advanced_options);
-        for (var option in advancedOptions) {
-          advancedOptions[option] = $.trim(advancedOptions[option]);
-          advancedOptions[option] = advancedOptions[option].replace(/\n/g, '');
-          if (!isNaN(parseInt(advancedOptions[option]))) {
-            advancedOptions[option] = parseInt(advancedOptions[option]);
-          }
-          else if (advancedOptions[option].toLowerCase() == 'true') {
-            advancedOptions[option] = true;
-          }
-          else if (advancedOptions[option].toLowerCase() == 'false') {
-            advancedOptions[option] = false;
-          }
-          
-          switch(option) {
-            
-            // Standard Options
-            case "activePagerClass":
-            case "allowPagerClickBubble":
-            case "autostop":
-            case "autostopCount":
-            case "backwards":
-            case "bounce":
-            case "cleartype":
-            case "cleartypeNoBg":
-            case "containerResize":
-            case "continuous":
-            case "delay":
-            case "easeIn":
-            case "easeOut":
-            case "easing":
-            case "fastOnEvent":
-            case "fit":
-            case "fx":
-            case "height":
-            case "manualTrump":
-            case "next":
-            case "nowrap":
-            case "pager":
-            case "pagerEvent":
-            case "pause":
-            case "pauseOnPagerHover":
-            case "prev":
-            case "prevNextEvent":
-            case "random":
-            case "randomizeEffects":
-            case "requeueOnImageNotLoaded":
-            case "requeueTimeout":
-            case "rev":
-            case "slideExpr":
-            case "slideResize":
-            case "speed":
-            case "speedIn":
-            case "speedOut":
-            case "startingSlide":
-            case "sync":
-            case "timeout":
-              settings.opts[option] = advancedOptions[option];
-              break;
-            
-            // These process options that look like {top:50, bottom:20}
-            case "animIn":
-            case "animOut":
-            case "cssBefore":
-            case "cssAfter":
-            case "shuffle":
-              settings.opts[option] = eval('(' + advancedOptions[option] + ')');
-              break;
-            
-            // These options have their own functions.
-            case "after":
-              // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag) 
-              settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "before":
-              // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag) 
-              settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "end":
-              // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
-              settings.opts[option] = function(options) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "fxFn":
-              // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
-              settings.opts[option] = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "onPagerEvent":
-              settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "onPrevNextEvent":
-              settings.opts[option] = function(isNext, zeroBasedSlideIndex, slideElement) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "pagerAnchorBuilder":
-              // callback fn for building anchor links:  function(index, DOMelement)
-              settings.opts[option] = function(index, DOMelement) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "pagerClick":
-              // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
-              settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
-                eval(advancedOptions[option]);
-              }
-              break;
-            
-            case "timeoutFn":
-              settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-                eval(advancedOptions[option]);
-              }
-              break;
         
-            case "updateActivePagerLink":
-              // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
-              settings.opts[option] = function(pager, currSlideIndex) {
-                eval(advancedOptions[option]);
-              }
-              break;
+        if (typeof JSON != 'undefined') {
+          var advancedOptions = JSON.parse(settings.advanced_options);
+          for (var option in advancedOptions) {
+            advancedOptions[option] = $.trim(advancedOptions[option]);
+            advancedOptions[option] = advancedOptions[option].replace(/\n/g, '');
+            if (!isNaN(parseInt(advancedOptions[option]))) {
+              advancedOptions[option] = parseInt(advancedOptions[option]);
+            }
+            else if (advancedOptions[option].toLowerCase() == 'true') {
+              advancedOptions[option] = true;
+            }
+            else if (advancedOptions[option].toLowerCase() == 'false') {
+              advancedOptions[option] = false;
+            }
+            
+            switch(option) {
+              
+              // Standard Options
+              case "activePagerClass":
+              case "allowPagerClickBubble":
+              case "autostop":
+              case "autostopCount":
+              case "backwards":
+              case "bounce":
+              case "cleartype":
+              case "cleartypeNoBg":
+              case "containerResize":
+              case "continuous":
+              case "delay":
+              case "easeIn":
+              case "easeOut":
+              case "easing":
+              case "fastOnEvent":
+              case "fit":
+              case "fx":
+              case "height":
+              case "manualTrump":
+              case "next":
+              case "nowrap":
+              case "pager":
+              case "pagerEvent":
+              case "pause":
+              case "pauseOnPagerHover":
+              case "prev":
+              case "prevNextEvent":
+              case "random":
+              case "randomizeEffects":
+              case "requeueOnImageNotLoaded":
+              case "requeueTimeout":
+              case "rev":
+              case "slideExpr":
+              case "slideResize":
+              case "speed":
+              case "speedIn":
+              case "speedOut":
+              case "startingSlide":
+              case "sync":
+              case "timeout":
+                settings.opts[option] = advancedOptions[option];
+                break;
+              
+              // These process options that look like {top:50, bottom:20}
+              case "animIn":
+              case "animOut":
+              case "cssBefore":
+              case "cssAfter":
+              case "shuffle":
+                settings.opts[option] = eval('(' + advancedOptions[option] + ')');
+                break;
+              
+              // These options have their own functions.
+              case "after":
+                // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag) 
+                settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "before":
+                // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag) 
+                settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "end":
+                // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
+                settings.opts[option] = function(options) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "fxFn":
+                // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
+                settings.opts[option] = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "onPagerEvent":
+                settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "onPrevNextEvent":
+                settings.opts[option] = function(isNext, zeroBasedSlideIndex, slideElement) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "pagerAnchorBuilder":
+                // callback fn for building anchor links:  function(index, DOMelement)
+                settings.opts[option] = function(index, DOMelement) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "pagerClick":
+                // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
+                settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+              
+              case "timeoutFn":
+                settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+          
+              case "updateActivePagerLink":
+                // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
+                settings.opts[option] = function(pager, currSlideIndex) {
+                  eval(advancedOptions[option]);
+                }
+                break;
+            }
           }
         }
         
