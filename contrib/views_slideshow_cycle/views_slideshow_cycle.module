@@ -20,17 +20,19 @@ function views_slideshow_cycle_init() {
     }
   }
   
-  $module_path = drupal_get_path('module', 'views_slideshow_cycle');
+  // Set location of the libraries directory.
+  $libraries_path = 'sites/all/libraries';
 
   // Otherwise, we'll add the version included with this module.
-  if (!$js && file_exists($module_path . '/js/jquery.cycle.all.min.js')) {
-    drupal_add_js($module_path . '/js/jquery.cycle.all.min.js');
+  if (!$js && file_exists($libraries_path . '/jquery.cycle/jquery.cycle.all.min.js')) {
+    drupal_add_js($libraries_path . '/jquery.cycle/jquery.cycle.all.min.js');
   }
   
-  if (file_exists($module_path . '/js/json2.js')) {
-    drupal_add_js($module_path . '/js/json2.js');
+  if (file_exists($libraries_path . '/json2/json2.js')) {
+    drupal_add_js($libraries_path . '/json2/json2.js');
   }
 
+  $module_path = drupal_get_path('module', 'views_slideshow_cycle');
   drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
   
   drupal_add_css($module_path . '/views_slideshow_cycle.css', 'module');
