@@ -187,6 +187,9 @@ function theme_views_slideshow_controls_widget_render($vars) {
  * @ingroup themeable
  */
 function template_preprocess_views_slideshow_controls_text_render(&$vars) {
+  $module_path = drupal_get_path('module', 'views_slideshow');
+  drupal_add_css($module_path . '/views_slideshow_controls.css', array('type' => 'file'));
+  
   $vars['classes_array'][] = 'views_slideshow_controls_text';
   
   $vars['rendered_control_previous'] = theme('views_slideshow_controls_text_previous', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings']));
