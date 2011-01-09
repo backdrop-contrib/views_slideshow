@@ -313,6 +313,15 @@ function views_slideshow_views_slideshow_option_definition() {
   // Default slideshow type and skins
   $options['slideshow_type'] = array('default' => '');
   $options['slideshow_skin'] = array('default' => '');
+  $options['skin_info'] = array(
+    'default' => array(
+      'class' => 'default',
+      'title' => t('Untitled skin'),
+      'module' => 'views_slideshow',
+      'path' => '',
+      'stylesheets' => array(),
+    ),
+  );
   
   // Set default widgets and weight values.
   $widgets = module_invoke_all('views_slideshow_widget_info');
@@ -320,7 +329,7 @@ function views_slideshow_views_slideshow_option_definition() {
     $locations = array('top', 'bottom');
     foreach ($locations as $location) {
       foreach ($widgets as $widget_id => $widget_name) {
-        $options['widgets']['contains'][$location]['contains'][$widget_id]['enable'] = array('default' => 0);
+        $options['widgets']['contains'][$location]['contains'][$widget_id]['contains']['enable'] = array('default' => 0);
         $options['widgets']['contains'][$location]['contains'][$widget_id]['contains']['weight'] = array('default' => 1);
       }
     }

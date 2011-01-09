@@ -237,25 +237,30 @@
         }
         
         // If selected wait for the images to be loaded.
-        // Otherwise just load the slideshow.
+        // otherwise just load the slideshow.
         if (settings.wait_for_image_load) {
-          // For IE/Chrome/Opera we need to make sure the images are loaded before
-          // starting the slideshow.
+          // For IE/Chrome/Opera we if there are images then we need to make
+          // sure the images are loaded before starting the slideshow.
           settings.totalImages = $(settings.targetId + ' img').length;
-          settings.loadedImages = 0;
+          if (settings.totalImages) {
+            settings.loadedImages = 0;
   
-          // Add a load event for each image.
-          $(settings.targetId + ' img').each(function() {
-            var $imageElement = $(this);
-            $imageElement.bind('load', function () {
-              Drupal.viewsSlideshowCycle.imageWait(fullId);
+            // Add a load event for each image.
+            $(settings.targetId + ' img').each(function() {
+              var $imageElement = $(this);
+              $imageElement.bind('load', function () {
+                Drupal.viewsSlideshowCycle.imageWait(fullId);
+              });
+              
+              // Removing the source and adding it again will fire the load event.
+              var imgSrc = $imageElement.attr('src');
+              $imageElement.attr('src', '');
+              $imageElement.attr('src', imgSrc);
             });
-            
-            // Removing the source and adding it again will fire the load event.
-            var imgSrc = $imageElement.attr('src');
-            $imageElement.attr('src', '');
-            $imageElement.attr('src', imgSrc);
-          });
+          }
+          else {
+            Drupal.viewsSlideshowCycle.load(fullId);
+          }
         }
         else {
           Drupal.viewsSlideshowCycle.load(fullId);
