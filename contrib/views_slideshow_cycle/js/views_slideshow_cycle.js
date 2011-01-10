@@ -32,7 +32,7 @@
               settings.processedAfter = 1;
               slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
             }
-            Drupal.viewsSlideshow.transitionEnd(settings.slideshowId, '', slideNum);
+            Drupal.viewsSlideshow.action({ "action": 'transitionEnd', "slideshowID": settings.slideshowId, "slideNum": slideNum });
           },
           before:function(curr, next, opts) {
             // Remember last slide.
@@ -55,7 +55,7 @@
               slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
             }
             
-            Drupal.viewsSlideshow.transitionBegin(settings.slideshowId, '', slideNum);
+            Drupal.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
           },
           cleartype:(settings.cleartype)? true : false,
           cleartypeNoBg:(settings.cleartypenobg)? true : false
@@ -80,10 +80,10 @@
         // Pause on hover.
         if (settings.pause) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
-            Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           }, function() {
             if (!settings.paused) {
-              Drupal.viewsSlideshow.play(settings.slideshowId, '');
+              Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
             }
           });
         }
@@ -91,7 +91,7 @@
         // Pause on clicking of the slide.
         if (settings.pause_on_click) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
-            Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           });
         }
         
@@ -286,7 +286,7 @@
     
     // Start Paused
     if (settings.start_paused) {
-      Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+      Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
     }
     
     // Pause if hidden.
@@ -297,10 +297,10 @@
         // pause it.
         var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
         if (visible && settings.paused) {
-          Drupal.viewsSlideshow.play(settings.slideshowId, '');
+          Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
         }
         else if (!visible && !settings.paused) {
-          Drupal.viewsSlideshow.pause(settings.slideshowId, '');
+          Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
         }
       }
      
@@ -316,24 +316,24 @@
     }
   }
   
-  Drupal.viewsSlideshowCycle.pause = function (slideshowID) {
-    $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('pause');
+  Drupal.viewsSlideshowCycle.pause = function (options) {
+    $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('pause');
   }
   
-  Drupal.viewsSlideshowCycle.play = function (slideshowID) {
-    $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('resume');
+  Drupal.viewsSlideshowCycle.play = function (options) {
+    $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('resume');
   }
   
-  Drupal.viewsSlideshowCycle.previousSlide = function (slideshowID) {
-    $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('prev');
+  Drupal.viewsSlideshowCycle.previousSlide = function (options) {
+    $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('prev');
   }
   
-  Drupal.viewsSlideshowCycle.nextSlide = function (slideshowID) {
-    $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle('next');
+  Drupal.viewsSlideshowCycle.nextSlide = function (options) {
+    $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('next');
   }
   
-  Drupal.viewsSlideshowCycle.goToSlide = function (slideshowID, slideNum) {
-    $('#views_slideshow_cycle_teaser_section_' + slideshowID).cycle(slideNum);
+  Drupal.viewsSlideshowCycle.goToSlide = function (options) {
+    $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle(options.slideNum);
   }
   
   // Verify that the value is a number.

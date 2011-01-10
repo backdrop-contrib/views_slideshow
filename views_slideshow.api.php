@@ -114,16 +114,16 @@ function [widget-type]_views_slideshow_widget_form_options(&$form, $form_state, 
 }
 
 /**
- * Define JS methods to be run when a certain slideshow event is fired.
+ * Define JS methods to be run when a certain slideshow action is fired.
  *
  * Available events:
- *  - viewsSlideshowPause
- *  - viewsSlideshowPlay
- *  - viewsSlideshowNextSlide
- *  - viewsSlideshowPreviousSlide
- *  - viewsSlideshowGoToSlide
- *  - viewsSlideshowTransitionBegin
- *  - viewsSlideshowTransitionEnd
+ *  - pause
+ *  - play
+ *  - nextSlide
+ *  - previousSlide
+ *  - goToSlide
+ *  - transitionBegin
+ *  - transitionEnd
  * @return
  *   array of methods.
  */

@@ -8,7 +8,7 @@
       $('.views_slideshow_controls_text_previous:not(.views-slideshow-controls-text-previous-processed)', context).addClass('views-slideshow-controls-text-previous-processed').each(function() {
         var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_previous_', '');
         $(this).click(function() {
-          Drupal.viewsSlideshow.previousSlide(uniqueID, '');
+          Drupal.viewsSlideshow.action({ "action": 'previousSlide', "slideshowID": uniqueID });
           return false;
         });
       });
@@ -17,7 +17,7 @@
       $('.views_slideshow_controls_text_next:not(.views-slideshow-controls-text-next-processed)', context).addClass('views-slideshow-controls-text-next-processed').each(function() {
         var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_next_', '');
         $(this).click(function() {
-          Drupal.viewsSlideshow.nextSlide(uniqueID, '');
+          Drupal.viewsSlideshow.action({ "action": 'nextSlide', "slideshowID": uniqueID });
           return false;
         });
       });
@@ -27,10 +27,10 @@
         var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_pause_', '');
         $(this).click(function() {
           if (Drupal.settings.viewsSlideshow[uniqueID].paused) {
-            Drupal.viewsSlideshow.play(uniqueID, '');
+            Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID });
           }
           else {
-            Drupal.viewsSlideshow.pause(uniqueID, '');
+            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID });
           }
           return false;
         });
@@ -48,11 +48,11 @@
         if (Drupal.settings.viewsSlideshowPagerFields[uniqueID][location].activatePauseOnHover) {
           $(this).children().each(function(index, pagerItem) {
             $(pagerItem).hover(function() {
-              Drupal.viewsSlideshow.goToSlide(uniqueID, '', index);
-              Drupal.viewsSlideshow.pause(uniqueID, '');
+              Drupal.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
+              Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID });
             },
             function() {
-              Drupal.viewsSlideshow.play(uniqueID, '');
+              Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID });
             });
           });
         }
@@ -65,17 +65,17 @@
   /**
    * Implement hook_viewsSlideshowPause for text controls.
    */
-  Drupal.viewsSlideshowControlsText.pause = function (slideshowID) {
+  Drupal.viewsSlideshowControlsText.pause = function (options) {
     var pauseText = Drupal.theme.prototype['viewsSlideshowControlsPause'] ? Drupal.theme('viewsSlideshowControlsPause') : '';
-    $('#views_slideshow_controls_text_pause_' + slideshowID).text(pauseText);
+    $('#views_slideshow_controls_text_pause_' + options.slideshowID).text(pauseText);
   }
   
   /**
    * Implement hook_viewsSlideshowPlay for text controls.
    */
-  Drupal.viewsSlideshowControlsText.play = function (slideshowID) {
+  Drupal.viewsSlideshowControlsText.play = function (options) {
     var playText = Drupal.theme.prototype['viewsSlideshowControlsPlay'] ? Drupal.theme('viewsSlideshowControlsPlay') : '';
-    $('#views_slideshow_controls_text_pause_' + slideshowID).text(playText);
+    $('#views_slideshow_controls_text_pause_' + options.slideshowID).text(playText);
   }
   
   // Theme control pause.
@@ -93,12 +93,12 @@
   /**
    * Implement hook_viewsSlidshowTransitionBegin for pager fields pager.
    */
-  Drupal.viewsSlideshowPagerFields.transitionBegin = function (slideshowID, slideNum) {
+  Drupal.viewsSlideshowPagerFields.transitionBegin = function (options) {
     // Remove active class from pagers
-    $('[id^="views_slideshow_pager_field_item_' + slideshowID + '"]').removeClass('active');
+    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
     
     // Add active class to active pager.
-    $('#views_slideshow_pager_field_item_' + slideshowID + '_' + slideNum).addClass('active');
+    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + options.slideNum).addClass('active');
   }
   
   Drupal.viewsSlideshowSlideCounter = Drupal.viewsSlideshowSlideCounter || {};
@@ -106,93 +106,78 @@
   /**
    * Implement hook_viewsSlidshowTransitionBegin for pager fields pager.
    */
-  Drupal.viewsSlideshowSlideCounter.transitionBegin = function (slideshowID, slideNum) {
-    $('#views_slideshow_slide_counter_' + slideshowID + ' .num').text(slideNum + 1);
+  Drupal.viewsSlideshowSlideCounter.transitionBegin = function (options) {
+    $('#views_slideshow_slide_counter_' + options.slideshowID + ' .num').text(options.slideNum + 1);
   }
   
   /**
-   * Call this function to pause the slideshow.
+   * This is used as a router to process actions for the slideshow.
    */
-  Drupal.viewsSlideshow.pause = function (slideshowID, callingMethod) {
-    Drupal.settings.viewsSlideshow[slideshowID].paused = 1;
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].pause == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].pause(slideshowID);
-      }
+  Drupal.viewsSlideshow.action = function (options) {
+    // Set default values for our return status.
+    var status = {
+      'value': true,
+      'text': ''
     }
-  }
-  
-  /**
-   * Call this function to play the slideshow.
-   */
-  Drupal.viewsSlideshow.play = function (slideshowID, callingMethod) {
-    Drupal.settings.viewsSlideshow[slideshowID].paused = 0;
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].play == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].play(slideshowID);
-      }
+
+    // If an action isn't specified return false.
+    if (typeof options.action == 'undefined' || options.action == '') {
+      status.value = false;
+      status.text =  Drupal.t('There was no action specified.');
+      return error;
     }
-  }
-  
-  /**
-   * Call this function to move the slideshow to the next slide.
-   */
-  Drupal.viewsSlideshow.nextSlide = function (slideshowID, callingMethod) {
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].nextSlide == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].nextSlide(slideshowID);
-      }
+    
+    // If we are using pause or play switch paused state accordingly.
+    if (options.action == 'pause') {
+      Drupal.settings.viewsSlideshow[options.slideshowID].paused = 1;
     }
-  }
-  
-  /**
-   * Call this function to move the slideshow to the previous slide.
-   */
-  Drupal.viewsSlideshow.previousSlide = function (slideshowID, callingMethod) {
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].previousSlide == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].previousSlide(slideshowID);
-      }
+    else if (options.action == 'play') {
+      Drupal.settings.viewsSlideshow[options.slideshowID].paused = 0;
     }
-  }
-  
-  /**
-   * Call this function to go to a specific slide number.
-   */
-  Drupal.viewsSlideshow.goToSlide = function (slideshowID, callingMethod, slideNum) {
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].goToSlide == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].goToSlide(slideshowID, slideNum);
-      }
+    
+    // We use a switch statement here mainly just to limit the type of actions
+    // that are available.
+    switch (options.action) {
+      case "goToSlide":
+      case "transitionBegin":
+      case "transitionEnd":
+        // The three methods above require a slide number. Checking if it is
+        // defined and it is a number that is an integer.
+        if (typeof options.slideNum == 'undefined' || typeof options.slideNum !== 'number' || parseInt(options.slideNum) != (options.slideNum - 0)) {
+          status.value = false;
+          status.text = Drupal.t('An invalid integer was specified for slideNum.');
+        }
+      case "pause":
+      case "play":
+      case "nextSlide":
+      case "previousSlide":
+        // Grab our list of methods.
+        var methods = Drupal.settings.viewsSlideshow[options.slideshowID]['methods'];
+        
+        // if the calling method specified methods that shouldn't be called then
+        // exclude calling them.
+        var excludeMethodsObj = {};
+        if (typeof options.excludeMethods !== 'undefined') {
+          // We need to turn the excludeMethods array into an object so we can use the in
+          // function.
+          for (var i=0; i < excludeMethods.length; i++) {
+            excludeMethodsObj[excludeMethods[i]] = '';
+          }
+        }
+        
+        // Call every registered method and don't call excluded ones.
+        for (i = 0; i < methods.length; i++) {
+          if (typeof Drupal[methods[i]][options.action] == 'function' && !(methods[i] in excludeMethodsObj)) {
+            Drupal[methods[i]][options.action](options);
+          }
+        }
+        break;
+      
+      // If it gets here it's because it's an invalid action. 
+      default:
+        status.value = false;
+        status.text = Drupal.t('An invalid action "!action" was specified.', { "!action": options.action });
     }
-  }
-  
-  /**
-   * Call this function when the slideshow transition begins.
-   */
-  Drupal.viewsSlideshow.transitionBegin = function (slideshowID, callingMethod, slideNum) {
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].transitionBegin == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].transitionBegin(slideshowID, slideNum);
-      }
-    }
-  }
-  
-  /**
-   * Call this function when the slideshow transition ends.
-   */
-  Drupal.viewsSlideshow.transitionEnd = function (slideshowID, callingMethod, slideToNum) {
-    var methods = Drupal.settings.viewsSlideshow[slideshowID]['methods'];
-    for (i = 0; i < methods.length; i++) {
-      if (typeof Drupal[methods[i]].transitionEnd == 'function' && methods[i] != callingMethod) {
-        Drupal[methods[i]].transitionEnd(slideshowID, slideToNum);
-      }
-    }
+    return status;
   }
 })(jQuery);
