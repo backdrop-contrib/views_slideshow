@@ -115,7 +115,7 @@ function theme_views_slideshow_pager_widget_render($vars) {
   $attributes['class'] = 'widget_pager widget_pager_' . $vars['location'];
   $attributes['id'] = 'widget_pager_' . $vars['location'] . '_' . $vars['vss_id'];
   
-  return theme($vars['settings']['type'] . '_render', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'rows' => $vars['rows'], 'attributes' => $attributes));
+  return theme($vars['settings']['type'] . '_render', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'attributes' => $attributes));
 }
 
 /**
