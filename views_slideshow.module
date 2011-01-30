@@ -85,13 +85,7 @@ function views_slideshow_views_api() {
 function views_slideshow_help($path, $arg) {
   switch ($path) {
     case 'admin/help#views_slideshow':
-      if (module_exists('advanced_help')) {
-        $output = '<p>' . l('Click here to view the documentation for Views Slideshow', 'admin/advanced_help/views_slideshow') . '</p>';
-      }
-      else {
-        $output = '<p>' . t('Views Slideshow help can be found by installing and enabling the !help.',  array('!advanced_help' => l('Advanced Help module', 'http://drupal.org/project/advanced_help'))) . '</p>';
-      }
-      return $output;
+      return '<p>Check the Views Slideshow project page documentation for tutorials and videos on how to use this module.</p>';
   }
 }
 
