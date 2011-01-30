@@ -76,7 +76,28 @@
         else {
           settings.opts.fx = settings.effect;
         }
-    
+        
+        // Take starting item from fragment.
+        var hash = location.hash;
+        if (hash) {
+          var hash = hash.replace('#', '');
+          var aHash = hash.split(';');
+          var aHashLen = aHash.length;
+          
+          // Loop through all the possible starting points.
+          for (var i = 0; i < aHashLen; i++) {
+            // Split the hash into two parts. One part is the slideshow id the
+            // other is the slide number.
+            var initialInfo = aHash[i].split(':');
+            // The id in the hash should match our slideshow.
+            // The slide number chosen shouldn't be larger than the number of
+            // slides we have.
+            if (settings.slideshowId == initialInfo[0] && settings.num_divs > initialInfo[1]) {
+              settings.opts.startingSlide = parseInt(initialInfo[1]);
+            }
+          }
+        }
+
         // Pause on hover.
         if (settings.pause) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
