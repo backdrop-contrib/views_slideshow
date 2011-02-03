@@ -15,7 +15,7 @@
 ?>
 
 <div class="skin-<?php print $skin; ?>">
-  <?php if (isset($top_widget_rendered)): ?>
+  <?php if (!empty($top_widget_rendered)): ?>
     <div class="views-slideshow-controls-top clear-block">
       <?php print $top_widget_rendered; ?>
     </div>
@@ -23,7 +23,7 @@
   
   <?php print $slideshow; ?>
   
-  <?php if (isset($bottom_widget_rendered)): ?>
+  <?php if (!empty($bottom_widget_rendered)): ?>
     <div class="views-slideshow-controls-bottom clear-block">
       <?php print $bottom_widget_rendered; ?>
     </div>
