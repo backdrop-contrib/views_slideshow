@@ -192,7 +192,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
   }
   
   // Run any necessary actions on submit.
-  function options_submit($form, &$form_state) {
+  function options_submit(&$form, &$form_state) {
     module_load_all_includes('views_slideshow.inc');
     
     $arguments = array(
