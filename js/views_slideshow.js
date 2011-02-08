@@ -88,6 +88,13 @@
             });
           });
         }
+        else {
+          $(this).children().each(function(index, pagerItem) {
+            $(pagerItem).click(function() {
+              Drupal.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
+            });
+          });
+        }
       });
     }
   };
