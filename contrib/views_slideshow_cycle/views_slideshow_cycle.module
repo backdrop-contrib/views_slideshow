@@ -35,7 +35,7 @@ function views_slideshow_cycle_init() {
   $module_path = drupal_get_path('module', 'views_slideshow_cycle');
   drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
   
-  drupal_add_css($module_path . '/views_slideshow_cycle.css', 'module');
+  drupal_add_css($module_path . '/views_slideshow_cycle.css', 'file');
 }
 
 /**
