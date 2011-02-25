@@ -1,4 +1,3 @@
-; $Id$
 name = Views Slideshow
 description = Provides a View style that displays rows as a jQuery slideshow.  This is an API and requires Views Slideshow Cycle or another module that supports the API.
 dependencies[] = views

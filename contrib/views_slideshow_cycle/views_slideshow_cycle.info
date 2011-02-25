@@ -1,4 +1,3 @@
-; $Id$
 name = Views Slideshow: Cycle
 description = Adds a Rotating slideshow mode to Views Slideshow.
 dependencies[] = views_slideshow
