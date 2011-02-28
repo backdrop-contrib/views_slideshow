@@ -8,6 +8,7 @@
  */
 
 function template_preprocess_views_slideshow(&$vars) {
+  static $instances = array();
   $options = $vars['options'];
   $main_frame_module = $options['slideshow_type'];
   $settings = $options[$main_frame_module];
@@ -15,6 +16,10 @@ function template_preprocess_views_slideshow(&$vars) {
   $rows = $vars['rows'];
   $num_divs = count($rows);
   $vss_id = $view->name . '-' . $view->current_display;
+  $instances[$vss_id]++;
+  if ($instances[$vss_id] > 1) {
+    $vss_id .= "_" . $instances[$vss_id];
+  }
   
   $methods = module_invoke_all('views_slideshow_js_method_register');
   drupal_add_js(array('viewsSlideshow' => array($vss_id => array('methods' => $methods, 'paused' => 0))), 'setting');
