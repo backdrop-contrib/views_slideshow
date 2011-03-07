@@ -80,9 +80,3 @@ function views_slideshow_cycle_help($path, $arg) {
       return $output;
   }
 }
-
-function views_slideshow_cycle_views_slideshow_js_method_register() {
-  return array(
-    'viewsSlideshowCycle',
-  );
-}

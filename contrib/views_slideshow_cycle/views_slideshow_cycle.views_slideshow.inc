@@ -7,7 +7,25 @@
 
 function views_slideshow_cycle_views_slideshow_slideshow_types() {
   $options = array(
-    'views_slideshow_cycle' => t('Cycle'),
+    'views_slideshow_cycle' => array(
+      'name' => t('Cycle'),
+      'accepts' => array(
+        'goToSlide',
+        'nextSlide',
+        'pause',
+        'play',
+        'previousSlide',
+      ),
+      'calls' => array(
+        'transitionBegin',
+        'transitionEnd',
+        'goToSlide',
+        'pause',
+        'play',
+        'nextSlide',
+        'previousSlide',
+      ),
+    ),
   );
   return $options;
 }

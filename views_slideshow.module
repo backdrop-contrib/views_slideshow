@@ -96,14 +96,6 @@ function views_slideshow_init() {
   drupal_add_js(drupal_get_path('module', 'views_slideshow') . '/js/views_slideshow.js');
 }
 
-function views_slideshow_views_slideshow_js_method_register() {
-  return array(
-    'viewsSlideshowPagerFields',
-    'viewsSlideshowControlsText',
-    'viewsSlideshowSlideCounter',
-  );
-}
-
 /**
  * Implementation of hook_views_slideshow_skins().
  */
@@ -120,9 +112,43 @@ function views_slideshow_views_slideshow_skins() {
  */
 function views_slideshow_views_slideshow_widget_info() {
   return array(
-    'views_slideshow_pager' => 'Pager',
-    'views_slideshow_controls' => 'Controls',
-    'views_slideshow_slide_counter' => 'Slide Counter',
+    'views_slideshow_pager' => array(
+      'name' => t('Pager'),
+      'accepts' => array(
+        'transitionBegin' => array('required' => TRUE),
+        'goToSlide',
+        'previousSlide',
+        'nextSlide',
+      ),
+      'calls' => array(
+        'goToSlide',
+        'pause',
+        'play',
+      ),
+    ),
+    'views_slideshow_controls' => array(
+      'name' => t('Controls'),
+      'accepts' => array(
+        'pause' => array('required' => TRUE),
+        'play' => array('required' => TRUE),
+      ),
+      'calls' => array(
+        'nextSlide',
+        'pause',
+        'play',
+        'previousSlide',
+      ),
+    ),
+    'views_slideshow_slide_counter' => array(
+      'name' => t('Slide Counter'),
+      'accepts' => array(
+        'transitionBegin' => array('required' => TRUE),
+        'goToSlide',
+        'previousSlide',
+        'nextSlide',
+      ),
+      'calls' => array(),
+    ),
   );
 }
 

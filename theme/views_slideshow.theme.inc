@@ -21,9 +21,44 @@ function template_preprocess_views_slideshow(&$vars) {
     $vss_id .= "_" . $instances[$vss_id];
   }
   
-  $methods = module_invoke_all('views_slideshow_js_method_register');
-  drupal_add_js(array('viewsSlideshow' => array($vss_id => array('methods' => $methods, 'paused' => 0))), 'setting');
+  // Building our default methods.
+  $methods = array(
+    'goToSlide' => array(),
+    'nextSlide' => array(),
+    'pause' => array(),
+    'play' => array(),
+    'previousSlide' => array(),
+    'transitionBegin' => array(),
+    'transitionEnd' => array(),
+  );
   
+  // Pull all widget info and slideshow info and merge them together.
+  $widgets = module_invoke_all('views_slideshow_widget_info');
+  $slideshows = module_invoke_all('views_slideshow_slideshow_types');
+  $addons = array_merge($widgets, $slideshows);
+  
+  // Loop through all the addons and call their methods if needed.
+  foreach ($addons as $addon_id => $addon_info) {
+    foreach ($addon_info['accepts'] as $imp_key => $imp_value) {
+      if (is_array($imp_value)) {
+        $methods[$imp_key][] = preg_replace('/_(.?)/e',"strtoupper('$1')", $addon_id);
+      }
+      else {
+        $methods[$imp_value][] = preg_replace('/_(.?)/e',"strtoupper('$1')", $addon_id);
+      }
+    }
+  }
+  
+  $js_settings = array(
+    'viewsSlideshow' => array(
+      $vss_id => array(
+        'methods' => $methods,
+        'paused' => 0,
+      )
+    )
+  );
+  drupal_add_js($js_settings, 'setting');
+
   /**
    * Process Skins
    */

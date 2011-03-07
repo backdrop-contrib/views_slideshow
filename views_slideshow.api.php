@@ -14,11 +14,29 @@
  * Define the type of the slideshow (eg.: cycle, imageflow, ddblock).
  *
  * @return
- *  Associative array of slideshow type and its user friendly name.
+ *  Associative array of slideshow type and its information.
  */
 function hook_views_slideshow_slideshow_types() {
   $options = array(
-    'views_slideshow_cycle' => t('Cycle'),
+    'views_slideshow_cycle' => array(
+      'name' => t('Cycle'),
+      'accepts' => array(
+        'goToSlide',
+        'nextSlide',
+        'pause',
+        'play',
+        'previousSlide',
+      ),
+      'calls' => array(
+        'transitionBegin',
+        'transitionEnd',
+        'goToSlide',
+        'pause',
+        'play',
+        'nextSlide',
+        'previousSlide',
+      ),
+    ),
   );
   return $options;
 }
@@ -95,27 +113,7 @@ function hook_views_slideshow_skins() {
 /**
  * Define new widgets (pagers, controls, counters).
  *
- * @return
- *  Array keyed by the widget names.
- */
-function hook_views_slideshow_widget_info() {
-  return array(
-    'views_slideshow_pager' => 'Pager',
-    'views_slideshow_controls' => 'Controls',
-    'views_slideshow_slide_counter' => 'Slide Counter',
-  );
-}
-
-/**
- * Form fields to be added for a specific widget type. Example of a widget type would be views_slideshow_pager or views_slideshow_slide_counter.
- */
-function [widget-type]_views_slideshow_widget_form_options(&$form, $form_state, $view, $defaults, $dependency) {
-}
-
-/**
- * Define JS methods to be run when a certain slideshow action is fired.
- *
- * Available events:
+ * Available events for accepts and calls
  *  - pause
  *  - play
  *  - nextSlide
@@ -123,13 +121,56 @@ function [widget-type]_views_slideshow_widget_form_options(&$form, $form_state, 
  *  - goToSlide
  *  - transitionBegin
  *  - transitionEnd
+ *
  * @return
- *   array of methods.
+ *  Array keyed by the widget names.
  */
-function hook_views_slideshow_js_method_register() {
+function hook_views_slideshow_widget_info() {
   return array(
-    'views_slideshow_cycle',
+    'views_slideshow_pager' => array(
+      'name' => t('Pager'),
+      'accepts' => array(
+        'transitionBegin' => array('required' => TRUE),
+        'goToSlide',
+        'previousSlide',
+        'nextSlide',
+      ),
+      'calls' => array(
+        'goToSlide',
+        'pause',
+        'play',
+      ),
+    ),
+    'views_slideshow_controls' => array(
+      'name' => t('Controls'),
+      'accepts' => array(
+        'pause' => array('required' => TRUE),
+        'play' => array('required' => TRUE),
+      ),
+      'calls' => array(
+        'nextSlide',
+        'pause',
+        'play',
+        'previousSlide',
+      ),
+    ),
+    'views_slideshow_slide_counter' => array(
+      'name' => t('Slide Counter'),
+      'accepts' => array(
+        'transitionBegin' => array('required' => TRUE),
+        'goToSlide',
+        'previousSlide',
+        'nextSlide',
+      ),
+      'calls' => array(),
+    ),
   );
+}
+
+/**
+ * Form fields to be added for a specific widget type. Example of a widget type would be views_slideshow_pager or views_slideshow_slide_counter.
+ */
+function [widget-type]_views_slideshow_widget_form_options(&$form, $form_state, $view, $defaults, $dependency) {
 }
 
 /**
