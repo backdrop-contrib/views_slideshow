@@ -16,7 +16,7 @@ function template_preprocess_views_slideshow(&$vars) {
   $rows = $vars['rows'];
   $num_divs = count($rows);
   $vss_id = $view->name . '-' . $view->current_display;
-  $instances[$vss_id]++;
+  $instances[$vss_id] = empty($instances[$vss_id]) ? 0 : $instances[$vss_id]++;
   if ($instances[$vss_id] > 1) {
     $vss_id .= "_" . $instances[$vss_id];
   }
