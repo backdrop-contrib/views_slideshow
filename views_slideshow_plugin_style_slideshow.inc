@@ -26,6 +26,9 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
 
   // Build the settings form for the view.
   function options_form(&$form, &$form_state) {
+    // Include ctools dependent support
+    ctools_include('dependent');
+    
     // load up all views slideshow modules functions.
     module_load_all_includes('views_slideshow.inc');
     parent::options_form($form, $form_state);
