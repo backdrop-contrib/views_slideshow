@@ -72,7 +72,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
   $cycle_path = libraries_get_path('jquery.cycle');
   if (empty($cycle_path) || !file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
     $form['views_slideshow_cycle']['no_cycle_js'] = array(
-      '#markup' => '<div style="color: red">' . t('You need to download jQuery cycle plugin and copy jquery.cycle.all.min.js to sites/all/libraries/jquery.cycle You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
+      '#markup' => '<div style="color: red">' . t('You need to install the jQuery cycle plugin. Create a directory in sites/all/libraries called jquery.cycle, and then copy jquery.cycle.all.min.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );
   }
   
