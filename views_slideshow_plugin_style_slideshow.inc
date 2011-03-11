@@ -193,7 +193,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
             '#title' => t('Weight of the !name', array('!name' => $widget_info['name'])),
             '#default_value' => ($this->options['widgets'][$location_id][$widget_id]['weight'] > count($widgets)) ? count($widgets) : $this->options['widgets'][$location_id][$widget_id]['weight'],
             '#options' => $weights,
-            '#description' => t('Determines in what order the !name appears.  A lower weight will cause the !name to be above higher weight items.', array('!name' => $widget_name)),
+            '#description' => t('Determines in what order the !name appears.  A lower weight will cause the !name to be above higher weight items.', array('!name' => $widget_info['name'])),
             '#states' => array(
               'visible' => array(
                 ':input[name="style_options[widgets][' . $location_id . '][' . $widget_id . '][enable]"]' => array('value' => $module),
