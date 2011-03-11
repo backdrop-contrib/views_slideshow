@@ -16,7 +16,7 @@
  * @return
  *  Associative array of slideshow type and its information.
  */
-function hook_views_slideshow_slideshow_types() {
+function hook_views_slideshow_slideshow_info() {
   $options = array(
     'views_slideshow_cycle' => array(
       'name' => t('Cycle'),
@@ -102,10 +102,10 @@ function hook_views_slideshow_options_form_submit($form, &$form_state) {
 /**
  * Define slideshow skins to be available to the end user.
  */
-function hook_views_slideshow_skins() {
+function hook_views_slideshow_skin_info() {
   return array(
     'default' => array(
-      'title' => t('Default'),
+      'name' => t('Default'),
     ),
   );
 }
@@ -176,13 +176,25 @@ function [widget-type]_views_slideshow_widget_form_options(&$form, $form_state, 
 /**
  * Hook called by the pager widget to configure it, the fields that should be shown.
  */
-function hook_views_slideshow_widget_pager_settings($view) {
+function hook_views_slideshow_widget_pager_info($view) {
 }
 
 /**
  * Hook called by the pager widget to add form items.
  */
 function [widget-type]_views_slideshow_widget_pager_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {  
+}
+
+/**
+ * Hook called by the controls widget to configure it, the fields that should be shown.
+ */
+function hook_views_slideshow_widget_controls_info($view) {
+}
+
+/**
+ * Hook called by the controls widget to add form items.
+ */
+function [widget-type]_views_slideshow_widget_controls_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {  
 }
 
 /**

@@ -34,7 +34,7 @@ function template_preprocess_views_slideshow(&$vars) {
   
   // Pull all widget info and slideshow info and merge them together.
   $widgets = module_invoke_all('views_slideshow_widget_info');
-  $slideshows = module_invoke_all('views_slideshow_slideshow_types');
+  $slideshows = module_invoke_all('views_slideshow_slideshow_info');
   $addons = array_merge($widgets, $slideshows);
   
   // Loop through all the addons and call their methods if needed.
@@ -70,7 +70,7 @@ function template_preprocess_views_slideshow(&$vars) {
   // Make sure $skin_info has all the values.
   $skin_info += array(
     'class' => 'default',
-    'title' => t('Untitled skin'),
+    'name' => t('Untitled skin'),
     'module' => 'views_slideshow',
     'path' => '',
     'stylesheets' => array(),

@@ -5,7 +5,7 @@
  * The default options available with Views Slideshow: cycle.
  */
 
-function views_slideshow_cycle_views_slideshow_slideshow_types() {
+function views_slideshow_cycle_views_slideshow_slideshow_info() {
   $options = array(
     'views_slideshow_cycle' => array(
       'name' => t('Cycle'),

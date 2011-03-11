@@ -42,7 +42,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     // Get a list of all available skins.
     $skin_info = $this->views_slideshow_get_skins();
     foreach ($skin_info as $skin => $info) {
-      $skins[$skin] = $info['title'];
+      $skins[$skin] = $info['name'];
     }
     asort($skins);
   
@@ -63,7 +63,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     );
     
     // Get all slideshow types.
-    $slideshows = module_invoke_all('views_slideshow_slideshow_types');
+    $slideshows = module_invoke_all('views_slideshow_slideshow_info');
     
     $slideshow_options = array();
     
@@ -264,16 +264,16 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     if (empty($skins)) {
       $skins = array();
       
-      // Call all modules that use hook_views_slideshow_skins
-      foreach (module_implements('views_slideshow_skins') as $module) {
-        $skin_items = call_user_func($module . '_views_slideshow_skins');
+      // Call all modules that use hook_views_slideshow_skin_info
+      foreach (module_implements('views_slideshow_skin_info') as $module) {
+        $skin_items = call_user_func($module . '_views_slideshow_skin_info');
         if (isset($skin_items) && is_array($skin_items)) {
           foreach (array_keys($skin_items) as $skin) {
             // Ensure that the definition is complete, so we don't need lots
             // of error checking later.
             $skin_items[$skin] += array(
               'class' => 'default',
-              'title' => t('Untitled skin'),
+              'name' => t('Untitled skin'),
               'module' => $module,
               'path' => '',
               'stylesheets' => array(),
