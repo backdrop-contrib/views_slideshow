@@ -69,8 +69,8 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
 }
 
 function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$form_state, &$view) {
-  
-  if (!file_exists('sites/all/libraries/jquery.cycle/jquery.cycle.all.min.js')) {
+  $cycle_path = libraries_get_path('jquery.cycle');
+  if (empty($cycle_path) || !file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
     $form['views_slideshow_cycle']['no_cycle_js'] = array(
       '#markup' => '<div style="color: red">' . t('You need to download jQuery cycle plugin and copy jquery.cycle.all.min.js to sites/all/libraries/jquery.cycle You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );
@@ -346,8 +346,9 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
   $form['views_slideshow_cycle']['advanced_options_header'] = array(
     '#markup' => '<h2>' . t('jQuery Cycle Custom Options') . '</h2>',
   );
-  
-  if (!file_exists('sites/all/libraries/json2/json2.js')) {
+
+  $json2_path = libraries_get_path('json2');
+  if (empty($json2_path) || !file_exists($json2_path . '/json2.js')) {
     $form['views_slideshow_cycle']['no_json_js'] = array(
       '#markup' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to sites/all/libraries/json2', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );

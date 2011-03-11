@@ -9,31 +9,23 @@
  * Implements hook_init().
  */
 function views_slideshow_cycle_init() {
-  // If the jQ module is installed, use that to add the jQuery Cycle plugin.
-  // This allows different versions of the plugin to be used.
-  $js = FALSE;
-  if (module_exists('jq')) {
-    $loaded_plugins = jq_plugins();
-    if (!empty($loaded_plugins['cycle'])) {
-      $js = jq_add('cycle');
-    }
+  // Load jQuery Cycle
+  $cycle_path = libraries_get_path('jquery.cycle');
+  if (!empty($cycle_path) && file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
+    drupal_add_js($cycle_path . '/jquery.cycle.all.min.js');
   }
   
-  // Set location of the libraries directory.
-  $libraries_path = 'sites/all/libraries';
-
-  // Otherwise, we'll add the version included with this module.
-  if (!$js && file_exists($libraries_path . '/jquery.cycle/jquery.cycle.all.min.js')) {
-    drupal_add_js($libraries_path . '/jquery.cycle/jquery.cycle.all.min.js');
-  }
-  
-  if (file_exists($libraries_path . '/json2/json2.js')) {
-    drupal_add_js($libraries_path . '/json2/json2.js');
+  // Load Json2
+  $json_path = libraries_get_path('json2');
+  if (!empty($json_path) && file_exists($json_path . '/json2.js')) {
+    drupal_add_js($json_path . '/json2.js');
   }
 
+  // Load our cycle js
   $module_path = drupal_get_path('module', 'views_slideshow_cycle');
   drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
   
+  // Load our cycle css
   drupal_add_css($module_path . '/views_slideshow_cycle.css', 'file');
 }
 
