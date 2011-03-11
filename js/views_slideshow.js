@@ -178,7 +178,7 @@
         
         // Call every registered method and don't call excluded ones.
         for (i = 0; i < methods[options.action].length; i++) {
-          if (typeof Drupal[methods[options.action][i]][options.action] == 'function' && !(methods[options.action][i] in excludeMethodsObj)) {
+          if (Drupal[methods[options.action][i]] != undefined && typeof Drupal[methods[options.action][i]][options.action] == 'function' && !(methods[options.action][i] in excludeMethodsObj)) {
             Drupal[methods[options.action][i]][options.action](options);
           }
         }
