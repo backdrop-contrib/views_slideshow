@@ -94,6 +94,9 @@ function views_slideshow_help($path, $arg) {
 function views_slideshow_init() {
   // Load javascript on the page in init to help fool caching.
   drupal_add_js(drupal_get_path('module', 'views_slideshow') . '/js/views_slideshow.js');
+  
+  $vs_path = drupal_get_path('module', 'views_slideshow');
+  drupal_add_css($vs_path . '/views_slideshow.css');
 }
 
 /**
@@ -167,6 +170,11 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
     }
     asort($pager_options);
     
+    // Need to wrap this so it indents correctly.
+    $form['views_slideshow_pager_wrapper'] = array(
+      '#markup' => '<div class="vs-dependent-lvl2">',
+    );
+    
     // Create the widget type field.
     $form['type'] = array(
       '#type' => 'select',
@@ -179,6 +187,10 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
           ':input[name="' . $dependency . '[enable]"]' => array('checked' => TRUE),
         ),
       ),
+    );
+    
+    $form['views_slideshow_pager_wrapper_close'] = array(
+      '#markup' => '</div>',
     );
     
     // Add any additional form elements
@@ -234,7 +246,10 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
   foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
     $options[$field] = $handler->ui_name();
   }
-  
+  // Need to wrap this so it indents correctly.
+  $form['views_slideshow_pager_fields_wrapper'] = array(
+    '#markup' => '<div class="vs-dependent-lvl3">',
+  );
   // Add ability to choose which fields to show in the pager.
   $form['views_slideshow_pager_fields_fields'] = array(
     '#type' => 'checkboxes',
@@ -267,6 +282,10 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
       ),
     ),
   );
+  
+  $form['views_slideshow_pager_fields_wrapper_close'] = array(
+    '#markup' => '</div>',
+  );
 }
 
 /**
@@ -284,6 +303,11 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
     }
     asort($control_type_options);
     
+    // Need to wrap this so it indents correctly.
+    $form['views_slideshow_controls_wrapper'] = array(
+      '#markup' => '<div class="vs-dependent-lvl2">',
+    );
+    
     // Create the widget type field.
     $form['type'] = array(
       '#type' => 'select',
@@ -296,6 +320,10 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
           ':input[name="' . $dependency . '[enable]"]' => array('checked' => TRUE),
         ),
       ),
+    );
+    
+    $form['controls_wrapper_close'] = array(
+      '#markup' => '</div>',
     );
     
     // Add any additional form elements

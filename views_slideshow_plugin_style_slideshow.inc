@@ -33,6 +33,10 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
     module_load_all_includes('views_slideshow.inc');
     parent::options_form($form, $form_state);
     
+    // Wrap all the form elements to help style the form.
+    $form['views_slideshow_wrapper'] = array(
+      '#markup' => '<div id="views-slideshow-form-wrapper">',
+    );
     
     // Style
     $form['slideshow_skin_header'] = array(
@@ -179,7 +183,6 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
             '#title' => t($widget_info['name']),
             '#default_value' => $this->options['widgets'][$location_id][$widget_id]['enable'],
             '#description' => t('Should !name be rendered at the !location of the slides.', array('!name' => $widget_info['name'], '!location' => $location_name)),
-            '#process' => array('ctools_dependent_process'),
           );
           
           $form['widgets'][$location_id][$widget_id]['enable']['#dependency']['edit-style-options-slideshow-type'] = !empty($compatible_slideshows) ? $compatible_slideshows : array('none');
@@ -215,6 +218,10 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style_list {
         }
       }
     }
+    
+    $form['views_slideshow_wrapper_close'] = array(
+      '#markup' => '</div>',
+    );
   }
   
   // Run any validation on the form settings.

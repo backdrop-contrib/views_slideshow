@@ -125,6 +125,12 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('View Transition Advanced Options'),
     '#default_value' => $view->options['views_slideshow_cycle']['transition_advanced'], 
   );
+  
+  // Need to wrap this so it indents correctly.
+  $form['views_slideshow_cycle']['transition_advanced_wrapper'] = array(
+    '#markup' => '<div class="vs-dependent-lvl2">',
+  );
+  
   $form['views_slideshow_cycle']['timeout'] = array(
     '#type' => 'textfield',
     '#title' => t('Timer delay'),
@@ -180,6 +186,10 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
       ),
     ),
   );
+  
+  $form['views_slideshow_cycle']['transition_advanced_wrapper_close'] = array(
+    '#markup' => '</div>',
+  );
 
   // Action
   $form['views_slideshow_cycle']['action'] = array(
@@ -204,6 +214,12 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('View Action Advanced Options'),
     '#default_value' => $view->options['views_slideshow_cycle']['action_advanced'], 
   );
+  
+  // Need to wrap this so it indents correctly.
+  $form['views_slideshow_cycle']['action_advanced_wrapper'] = array(
+    '#markup' => '<div class="vs-dependent-lvl2">',
+  );
+  
   $form['views_slideshow_cycle']['start_paused'] = array(
     '#type' => 'checkbox',
     '#title' => t('Start Slideshow Paused'),
@@ -320,6 +336,11 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
         ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
       ),
     ),
+  );
+  
+  // Need to wrap this so it indents correctly.
+  $form['views_slideshow_cycle']['action_advanced_wrapper_close'] = array(
+    '#markup' => '</div>',
   );
   
   // Internet Explorer Tweaks
