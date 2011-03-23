@@ -8,7 +8,6 @@
  */
 
 function template_preprocess_views_slideshow(&$vars) {
-  static $instances = array();
   $options = $vars['options'];
   $main_frame_module = $options['slideshow_type'];
   $settings = $options[$main_frame_module];
@@ -16,9 +15,15 @@ function template_preprocess_views_slideshow(&$vars) {
   $rows = $vars['rows'];
   $num_divs = count($rows);
   $vss_id = $view->name . '-' . $view->current_display;
-  $instances[$vss_id] = isset($instances[$vss_id]) ? $instances[$vss_id]++ : 0;
-  if ($instances[$vss_id] > 1) {
+  
+  // Give each slideshow a unique id if there are more than one on the page.
+  static $instances = array();
+  if (isset($instances[$vss_id])) {
+    $instances[$vss_id]++;
     $vss_id .= "_" . $instances[$vss_id];
+  }
+  else {
+    $instances[$vss_id] = 1;
   }
   
   // Building our default methods.
