@@ -154,10 +154,22 @@ function theme_views_slideshow_main_section($vars) {
  * @ingroup themeable
  */
 function theme_views_slideshow_pager_widget_render($vars) {
+  // Add javascript settings for the pager type.
+  $js_vars = array(
+    'viewsSlideshowPager' => array(
+      $vars['vss_id'] => array(
+        $vars['location'] => array(
+          'type' => preg_replace('/_(.?)/e',"strtoupper('$1')", $vars['settings']['type']),
+        ),
+      ),
+    ),
+  );
+
+  drupal_add_js($js_vars, 'setting');
+
   // Create some attributes
   $attributes['class'] = 'widget_pager widget_pager_' . $vars['location'];
   $attributes['id'] = 'widget_pager_' . $vars['location'] . '_' . $vars['vss_id'];
-
   return theme($vars['settings']['type'] . '_render', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'attributes' => $attributes));
 }
 
@@ -216,6 +228,19 @@ function template_preprocess_views_slideshow_pager_field_item(&$vars) {
  * @inggroup themeable
  */
 function theme_views_slideshow_controls_widget_render($vars) {
+  // Add javascript settings for the controls type.
+  $js_vars = array(
+    'viewsSlideshowControls' => array(
+      $vars['vss_id'] => array(
+        $vars['location'] => array(
+          'type' => preg_replace('/_(.?)/e',"strtoupper('$1')", $vars['settings']['type']),
+        ),
+      ),
+    ),
+  );
+
+  drupal_add_js($js_vars, 'setting');
+
   $output = '';
   if (count($vars['rows']) > 1) {
     $output = theme($vars['settings']['type'] . '_render', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'rows' => $vars['rows']));

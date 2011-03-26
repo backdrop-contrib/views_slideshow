@@ -1,6 +1,69 @@
 (function ($) {
   Drupal.viewsSlideshow = Drupal.viewsSlideshow || {};
 
+  /**
+   * Views Slideshow Controls
+   */
+  Drupal.viewsSlideshowControls = Drupal.viewsSlideshowControls || {};
+
+  /**
+   * Implement the play hook for controls.
+   */
+  Drupal.viewsSlideshowControls.play = function (options) {
+    // Route the control call to the correct control type.
+    // Need to use try catch so we don't have to check to make sure every part
+    // of the object is defined.
+    try {
+      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].play == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].play(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+
+    try {
+      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].play == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].play(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+  }
+
+  /**
+   * Implement the pause hook for controls.
+   */
+  Drupal.viewsSlideshowControls.pause = function (options) {
+    // Route the control call to the correct control type.
+    // Need to use try catch so we don't have to check to make sure every part
+    // of the object is defined.
+    try {
+      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].pause == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].pause(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+
+    try {
+      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].pause == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].pause(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+  }
+
+
+  /**
+   * Views Slideshow Text Controls
+   */
+
+  // Add views slieshow api calls for views slideshow text controls.
   Drupal.behaviors.viewsSlideshowControlsText = {
     attach: function (context) {
 
@@ -41,7 +104,7 @@
   Drupal.viewsSlideshowControlsText = Drupal.viewsSlideshowControlsText || {};
 
   /**
-   * Implement hook_viewsSlideshowPause for text controls.
+   * Implement the pause hook for text controls.
    */
   Drupal.viewsSlideshowControlsText.pause = function (options) {
     var pauseText = Drupal.theme.prototype['viewsSlideshowControlsPause'] ? Drupal.theme('viewsSlideshowControlsPause') : '';
@@ -49,23 +112,138 @@
   }
 
   /**
-   * Implement hook_viewsSlideshowPlay for text controls.
+   * Implement the play hook for text controls.
    */
   Drupal.viewsSlideshowControlsText.play = function (options) {
     var playText = Drupal.theme.prototype['viewsSlideshowControlsPlay'] ? Drupal.theme('viewsSlideshowControlsPlay') : '';
     $('#views_slideshow_controls_text_pause_' + options.slideshowID).text(playText);
   }
 
-  // Theme control pause.
+  // Theme the resume control.
   Drupal.theme.prototype.viewsSlideshowControlsPause = function () {
     return Drupal.t('Resume');
   }
 
-  // Theme control pause.
+  // Theme the pause control.
   Drupal.theme.prototype.viewsSlideshowControlsPlay = function () {
     return Drupal.t('Pause');
   }
 
+  /**
+   * Views Slideshow Pager
+   */
+  Drupal.viewsSlideshowPager = Drupal.viewsSlideshowPager || {};
+
+  /**
+   * Implement the transitionBegin hook for pagers.
+   */
+  Drupal.viewsSlideshowPager.transitionBegin = function (options) {
+    // Route the pager call to the correct pager type.
+    // Need to use try catch so we don't have to check to make sure every part
+    // of the object is defined.
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].transitionBegin == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].transitionBegin(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].transitionBegin == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].transitionBegin(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+  }
+
+  /**
+   * Implement the goToSlide hook for pagers.
+   */
+  Drupal.viewsSlideshowPager.goToSlide = function (options) {
+    // Route the pager call to the correct pager type.
+    // Need to use try catch so we don't have to check to make sure every part
+    // of the object is defined.
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].goToSlide == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].goToSlide(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].goToSlide == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].goToSlide(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+  }
+
+  /**
+   * Implement the previousSlide hook for pagers.
+   */
+  Drupal.viewsSlideshowPager.previousSlide = function (options) {
+    // Route the pager call to the correct pager type.
+    // Need to use try catch so we don't have to check to make sure every part
+    // of the object is defined.
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].previousSlide == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].previousSlide(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].previousSlide == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].previousSlide(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+  }
+
+  /**
+   * Implement the nextSlide hook for pagers.
+   */
+  Drupal.viewsSlideshowPager.nextSlide = function (options) {
+    // Route the pager call to the correct pager type.
+    // Need to use try catch so we don't have to check to make sure every part
+    // of the object is defined.
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].nextSlide == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].nextSlide(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+
+    try {
+      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].nextSlide == 'function') {
+        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].nextSlide(options);
+      }
+    }
+    catch(err) {
+      // Don't need to do anything on error.
+    }
+  }
+
+
+  /**
+   * Views Slideshow Pager Fields
+   */
+
+  // Add views slieshow api calls for views slideshow pager fields.
   Drupal.behaviors.viewsSlideshowPagerFields = {
     attach: function (context) {
       // Process pause on hover.
@@ -102,7 +280,7 @@
   Drupal.viewsSlideshowPagerFields = Drupal.viewsSlideshowPagerFields || {};
 
   /**
-   * Implement hook_viewsSlidshowTransitionBegin for pager fields pager.
+   * Implement the transitionBegin hook for pager fields pager.
    */
   Drupal.viewsSlideshowPagerFields.transitionBegin = function (options) {
     // Remove active class from pagers
@@ -112,10 +290,71 @@
     $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + options.slideNum).addClass('active');
   }
 
+  /**
+   * Implement the goToSlide hook for pager fields pager.
+   */
+  Drupal.viewsSlideshowPagerFields.goToSlide = function (options) {
+    // Remove active class from pagers
+    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
+
+    // Add active class to active pager.
+    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + options.slideNum).addClass('active');
+  }
+
+  /**
+   * Implement the previousSlide hook for pager fields pager.
+   */
+  Drupal.viewsSlideshowPagerFields.previousSlide = function (options) {
+    // Get the current active pager.
+    var pagerNum = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + options.slideshowID + '_', '');
+
+    // If we are on the first pager then activate the last pager.
+    // Otherwise activate the previous pager.
+    if (pagerNum == 0) {
+      pagerNum = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').length() - 1;
+    }
+    else {
+      pagerNum--;
+    }
+
+    // Remove active class from pagers
+    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
+
+    // Add active class to active pager.
+    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + pagerNum).addClass('active');
+  }
+
+  /**
+   * Implement the nextSlide hook for pager fields pager.
+   */
+  Drupal.viewsSlideshowPagerFields.nextSlide = function (options) {
+    // Get the current active pager.
+    var pagerNum = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + options.slideshowID + '_', '');
+    var totalPagers = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').length();
+
+    // If we are on the last pager then activate the first pager.
+    // Otherwise activate the next pager.
+    pagerNum++;
+    if (pagerNum == totalPagers) {
+      pagerNum = 0;
+    }
+
+    // Remove active class from pagers
+    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
+
+    // Add active class to active pager.
+    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + slideNum).addClass('active');
+  }
+
+
+  /**
+   * Views Slideshow Slide Counter
+   */
+
   Drupal.viewsSlideshowSlideCounter = Drupal.viewsSlideshowSlideCounter || {};
 
   /**
-   * Implement hook_viewsSlidshowTransitionBegin for pager fields pager.
+   * Implement the transitionBegin for the slide counter.
    */
   Drupal.viewsSlideshowSlideCounter.transitionBegin = function (options) {
     $('#views_slideshow_slide_counter_' + options.slideshowID + ' .num').text(options.slideNum + 1);
