@@ -16,7 +16,7 @@
         settings.targetId = '#' + $(fullId + " :first").attr('id');
         settings.slideshowId = settings.targetId.replace('#views_slideshow_cycle_teaser_section_', '');
         settings.paused = false;
-    
+
         settings.opts = {
           speed:settings.speed,
           timeout:settings.timeout,
@@ -38,7 +38,7 @@
             if (settings.remember_slide) {
               createCookie(settings.vss_id, opts.currSlide + 1, settings.remember_slide_days);
             }
-    
+
             // Make variable height.
             if (!settings.fixed_height) {
               //get the height of the current slide
@@ -46,20 +46,20 @@
               //set the container's height to that of the current slide
               $(this).parent().animate({height: $ht});
             }
-            
+
             // Need to do some special handling on first load.
             var slideNum = opts.nextSlide;
             if (typeof settings.processedBefore == 'undefined' || !settings.processedBefore) {
               settings.processedBefore = 1;
               slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
             }
-            
+
             Drupal.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
           },
           cleartype:(settings.cleartype)? true : false,
           cleartypeNoBg:(settings.cleartypenobg)? true : false
         }
-        
+
         // Set the starting slide if we are supposed to remember the slide
         if (settings.remember_slide) {
           var startSlide = readCookie(settings.vss_id);
@@ -68,21 +68,21 @@
           }
           settings.opts.startingSlide =  startSlide;
         }
-    
+
         if (settings.effect == 'none') {
           settings.opts.speed = 1;
         }
         else {
           settings.opts.fx = settings.effect;
         }
-        
+
         // Take starting item from fragment.
         var hash = location.hash;
         if (hash) {
           var hash = hash.replace('#', '');
           var aHash = hash.split(';');
           var aHashLen = aHash.length;
-          
+
           // Loop through all the possible starting points.
           for (var i = 0; i < aHashLen; i++) {
             // Split the hash into two parts. One part is the slideshow id the
@@ -107,14 +107,14 @@
             }
           });
         }
-    
+
         // Pause on clicking of the slide.
         if (settings.pause_on_click) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
             Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           });
         }
-        
+
         if (typeof JSON != 'undefined') {
           var advancedOptions = JSON.parse(settings.advanced_options);
           for (var option in advancedOptions) {
@@ -129,9 +129,9 @@
             else if (advancedOptions[option].toLowerCase() == 'false') {
               advancedOptions[option] = false;
             }
-            
+
             switch(option) {
-              
+
               // Standard Options
               case "activePagerClass":
               case "allowPagerClickBubble":
@@ -175,7 +175,7 @@
               case "timeout":
                 settings.opts[option] = advancedOptions[option];
                 break;
-              
+
               // These process options that look like {top:50, bottom:20}
               case "animIn":
               case "animOut":
@@ -184,68 +184,68 @@
               case "shuffle":
                 settings.opts[option] = eval('(' + advancedOptions[option] + ')');
                 break;
-              
+
               // These options have their own functions.
               case "after":
-                // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag) 
+                // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "before":
-                // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag) 
+                // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "end":
                 // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
                 settings.opts[option] = function(options) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "fxFn":
                 // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "onPagerEvent":
                 settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "onPrevNextEvent":
                 settings.opts[option] = function(isNext, zeroBasedSlideIndex, slideElement) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "pagerAnchorBuilder":
                 // callback fn for building anchor links:  function(index, DOMelement)
                 settings.opts[option] = function(index, DOMelement) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "pagerClick":
                 // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
                 settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
                   eval(advancedOptions[option]);
                 }
                 break;
-              
+
               case "timeoutFn":
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
                   eval(advancedOptions[option]);
                 }
                 break;
-          
+
               case "updateActivePagerLink":
                 // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
                 settings.opts[option] = function(pager, currSlideIndex) {
@@ -255,7 +255,7 @@
             }
           }
         }
-        
+
         // If selected wait for the images to be loaded.
         // otherwise just load the slideshow.
         if (settings.wait_for_image_load) {
@@ -264,14 +264,14 @@
           settings.totalImages = $(settings.targetId + ' img').length;
           if (settings.totalImages) {
             settings.loadedImages = 0;
-  
+
             // Add a load event for each image.
             $(settings.targetId + ' img').each(function() {
               var $imageElement = $(this);
               $imageElement.bind('load', function () {
                 Drupal.viewsSlideshowCycle.imageWait(fullId);
               });
-              
+
               // Removing the source and adding it again will fire the load event.
               var imgSrc = $imageElement.attr('src');
               $imageElement.attr('src', '');
@@ -288,9 +288,9 @@
       });
     }
   };
-  
+
   Drupal.viewsSlideshowCycle = Drupal.viewsSlideshowCycle || {};
-  
+
   // This checks to see if all the images have been loaded.
   // If they have then it starts the slideshow.
   Drupal.viewsSlideshowCycle.imageWait = function(fullId) {
@@ -298,17 +298,17 @@
       Drupal.viewsSlideshowCycle.load(fullId);
     }
   }
-  
+
   // Start the slideshow.
   Drupal.viewsSlideshowCycle.load = function (fullId) {
     var settings = Drupal.settings.viewsSlideshowCycle[fullId];
     $(settings.targetId).cycle(settings.opts);
-    
+
     // Start Paused
     if (settings.start_paused) {
       Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
     }
-    
+
     // Pause if hidden.
     if (settings.pause_when_hidden) {
       var checkPause = function(settings) {
@@ -323,54 +323,54 @@
           Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
         }
       }
-     
+
       // Check when scrolled.
       $(window).scroll(function() {
        checkPause(settings);
       });
-      
+
       // Check when the window is resized.
       $(window).resize(function() {
         checkPause(settings);
       });
     }
   }
-  
+
   Drupal.viewsSlideshowCycle.pause = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('pause');
   }
-  
+
   Drupal.viewsSlideshowCycle.play = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('resume');
   }
-  
+
   Drupal.viewsSlideshowCycle.previousSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('prev');
   }
-  
+
   Drupal.viewsSlideshowCycle.nextSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('next');
   }
-  
+
   Drupal.viewsSlideshowCycle.goToSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle(options.slideNum);
   }
-  
+
   // Verify that the value is a number.
   function IsNumeric(sText) {
     var ValidChars = "0123456789";
     var IsNumber=true;
     var Char;
-  
-    for (var i=0; i < sText.length && IsNumber == true; i++) { 
-      Char = sText.charAt(i); 
+
+    for (var i=0; i < sText.length && IsNumber == true; i++) {
+      Char = sText.charAt(i);
       if (ValidChars.indexOf(Char) == -1) {
         IsNumber = false;
       }
     }
     return IsNumber;
   }
-  
+
   /**
    * Cookie Handling Functions
    */
@@ -385,7 +385,7 @@
     }
     document.cookie = name+"="+value+expires+"; path=/";
   }
-  
+
   function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -398,11 +398,11 @@
     }
     return null;
   }
-  
+
   function eraseCookie(name) {
     createCookie(name,"",-1);
   }
-  
+
   /**
    * Checks to see if the slide is visible enough.
    * elem = element to check.
@@ -418,7 +418,7 @@
     var docViewBottom = docViewTop + $(window).height();
     var docViewLeft = $(window).scrollLeft();
     var docViewRight = docViewLeft + $(window).width();
-  
+
     // Get the top, bottom, and height of the slide;
     var elemTop = $(elem).offset().top;
     var elemHeight = $(elem).height();
@@ -427,33 +427,33 @@
     var elemWidth = $(elem).width();
     var elemRight = elemLeft + elemWidth;
     var elemArea = elemHeight * elemWidth;
-    
+
     // Calculate what's hiding in the slide.
     var missingLeft = 0;
     var missingRight = 0;
     var missingTop = 0;
     var missingBottom = 0;
-    
+
     // Find out how much of the slide is missing from the left.
     if (elemLeft < docViewLeft) {
       missingLeft = docViewLeft - elemLeft;
     }
-  
+
     // Find out how much of the slide is missing from the right.
     if (elemRight > docViewRight) {
       missingRight = elemRight - docViewRight;
     }
-    
+
     // Find out how much of the slide is missing from the top.
     if (elemTop < docViewTop) {
       missingTop = docViewTop - elemTop;
     }
-  
+
     // Find out how much of the slide is missing from the bottom.
     if (elemBottom > docViewBottom) {
       missingBottom = elemBottom - docViewBottom;
     }
-    
+
     // If there is no amountVisible defined then check to see if the whole slide
     // is visible.
     if (type == 'full') {
@@ -464,7 +464,7 @@
     }
     else if(type == 'vertical') {
       var verticalShowing = elemHeight - missingTop - missingBottom;
-      
+
       // If user specified a percentage then find out if the current shown percent
       // is larger than the allowed percent.
       // Otherwise check to see if the amount of px shown is larger than the
@@ -478,7 +478,7 @@
     }
     else if(type == 'horizontal') {
       var horizontalShowing = elemWidth - missingLeft - missingRight;
-      
+
       // If user specified a percentage then find out if the current shown percent
       // is larger than the allowed percent.
       // Otherwise check to see if the amount of px shown is larger than the
@@ -492,7 +492,7 @@
     }
     else if(type == 'area') {
       var areaShowing = (elemWidth - missingLeft - missingRight) * (elemHeight - missingTop - missingBottom);
-      
+
       // If user specified a percentage then find out if the current shown percent
       // is larger than the allowed percent.
       // Otherwise check to see if the amount of px shown is larger than the

@@ -94,7 +94,7 @@ function views_slideshow_help($path, $arg) {
 function views_slideshow_init() {
   // Load javascript on the page in init to help fool caching.
   drupal_add_js(drupal_get_path('module', 'views_slideshow') . '/js/views_slideshow.js');
-  
+
   $vs_path = drupal_get_path('module', 'views_slideshow');
   drupal_add_css($vs_path . '/views_slideshow.css');
 }
@@ -169,12 +169,12 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
       $pager_options[$pager_id] = $pager_info['name'];
     }
     asort($pager_options);
-    
+
     // Need to wrap this so it indents correctly.
     $form['views_slideshow_pager_wrapper'] = array(
       '#markup' => '<div class="vs-dependent-lvl2">',
     );
-    
+
     // Create the widget type field.
     $form['type'] = array(
       '#type' => 'select',
@@ -188,11 +188,11 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
         ),
       ),
     );
-    
+  
     $form['views_slideshow_pager_wrapper_close'] = array(
       '#markup' => '</div>',
     );
-    
+
     // Add any additional form elements
     // Build our arguments to pass to
     // [pager-type]_views_slideshow_widget_pager_form_options
@@ -203,7 +203,7 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
       $defaults,
       $dependency,
     );
-    
+
     foreach ($pagers as $pager_key => $pager_info) {
       $function = $pager_key . '_views_slideshow_widget_pager_form_options';
       if (function_exists($function)) {
@@ -232,7 +232,7 @@ function views_slideshow_views_slideshow_widget_pager_info($view) {
       ),
     );
   }
-  
+
   return $settings;
 }
 
@@ -242,7 +242,7 @@ function views_slideshow_views_slideshow_widget_pager_info($view) {
 function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
   // Settings for fields pager.
   $options = array();
-  // Get each field and it's name. 
+  // Get each field and it's name.
   foreach ($view->display->handler->get_handlers('field') as $field => $handler) {
     $options[$field] = $handler->ui_name();
   }
@@ -267,7 +267,7 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
       ),
     ),
   );
-  
+
   // Add field to see if they would like to activate slide and pause on pager
   // hover
   $form['views_slideshow_pager_fields_hover'] = array(
@@ -282,7 +282,7 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
       ),
     ),
   );
-  
+
   $form['views_slideshow_pager_fields_wrapper_close'] = array(
     '#markup' => '</div>',
   );
@@ -295,19 +295,19 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
   // Get all the pager info from other modules.
   // hook_views_slideshow_controls_settings($view, $option_values, $dependency_prefix)
   $controls = module_invoke_all('views_slideshow_widget_controls_info', $view);
-  
+
   if (!empty($controls)) {
     $control_type_options = array();
     foreach($controls as $control_id => $control_info) {
       $control_type_options[$control_id] = $control_info['name'];
     }
     asort($control_type_options);
-    
+
     // Need to wrap this so it indents correctly.
     $form['views_slideshow_controls_wrapper'] = array(
       '#markup' => '<div class="vs-dependent-lvl2">',
     );
-    
+
     // Create the widget type field.
     $form['type'] = array(
       '#type' => 'select',
@@ -321,11 +321,11 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
         ),
       ),
     );
-    
+
     $form['controls_wrapper_close'] = array(
       '#markup' => '</div>',
     );
-    
+
     // Add any additional form elements
     // Build our arguments to pass to
     // [pager-type]_views_slideshow_widget_pager_form_options
@@ -336,7 +336,7 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
       $defaults,
       $dependency,
     );
-    
+
     foreach ($controls as $control_key => $control_info) {
       $function = $control_key . '_views_slideshow_widget_controls_form_options';
       if (function_exists($function)) {
@@ -366,7 +366,7 @@ function views_slideshow_views_slideshow_widget_controls_info($view) {
  * Implements hook_views_slideshow_option_definition.
  */
 function views_slideshow_views_slideshow_option_definition() {
-  
+
   // Default slideshow type and skins
   $options['slideshow_type'] = array('default' => '');
   $options['slideshow_skin'] = array('default' => '');
@@ -379,7 +379,7 @@ function views_slideshow_views_slideshow_option_definition() {
       'stylesheets' => array(),
     ),
   );
-  
+
   // Set default widgets and weight values.
   $widgets = module_invoke_all('views_slideshow_widget_info');
   if ($widgets) {
@@ -391,7 +391,7 @@ function views_slideshow_views_slideshow_option_definition() {
       }
     }
   }
-  
+
   // Defaults for the pager widget.
   foreach ($locations as $location) {
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['type'] = array('default' => 0);
@@ -401,12 +401,9 @@ function views_slideshow_views_slideshow_option_definition() {
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_thumbnails_click_to_page'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_fields'] = array('default' => array());
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_hover'] = array('default' => 0);
-    
+
     $options['widgets']['contains'][$location]['contains']['views_slideshow_controls']['contains']['type'] = array('default' => 0);
   }
-  
+
   return $options;
 }
-
-
-

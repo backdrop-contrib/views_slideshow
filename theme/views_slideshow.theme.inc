@@ -15,7 +15,7 @@ function template_preprocess_views_slideshow(&$vars) {
   $rows = $vars['rows'];
   $num_divs = count($rows);
   $vss_id = $view->name . '-' . $view->current_display;
-  
+
   // Give each slideshow a unique id if there are more than one on the page.
   static $instances = array();
   if (isset($instances[$vss_id])) {
@@ -25,7 +25,7 @@ function template_preprocess_views_slideshow(&$vars) {
   else {
     $instances[$vss_id] = 1;
   }
-  
+
   // Building our default methods.
   $methods = array(
     'goToSlide' => array(),
@@ -36,12 +36,12 @@ function template_preprocess_views_slideshow(&$vars) {
     'transitionBegin' => array(),
     'transitionEnd' => array(),
   );
-  
+
   // Pull all widget info and slideshow info and merge them together.
   $widgets = module_invoke_all('views_slideshow_widget_info');
   $slideshows = module_invoke_all('views_slideshow_slideshow_info');
   $addons = array_merge($widgets, $slideshows);
-  
+
   // Loop through all the addons and call their methods if needed.
   foreach ($addons as $addon_id => $addon_info) {
     foreach ($addon_info['accepts'] as $imp_key => $imp_value) {
@@ -53,7 +53,7 @@ function template_preprocess_views_slideshow(&$vars) {
       }
     }
   }
-  
+
   $js_settings = array(
     'viewsSlideshow' => array(
       $vss_id => array(
@@ -71,7 +71,7 @@ function template_preprocess_views_slideshow(&$vars) {
   if (isset($options['skin_info'])) {
     $skin_info = $options['skin_info'];
   }
-  
+
   // Make sure $skin_info has all the values.
   $skin_info += array(
     'class' => 'default',
@@ -88,14 +88,14 @@ function template_preprocess_views_slideshow(&$vars) {
   if ($skin_info['path']) {
     $skin_path .= '/' . $skin_info['path'];
   }
-  
+
   // Add stylesheet.
   if (!empty($skin_info['stylesheets'])) {
     foreach ($skin_info['stylesheets'] as $stylesheet) {
       drupal_add_css($skin_path . '/' . $stylesheet);
     }
   }
-  
+
   /**
    * Process Widgets
    */
@@ -105,20 +105,20 @@ function template_preprocess_views_slideshow(&$vars) {
     $weight['top'][$i] = '';
     $weight['bottom'][$i] = '';
   }
-  
+
   foreach ($widgets as $widget_id => $widget_name) {
     // Put our widgets in the right location.
     if ($options['widgets']['top'][$widget_id]['enable']) {
       $widget_weight = ($options['widgets']['top'][$widget_id]['weight'] > count($widgets)) ? count($widgets) : $options['widgets']['top'][$widget_id]['weight'];
       $weight['top'][$widget_weight][] = $widget_id;
     }
-    
+
     if ($options['widgets']['bottom'][$widget_id]['enable']) {
       $widget_weight = ($options['widgets']['bottom'][$widget_id]['weight'] > count($widgets)) ? count($widgets) : $options['widgets']['bottom'][$widget_id]['weight'];
       $weight['bottom'][$widget_weight][] = $widget_id;
     }
   }
-  
+
   // Build our widgets
   foreach ($weight as $location => $order) {
     $vars[$location . '_widget_rendered'] = '';
@@ -131,7 +131,7 @@ function template_preprocess_views_slideshow(&$vars) {
       }
     }
   }
-  
+
   /**
    * Process Slideshow
    */
@@ -157,7 +157,7 @@ function theme_views_slideshow_pager_widget_render($vars) {
   // Create some attributes
   $attributes['class'] = 'widget_pager widget_pager_' . $vars['location'];
   $attributes['id'] = 'widget_pager_' . $vars['location'] . '_' . $vars['vss_id'];
-  
+
   return theme($vars['settings']['type'] . '_render', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'attributes' => $attributes));
 }
 
@@ -175,15 +175,15 @@ function template_preprocess_views_slideshow_pager_fields_render(&$vars) {
       ),
     ),
   );
-  
+
   // Add the settings to the page.
   drupal_add_js($js_vars, 'setting');
-  
+
   $vars['classes_array'][] = $vars['attributes']['class'];
   $vars['widget_id'] = $vars['attributes']['id'];
   // Add our class to the wrapper.
   $vars['classes_array'][] = 'views_slideshow_pager_field';
-  
+
   // Render all the fields.
   $vars['rendered_field_items'] = '';
   foreach ($vars['view']->result as $count => $node) {
@@ -220,7 +220,7 @@ function theme_views_slideshow_controls_widget_render($vars) {
   if (count($vars['rows']) > 1) {
     $output = theme($vars['settings']['type'] . '_render', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'rows' => $vars['rows']));
   }
-  
+
   return $output;
 }
 
@@ -232,13 +232,13 @@ function theme_views_slideshow_controls_widget_render($vars) {
 function template_preprocess_views_slideshow_controls_text_render(&$vars) {
   $module_path = drupal_get_path('module', 'views_slideshow');
   drupal_add_css($module_path . '/views_slideshow_controls.css', array('type' => 'file'));
-  
+
   $vars['classes_array'][] = 'views_slideshow_controls_text';
-  
+
   $vars['rendered_control_previous'] = theme('views_slideshow_controls_text_previous', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings']));
 
   $vars['rendered_control_pause'] = theme('views_slideshow_controls_text_pause', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings']));
-  
+
   $vars['rendered_control_next'] = theme('views_slideshow_controls_text_next', array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings']));
 }
 

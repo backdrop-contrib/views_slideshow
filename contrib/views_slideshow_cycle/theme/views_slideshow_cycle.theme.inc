@@ -25,7 +25,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
         $value = str_replace("\n", ' ', $value);
       }
       $value = trim($value);
-  
+
       if (is_numeric($value)) {
         $value = (int)$value;
       }
@@ -36,7 +36,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
         $value = FALSE;
       }
     }
-    
+
     $new_settings[$key] = $value;
   }
 
@@ -66,11 +66,11 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
 
   if ($slideshow_count > 1) {
     $vss_id .= '-' . $slideshow_count;
-    $settings['vss_id'] = $vss_id;  
+    $settings['vss_id'] = $vss_id;
   }
-  
+
   drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
-  
+
   // Add the hoverIntent plugin.
   if (isset($settings['advanced_pagerevent']) && $settings['advanced_pagerevent'] == 'hoverIntent') {
     if (module_exists('jq')) {
@@ -83,20 +83,20 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
       hoverintent_add();
     }
   }
-  
+
   // Add the slideshow elements.
   $vars['classes_array'][] = 'views_slideshow_cycle_teaser_section';
-  
+
   $styles = '';
   if (isset($view->display_handler->display->display_options['style_options']['views_slideshow_cycle'])) {
     $styles = $view->display_handler->display->display_options['style_options']['views_slideshow_cycle'];
   }
-  
+
   $styles_default = '';
   if (isset($view->display['default']->display_options['style_options']['views_slideshow_cycle'])) {
     $styles_default = $view->display['default']->display_options['style_options']['views_slideshow_cycle'];
   }
-  
+
   // Retrive the number of items per frame
   if (isset($styles['items_per_slide']) && $styles['items_per_slide'] > 0) {
     $items_per_slide = $styles['items_per_slide'];
@@ -107,9 +107,9 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   else {
     $items_per_slide = 1;
   }
-  
+
   $vars['items_per_slide'] = $items_per_slide;
-  
+
   $items = array();
   $slideshow_count = 0;
   $rendered_rows = '';
@@ -121,7 +121,7 @@ function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
       $slideshow_count++;
     }
   }
-  
+
   $vars['rendered_rows'] = $rendered_rows;
 }
 
