@@ -229,7 +229,9 @@
               case "pagerAnchorBuilder":
                 // callback fn for building anchor links:  function(index, DOMelement)
                 settings.opts[option] = function(index, DOMelement) {
+                  var returnVal = '';
                   eval(advancedOptions[option]);
+                  return returnVal;
                 }
                 break;
 
