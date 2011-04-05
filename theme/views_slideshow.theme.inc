@@ -13,7 +13,10 @@ function template_preprocess_views_slideshow(&$vars) {
 
   // Make sure the main slideshow settings are defined before building the
   // slideshow.
-  if (isset($options[$main_frame_module])) {
+  if (empty($options[$main_frame_module])) {
+    drupal_set_message(t('The options for !module does not exists.', array('!module' => $main_frame_module)), 'error');
+  }
+  else {
     $settings = $options[$main_frame_module];
     $view = $vars['view'];
     $rows = $vars['rows'];
@@ -141,9 +144,6 @@ function template_preprocess_views_slideshow(&$vars) {
      */
     $slides = theme($main_frame_module . '_main_frame', array('vss_id' => $vss_id, 'view' => $view, 'settings' => $settings, 'rows' => $rows));
     $vars['slideshow'] = theme('views_slideshow_main_section', array('vss_id' => $vss_id, 'slides' => $slides, 'plugin' => $main_frame_module));
-  }
-  else {
-    drupal_set_message(t('The options for !module does not exists.', array('!module' => $main_frame_module)), 'error');
   }
 }
 
