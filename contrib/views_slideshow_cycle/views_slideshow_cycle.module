@@ -9,21 +9,24 @@
  * Implements hook_init().
  */
 function views_slideshow_cycle_init() {
-  // Load jQuery Cycle
-  $cycle_path = libraries_get_path('jquery.cycle');
-  if (!empty($cycle_path) && file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
-    drupal_add_js($cycle_path . '/jquery.cycle.all.min.js');
-  }
+  // Don't load javascript unless libraries module is present.
+  if (module_exists('libraries')) {
+    // Load jQuery Cycle
+    $cycle_path = libraries_get_path('jquery.cycle');
+    if (!empty($cycle_path) && file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
+      drupal_add_js($cycle_path . '/jquery.cycle.all.min.js');
+    }
 
-  // Load Json2
-  $json_path = libraries_get_path('json2');
-  if (!empty($json_path) && file_exists($json_path . '/json2.js')) {
-    drupal_add_js($json_path . '/json2.js');
-  }
+    // Load Json2
+    $json_path = libraries_get_path('json2');
+    if (!empty($json_path) && file_exists($json_path . '/json2.js')) {
+      drupal_add_js($json_path . '/json2.js');
+    }
 
-  // Load our cycle js
-  $module_path = drupal_get_path('module', 'views_slideshow_cycle');
-  drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
+    // Load our cycle js
+    $module_path = drupal_get_path('module', 'views_slideshow_cycle');
+    drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
+  }
 
   // Load our cycle css
   drupal_add_css($module_path . '/views_slideshow_cycle.css', 'file');
