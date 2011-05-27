@@ -170,7 +170,7 @@ function hook_views_slideshow_widget_info() {
 /**
  * Form fields to be added for a specific widget type. Example of a widget type would be views_slideshow_pager or views_slideshow_slide_counter.
  */
-function [widget-type]_views_slideshow_widget_form_options(&$form, $form_state, $view, $defaults, $dependency) {
+function INSERT_WIDGET_TYPE_HERE_views_slideshow_widget_form_options(&$form, $form_state, $view, $defaults, $dependency) {
 }
 
 /**
@@ -182,7 +182,7 @@ function hook_views_slideshow_widget_pager_info($view) {
 /**
  * Hook called by the pager widget to add form items.
  */
-function [widget-type]_views_slideshow_widget_pager_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
+function INSERT_WIDGET_TYPE_HERE_views_slideshow_widget_pager_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
 }
 
 /**
@@ -194,7 +194,7 @@ function hook_views_slideshow_widget_controls_info($view) {
 /**
  * Hook called by the controls widget to add form items.
  */
-function [widget-type]_views_slideshow_widget_controls_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
+function INSERT_WIDGET_TYPE_HERE_views_slideshow_widget_controls_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
 }
 
 /**
