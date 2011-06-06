@@ -111,6 +111,7 @@
         // Pause on clicking of the slide.
         if (settings.pause_on_click) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
+            settings.paused = true;
             Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           });
         }
@@ -343,6 +344,7 @@
   }
 
   Drupal.viewsSlideshowCycle.play = function (options) {
+    Drupal.settings.viewsSlideshowCycle['#views_slideshow_cycle_main_' + options.slideshowID].paused = false;
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('resume');
   }
 
