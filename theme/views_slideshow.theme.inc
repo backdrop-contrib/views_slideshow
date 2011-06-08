@@ -30,7 +30,7 @@ function template_preprocess_views_slideshow(&$vars) {
   if (empty($main_frame_module)) {
     drupal_set_message(t('No main frame module is enabled for views slideshow.'), 'error');
   }
-  if (empty($options[$main_frame_module])) {
+  elseif (empty($options[$main_frame_module])) {
     drupal_set_message(t('The options for !module does not exists.', array('!module' => $main_frame_module)), 'error');
   }
   else {
