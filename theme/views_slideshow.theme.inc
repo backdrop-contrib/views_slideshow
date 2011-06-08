@@ -9,10 +9,27 @@
 
 function template_preprocess_views_slideshow(&$vars) {
   $options = $vars['options'];
+  $vars['skin'] = 'default';
+  $vars['slideshow'] = '';
   $main_frame_module = $options['slideshow_type'];
 
+  if (empty($main_frame_module)) {
+    // Get all slideshow types.
+    $slideshows = module_invoke_all('views_slideshow_slideshow_info');
+
+    if ($slideshows) {
+      foreach ($slideshows as $slideshow_id => $slideshow_info) {
+        $main_frame_module = $slideshow_id;
+        break;
+      }
+    }
+  }
+  
   // Make sure the main slideshow settings are defined before building the
   // slideshow.
+  if (empty($main_frame_module)) {
+    drupal_set_message(t('No main frame module is enabled for views slideshow.'), 'error');
+  }
   if (empty($options[$main_frame_module])) {
     drupal_set_message(t('The options for !module does not exists.', array('!module' => $main_frame_module)), 'error');
   }
