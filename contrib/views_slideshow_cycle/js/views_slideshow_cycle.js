@@ -300,7 +300,7 @@
     if (++Drupal.settings.viewsSlideshowCycle[fullId].loadedImages == Drupal.settings.viewsSlideshowCycle[fullId].totalImages) {
       Drupal.viewsSlideshowCycle.load(fullId);
     }
-  }
+  };
 
   // Start the slideshow.
   Drupal.viewsSlideshowCycle.load = function (fullId) {
@@ -337,28 +337,28 @@
         checkPause(settings);
       });
     }
-  }
+  };
 
   Drupal.viewsSlideshowCycle.pause = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('pause');
-  }
+  };
 
   Drupal.viewsSlideshowCycle.play = function (options) {
     Drupal.settings.viewsSlideshowCycle['#views_slideshow_cycle_main_' + options.slideshowID].paused = false;
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('resume');
-  }
+  };
 
   Drupal.viewsSlideshowCycle.previousSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('prev');
-  }
+  };
 
   Drupal.viewsSlideshowCycle.nextSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('next');
-  }
+  };
 
   Drupal.viewsSlideshowCycle.goToSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle(options.slideNum);
-  }
+  };
 
   // Verify that the value is a number.
   function IsNumeric(sText) {
