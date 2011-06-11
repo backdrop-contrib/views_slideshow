@@ -230,7 +230,7 @@ function template_preprocess_views_slideshow_pager_fields_render(&$vars) {
         $rendered_fields .= theme('views_slideshow_pager_field_field', array('view' => $vars['view'], 'field' => $field, 'count' => $count));
       }
     }
-    $vars['rendered_field_items'] .= theme('views_slideshow_pager_field_item', array('vss_id' => $vars['vss_id'], 'item' => $rendered_fields, 'count' => $count));
+    $vars['rendered_field_items'] .= theme('views_slideshow_pager_field_item', array('vss_id' => $vars['vss_id'], 'item' => $rendered_fields, 'count' => $count, 'location' => $vars['location']));
   }
 }
 

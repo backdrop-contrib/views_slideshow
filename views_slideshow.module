@@ -29,7 +29,7 @@ function views_slideshow_theme($existing, $type, $theme, $path) {
       'file' => 'theme/views_slideshow.theme.inc',
     ),
     'views_slideshow_pager_field_item' => array(
-      'variables' => array('vss_id' => NULL, 'item' => NULL, 'count' => NULL),
+      'variables' => array('vss_id' => NULL, 'item' => NULL, 'count' => NULL, 'location' => NULL),
       'template' => 'theme/views-slideshow-pager-field-item',
       'file' => 'theme/views_slideshow.theme.inc',
     ),
