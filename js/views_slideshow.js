@@ -283,67 +283,76 @@
    * Implement the transitionBegin hook for pager fields pager.
    */
   Drupal.viewsSlideshowPagerFields.transitionBegin = function (options) {
-    // Remove active class from pagers
-    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
+    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+      // Remove active class from pagers
+      $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').removeClass('active');
 
-    // Add active class to active pager.
-    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + options.slideNum).addClass('active');
+      // Add active class to active pager.
+      $('#views_slideshow_pager_field_item_'+ pagerLocation + '_' + options.slideshowID + '_' + options.slideNum).addClass('active');
+    }
+
   };
 
   /**
    * Implement the goToSlide hook for pager fields pager.
    */
   Drupal.viewsSlideshowPagerFields.goToSlide = function (options) {
-    // Remove active class from pagers
-    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
+    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+      // Remove active class from pagers
+      $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').removeClass('active');
 
-    // Add active class to active pager.
-    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + options.slideNum).addClass('active');
+      // Add active class to active pager.
+      $('#views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_' + options.slideNum).addClass('active');
+    }
   };
 
   /**
    * Implement the previousSlide hook for pager fields pager.
    */
   Drupal.viewsSlideshowPagerFields.previousSlide = function (options) {
-    // Get the current active pager.
-    var pagerNum = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + options.slideshowID + '_', '');
+    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+      // Get the current active pager.
+      var pagerNum = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_', '');
 
-    // If we are on the first pager then activate the last pager.
-    // Otherwise activate the previous pager.
-    if (pagerNum == 0) {
-      pagerNum = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').length() - 1;
+      // If we are on the first pager then activate the last pager.
+      // Otherwise activate the previous pager.
+      if (pagerNum == 0) {
+        pagerNum = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').length() - 1;
+      }
+      else {
+        pagerNum--;
+      }
+
+      // Remove active class from pagers
+      $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').removeClass('active');
+
+      // Add active class to active pager.
+      $('#views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_' + pagerNum).addClass('active');
     }
-    else {
-      pagerNum--;
-    }
-
-    // Remove active class from pagers
-    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
-
-    // Add active class to active pager.
-    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + pagerNum).addClass('active');
   };
 
   /**
    * Implement the nextSlide hook for pager fields pager.
    */
   Drupal.viewsSlideshowPagerFields.nextSlide = function (options) {
-    // Get the current active pager.
-    var pagerNum = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + options.slideshowID + '_', '');
-    var totalPagers = $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').length();
+    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+      // Get the current active pager.
+      var pagerNum = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_', '');
+      var totalPagers = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').length();
 
-    // If we are on the last pager then activate the first pager.
-    // Otherwise activate the next pager.
-    pagerNum++;
-    if (pagerNum == totalPagers) {
-      pagerNum = 0;
+      // If we are on the last pager then activate the first pager.
+      // Otherwise activate the next pager.
+      pagerNum++;
+      if (pagerNum == totalPagers) {
+        pagerNum = 0;
+      }
+
+      // Remove active class from pagers
+      $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').removeClass('active');
+
+      // Add active class to active pager.
+      $('#views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_' + slideNum).addClass('active');
     }
-
-    // Remove active class from pagers
-    $('[id^="views_slideshow_pager_field_item_' + options.slideshowID + '"]').removeClass('active');
-
-    // Add active class to active pager.
-    $('#views_slideshow_pager_field_item_' + options.slideshowID + '_' + slideNum).addClass('active');
   };
 
 
