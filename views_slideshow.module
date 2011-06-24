@@ -18,9 +18,9 @@ function views_slideshow_theme($existing, $type, $theme, $path) {
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'file' => 'theme/views_slideshow.theme.inc',
     ),
-    'views_slideshow_pager_fields_render' => array(
+    'views_slideshow_pager_fields' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'attributes' => array()),
-      'template' => 'theme/views-slideshow-pager-field',
+      'template' => 'theme/views-slideshow-pager-fields',
       'file' => 'theme/views_slideshow.theme.inc',
     ),
     'views_slideshow_pager_field_field' => array(
@@ -37,7 +37,7 @@ function views_slideshow_theme($existing, $type, $theme, $path) {
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'file' => 'theme/views_slideshow.theme.inc',
     ),
-    'views_slideshow_controls_text_render' => array(
+    'views_slideshow_controls_text' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'template' => 'theme/views-slideshow-controls-text',
       'file' => 'theme/views_slideshow.theme.inc',
