@@ -82,13 +82,13 @@ function views_slideshow_cycle_help($path, $arg) {
  */
 
 function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
-    _views_slideshow_preprocess_views_slideshow_cycle_main_frame($vars);
+  _views_slideshow_preprocess_views_slideshow_cycle_main_frame($vars);
 }
 
 function template_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
-    _views_slideshow_preprocess_views_slideshow_cycle_main_frame_row($vars);
+  _views_slideshow_preprocess_views_slideshow_cycle_main_frame_row($vars);
 }
 
 function template_preprocess_views_slideshow_cycle_main_frame_row_item(&$vars) {
-    _views_slideshow_preprocess_views_slideshow_cycle_main_frame_row_item($vars);
+  _views_slideshow_preprocess_views_slideshow_cycle_main_frame_row_item($vars);
 }
