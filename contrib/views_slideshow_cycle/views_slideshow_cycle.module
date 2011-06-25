@@ -45,17 +45,14 @@ function views_slideshow_cycle_theme($existing, $type, $theme, $path) {
     'views_slideshow_cycle_main_frame' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => NULL, 'rows' => NULL),
       'template' => 'theme/views-slideshow-cycle-main-frame',
-      'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
     'views_slideshow_cycle_main_frame_row' => array(
       'variables' => array('vss_id' => NULL, 'items' => NULL, 'count' => NULL),
       'template' => 'theme/views-slideshow-cycle-main-frame-row',
-      'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
     'views_slideshow_cycle_main_frame_row_item' => array(
       'variables' => array('item' => NULL, 'item_count' => NULL),
       'template' => 'theme/views-slideshow-cycle-main-frame-row-item',
-      'file' => 'theme/views_slideshow_cycle.theme.inc',
     ),
   );
 }
@@ -74,4 +71,24 @@ function views_slideshow_cycle_help($path, $arg) {
       }
       return $output;
   }
+}
+
+/**
+ * Need to have preprocess functions here because drupal doesn't cache them 
+ * correctly in the theme.inc file.
+ * 
+ * If you would like to override the preprocess functions make sure to look at
+ * the associated function in theme.inc.
+ */
+
+function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
+    _views_slideshow_preprocess_views_slideshow_cycle_main_frame($vars);
+}
+
+function template_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
+    _views_slideshow_preprocess_views_slideshow_cycle_main_frame_row($vars);
+}
+
+function template_preprocess_views_slideshow_cycle_main_frame_row_item(&$vars) {
+    _views_slideshow_preprocess_views_slideshow_cycle_main_frame_row_item($vars);
 }
