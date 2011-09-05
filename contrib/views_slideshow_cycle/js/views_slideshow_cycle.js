@@ -15,7 +15,6 @@
         var settings = Drupal.settings.viewsSlideshowCycle[fullId];
         settings.targetId = '#' + $(fullId + " :first").attr('id');
         settings.slideshowId = settings.targetId.replace('#views_slideshow_cycle_teaser_section_', '');
-        settings.paused = false;
 
         settings.opts = {
           speed:settings.speed,
@@ -102,17 +101,14 @@
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
             Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           }, function() {
-            if (!settings.paused) {
-              Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
-            }
+            Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
           });
         }
 
         // Pause on clicking of the slide.
         if (settings.pause_on_click) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
-            settings.paused = true;
-            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
+            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
           });
         }
 
@@ -309,7 +305,7 @@
 
     // Start Paused
     if (settings.start_paused) {
-      Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
+      Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
     }
 
     // Pause if hidden.
@@ -319,10 +315,10 @@
         // otherwise if the slideshow is not visible and it is not paused then
         // pause it.
         var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
-        if (visible && settings.paused) {
+        if (visible) {
           Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
         }
-        else if (!visible && !settings.paused) {
+        else {
           Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
         }
       }
