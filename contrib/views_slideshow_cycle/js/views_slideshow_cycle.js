@@ -98,11 +98,20 @@
 
         // Pause on hover.
         if (settings.pause) {
-          $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(function() {
+          var mouseIn = function() {
             Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
-          }, function() {
+          }
+          
+          var mouseOut = function() {
             Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
-          });
+          }
+          
+          if (jQuery.fn.hoverIntent) {
+            $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hoverIntent(mouseIn, mouseOut);
+          }
+          else {
+            $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).hover(mouseIn, mouseOut);
+          }
         }
 
         // Pause on clicking of the slide.

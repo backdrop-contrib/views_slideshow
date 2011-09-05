@@ -70,17 +70,15 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
   }
 
   drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
-
-  // Add the hoverIntent plugin.
-  if (isset($settings['advanced_pagerevent']) && $settings['advanced_pagerevent'] == 'hoverIntent') {
-    if (module_exists('jq')) {
-      $loaded_plugins = jq_plugins();
-      if (!empty($loaded_plugins['hoverIntent'])) {
-        jq_add('hoverIntent');
+  
+  // Add hover intent library
+  if ($settings['pause']) {
+    if (module_exists('libraries')) {
+      // Load jQuery hoverIntent
+      $hoverIntent_path = libraries_get_path('jquery.hoverIntent');
+      if (!empty($hoverIntent_path) && file_exists($hoverIntent_path . '/jquery.hoverIntent.js')) {
+        drupal_add_js($hoverIntent_path . '/jquery.hoverIntent.js');
       }
-    }
-    if (module_exists('hoverintent')) {
-      hoverintent_add();
     }
   }
 

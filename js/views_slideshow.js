@@ -257,13 +257,22 @@
         // Add the activate and pause on pager hover event to each pager item.
         if (Drupal.settings.viewsSlideshowPagerFields[uniqueID][location].activatePauseOnHover) {
           $(this).children().each(function(index, pagerItem) {
-            $(pagerItem).hover(function() {
+            var mouseIn = function() {
               Drupal.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
               Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID });
-            },
-            function() {
+            }
+            
+            var mouseOut = function() {
               Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID });
-            });
+            }
+          
+            if (jQuery.fn.hoverIntent) {
+              $(pagerItem).hoverIntent(mouseIn, mouseOut);
+            }
+            else {
+              $(pagerItem).hover(mouseIn, mouseOut);
+            }
+            
           });
         }
         else {
