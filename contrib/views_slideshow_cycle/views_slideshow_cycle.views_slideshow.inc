@@ -389,8 +389,8 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
       'animOut' => 'animOut',
       'autostop' => 'autostop',
       'autostopCount' => 'autostopCount',
-      'before' => 'before',
       'backwards' => 'backwards',
+      'before' => 'before',
       'bounce' => 'bounce',
       'cleartype' => 'cleartype',
       'cleartypeNoBg' => 'cleartypeNoBg',
@@ -409,6 +409,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
       'fxFn' => 'fxFn',
       'height' => 'height',
       'manualTrump' => 'manualTrump',
+      'metaAttr' => 'metaAttr',
       'next' => 'next',
       'nowrap' => 'nowrap',
       'onPagerEvent' => 'onPagerEvent',
@@ -436,6 +437,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
       'timeout' => 'timeout',
       'timeoutFn' => 'timeoutFn',
       'updateActivePagerLink' => 'updateActivePagerLink',
+      'width' => 'width',
     );
 
     $form['views_slideshow_cycle']['advanced_options_choices'] = array(
