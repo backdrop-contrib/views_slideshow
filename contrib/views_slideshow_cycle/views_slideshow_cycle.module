@@ -12,9 +12,8 @@ function views_slideshow_cycle_init() {
   // Don't load javascript unless libraries module is present.
   if (module_exists('libraries')) {
     // Load jQuery Cycle
-    $cycle_path = libraries_get_path('jquery.cycle');
-    if (!empty($cycle_path) && file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
-      drupal_add_js($cycle_path . '/jquery.cycle.all.min.js');
+    if ($cycle_path = _views_slideshow_cycle_library_path()) {
+      drupal_add_js($cycle_path);
     }
 
     // Load Json2
@@ -71,6 +70,35 @@ function views_slideshow_cycle_help($path, $arg) {
       }
       return $output;
   }
+}
+
+/**
+ * Gets the path to the jQuery cycle library.
+ *
+ * @return
+ *   The path to the cycle library js file, or FALSE if not found.
+ */
+function _views_slideshow_cycle_library_path() {
+  $cycle_path = libraries_get_path('jquery.cycle');
+
+  if (!empty($cycle_path)) {
+    // Attempt to use minified version of jQuery cycle plugin.
+    if (file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
+      $cycle_path .= '/jquery.cycle.all.min.js';
+    }
+    // Otherwise use non-minified version if available.
+    elseif (file_exists($cycle_path . '/jquery.cycle.all.js')) {
+      $cycle_path .= '/jquery.cycle.all.js';
+    }
+    else {
+      $cycle_path = FALSE;
+    }
+  }
+  else {
+    $cycle_path = FALSE;
+  }
+
+  return $cycle_path;
 }
 
 /**
