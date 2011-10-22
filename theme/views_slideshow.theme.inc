@@ -235,7 +235,7 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
   // Render all the fields unless there is only 1 slide and the user specified
   // to hide them when there is only one slide.
   $vars['rendered_field_items'] = '';
-  if (empty($vars['settings']['views_slideshow_pager_fields_hide_on_single_slide']) || count($vars['view']->result) > 1) {
+  if (empty($vars['settings']['views_slideshow_pager_fields_hide_on_single_slide']) && count($vars['view']->result) > 1) {
     foreach ($vars['view']->result as $count => $node) {
       $rendered_fields = '';
       foreach ($vars['settings']['views_slideshow_pager_fields_fields'] as $field => $use) {
