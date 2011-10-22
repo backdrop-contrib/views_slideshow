@@ -68,6 +68,27 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
     $vss_id .= '-' . $slideshow_count;
     $settings['vss_id'] = $vss_id;
   }
+  
+  // Don't load javascript unless libraries module is present.
+  if (module_exists('libraries')) {
+    // Load jQuery Cycle
+    if ($cycle_path = _views_slideshow_cycle_library_path()) {
+      drupal_add_js($cycle_path);
+    }
+
+    // Load Json2
+    $json_path = libraries_get_path('json2');
+    if (!empty($json_path) && file_exists($json_path . '/json2.js')) {
+      drupal_add_js($json_path . '/json2.js');
+    }
+
+    // Load our cycle js
+    $module_path = drupal_get_path('module', 'views_slideshow_cycle');
+    drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
+  }
+
+  // Load our cycle css
+  drupal_add_css($module_path . '/views_slideshow_cycle.css', 'file');
 
   drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
   
