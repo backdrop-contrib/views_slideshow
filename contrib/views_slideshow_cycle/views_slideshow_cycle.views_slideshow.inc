@@ -56,6 +56,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'fixed_height' => array('default' => 1),
       'items_per_slide' => array('default' => 1),
       'wait_for_image_load' => array('default' => 1),
+      'wait_for_image_load_timeout' => array('default' => 3000),
 
       // Internet Explorer Tweaks
       'cleartype' => array('default' => 'true'),
@@ -333,6 +334,18 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#states' => array(
       'visible' => array(
         ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+      ),
+    ),
+  );
+  $form['views_slideshow_cycle']['wait_for_image_load_timeout'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Timeout'),
+    '#default_value' => $view->options['views_slideshow_cycle']['wait_for_image_load_timeout'],
+    '#description' => t('How long should it wait until it starts the slideshow anyway. Time is in milliseconds.'),
+    '#states' => array(
+      'visible' => array(
+        ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
+        ':input[name="style_options[views_slideshow_cycle][wait_for_image_load]"]' => array('checked' => TRUE),
       ),
     ),
   );

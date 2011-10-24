@@ -15,6 +15,7 @@
         var settings = Drupal.settings.viewsSlideshowCycle[fullId];
         settings.targetId = '#' + $(fullId + " :first").attr('id');
         settings.slideshowId = settings.targetId.replace('#views_slideshow_cycle_teaser_section_', '');
+        settings.loaded = false;
 
         settings.opts = {
           speed:settings.speed,
@@ -287,6 +288,10 @@
               $imageElement.attr('src', '');
               $imageElement.attr('src', imgSrc);
             });
+
+            // We need to set a timeout so that the slideshow doesn't wait
+            // indefinitely for all images to load.
+            setTimeout("Drupal.viewsSlideshowCycle.load('" + fullId + "')", settings.wait_for_image_load_timeout);
           }
           else {
             Drupal.viewsSlideshowCycle.load(fullId);
@@ -312,37 +317,42 @@
   // Start the slideshow.
   Drupal.viewsSlideshowCycle.load = function (fullId) {
     var settings = Drupal.settings.viewsSlideshowCycle[fullId];
-    $(settings.targetId).cycle(settings.opts);
-
-    // Start Paused
-    if (settings.start_paused) {
-      Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
-    }
-
-    // Pause if hidden.
-    if (settings.pause_when_hidden) {
-      var checkPause = function(settings) {
-        // If the slideshow is visible and it is paused then resume.
-        // otherwise if the slideshow is not visible and it is not paused then
-        // pause it.
-        var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
-        if (visible) {
-          Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
-        }
-        else {
-          Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
-        }
+    
+    // Make sure the slideshow isn't already loaded.
+    if (!settings.loaded) {
+      $(settings.targetId).cycle(settings.opts);
+      settings.loaded = true;
+  
+      // Start Paused
+      if (settings.start_paused) {
+        Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
       }
-
-      // Check when scrolled.
-      $(window).scroll(function() {
-       checkPause(settings);
-      });
-
-      // Check when the window is resized.
-      $(window).resize(function() {
-        checkPause(settings);
-      });
+  
+      // Pause if hidden.
+      if (settings.pause_when_hidden) {
+        var checkPause = function(settings) {
+          // If the slideshow is visible and it is paused then resume.
+          // otherwise if the slideshow is not visible and it is not paused then
+          // pause it.
+          var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
+          if (visible) {
+            Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
+          }
+          else {
+            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
+          }
+        }
+  
+        // Check when scrolled.
+        $(window).scroll(function() {
+         checkPause(settings);
+        });
+  
+        // Check when the window is resized.
+        $(window).resize(function() {
+          checkPause(settings);
+        });
+      }
     }
   };
 
