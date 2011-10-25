@@ -125,18 +125,6 @@
         if (typeof JSON != 'undefined') {
           var advancedOptions = JSON.parse(settings.advanced_options);
           for (var option in advancedOptions) {
-            advancedOptions[option] = $.trim(advancedOptions[option]);
-            advancedOptions[option] = advancedOptions[option].replace(/\n/g, '');
-            if (!isNaN(parseInt(advancedOptions[option]))) {
-              advancedOptions[option] = parseInt(advancedOptions[option]);
-            }
-            else if (advancedOptions[option].toLowerCase() == 'true') {
-              advancedOptions[option] = true;
-            }
-            else if (advancedOptions[option].toLowerCase() == 'false') {
-              advancedOptions[option] = false;
-            }
-
             switch(option) {
 
               // Standard Options
@@ -182,85 +170,109 @@
               case "sync":
               case "timeout":
               case "width":
-                settings.opts[option] = advancedOptions[option];
+                var optionValue = advancedOptions[option];
+                optionValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(optionValue);
+                settings.opts[option] = optionValue;
                 break;
-
+  
               // These process options that look like {top:50, bottom:20}
               case "animIn":
               case "animOut":
               case "cssBefore":
               case "cssAfter":
               case "shuffle":
-                settings.opts[option] = eval('(' + advancedOptions[option] + ')');
+                var cssValue = advancedOptions[option];
+                cssValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(cssValue);
+                settings.opts[option] = eval('(' + cssValue + ')');
                 break;
-
+  
               // These options have their own functions.
               case "after":
+                var afterValue = advancedOptions[option];
+                afterValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(afterValue);
                 // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-                  eval(advancedOptions[option]);
+                  eval(afterValue);
                 }
                 break;
-
+  
               case "before":
+                var beforeValue = advancedOptions[option];
+                beforeValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(beforeValue);
                 // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-                  eval(advancedOptions[option]);
+                  eval(beforeValue);
                 }
                 break;
-
+  
               case "end":
+                var endValue = advancedOptions[option];
+                endValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(endValue);
                 // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
                 settings.opts[option] = function(options) {
-                  eval(advancedOptions[option]);
+                  eval(endValue);
                 }
                 break;
-
+  
               case "fxFn":
+                var fxFnValue = advancedOptions[option];
+                fxFnValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(fxFnValue);
                 // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
-                  eval(advancedOptions[option]);
+                  eval(fxFnValue);
                 }
                 break;
-
+  
               case "onPagerEvent":
+                var onPagerEventValue = advancedOptions[option];
+                onPagerEventValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(onPagerEventValue);
                 settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
-                  eval(advancedOptions[option]);
+                  eval(onPagerEventValue);
                 }
                 break;
-
+  
               case "onPrevNextEvent":
+                var onPrevNextEventValue = advancedOptions[option];
+                onPrevNextEventValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(onPrevNextEventValue);
                 settings.opts[option] = function(isNext, zeroBasedSlideIndex, slideElement) {
-                  eval(advancedOptions[option]);
+                  eval(onPrevNextEventValue);
                 }
                 break;
-
+  
               case "pagerAnchorBuilder":
+                var pagerAnchorBuilderValue = advancedOptions[option];
+                pagerAnchorBuilderValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(pagerAnchorBuilderValue);
                 // callback fn for building anchor links:  function(index, DOMelement)
                 settings.opts[option] = function(index, DOMelement) {
                   var returnVal = '';
-                  eval(advancedOptions[option]);
+                  eval(pagerAnchorBuilderValue);
                   return returnVal;
                 }
                 break;
-
+  
               case "pagerClick":
+                var pagerClickValue = advancedOptions[option];
+                pagerClickValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(pagerClickValue);
                 // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
                 settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
-                  eval(advancedOptions[option]);
+                  eval(pagerClickValue);
                 }
                 break;
-
+  
               case "timeoutFn":
+                var timeoutFnValue = advancedOptions[option];
+                timeoutFnValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(timeoutFnValue);
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
-                  eval(advancedOptions[option]);
+                  eval(timeoutFnValue);
                 }
                 break;
-
+  
               case "updateActivePagerLink":
+                var updateActivePagerLinkValue = advancedOptions[option];
+                updateActivePagerLinkValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(updateActivePagerLinkValue);
                 // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
                 settings.opts[option] = function(pager, currSlideIndex) {
-                  eval(advancedOptions[option]);
+                  eval(updateActivePagerLinkValue);
                 }
                 break;
             }
@@ -305,6 +317,23 @@
   };
 
   Drupal.viewsSlideshowCycle = Drupal.viewsSlideshowCycle || {};
+
+  // Cleanup the values of advanced options.
+  Drupal.viewsSlideshowCycle.advancedOptionCleanup = function(value) {
+    value = $.trim(value);
+    value = value.replace(/\n/g, '');
+    if (!isNaN(parseInt(value))) {
+      value = parseInt(value);
+    }
+    else if (value.toLowerCase() == 'true') {
+      value = true;
+    }
+    else if (value.toLowerCase() == 'false') {
+      value = false;
+    }
+    
+    return value;
+  }
 
   // This checks to see if all the images have been loaded.
   // If they have then it starts the slideshow.
