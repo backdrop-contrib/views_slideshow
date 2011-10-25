@@ -165,7 +165,7 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
 
     // Need to wrap this so it indents correctly.
     $form['views_slideshow_pager_wrapper'] = array(
-      '#markup' => '<div class="vs-dependent-lvl2">',
+      '#markup' => '<div class="vs-dependent">',
     );
 
     // Add field to see if they would like to hide pager if there is only one
@@ -196,10 +196,6 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
       ),
     );
   
-    $form['views_slideshow_pager_wrapper_close'] = array(
-      '#markup' => '</div>',
-    );
-
     // Add any additional form elements
     // Build our arguments to pass to
     // [pager-type]_views_slideshow_widget_pager_form_options
@@ -217,6 +213,10 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
         call_user_func_array($function, $arguments);
       }
     }
+    
+    $form['views_slideshow_pager_wrapper_close'] = array(
+      '#markup' => '</div>',
+    );
   }
   else {
     $form['enable_pager'] = array(
@@ -255,7 +255,7 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
   }
   // Need to wrap this so it indents correctly.
   $form['views_slideshow_pager_fields_wrapper'] = array(
-    '#markup' => '<div class="vs-dependent-lvl3">',
+    '#markup' => '<div class="vs-dependent">',
   );
   // Add ability to choose which fields to show in the pager.
   $form['views_slideshow_pager_fields_fields'] = array(
@@ -299,7 +299,7 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
  * Implements [widget]_views_slideshow_widget_form_options().
  */
 function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$form_state, &$view, $defaults, $dependency) {
-  // Get all the pager info from other modules.
+  // Get all the control info from other modules.
   // hook_views_slideshow_controls_settings($view, $option_values, $dependency_prefix)
   $controls = module_invoke_all('views_slideshow_widget_controls_info', $view);
 
@@ -312,7 +312,7 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
 
     // Need to wrap this so it indents correctly.
     $form['views_slideshow_controls_wrapper'] = array(
-      '#markup' => '<div class="vs-dependent-lvl2">',
+      '#markup' => '<div class="vs-dependent">',
     );
     
     // Add field to see if they would like to hide controls if there is only one
@@ -343,10 +343,6 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
       ),
     );
 
-    $form['controls_wrapper_close'] = array(
-      '#markup' => '</div>',
-    );
-
     // Add any additional form elements
     // Build our arguments to pass to
     // [pager-type]_views_slideshow_widget_pager_form_options
@@ -364,6 +360,10 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
         call_user_func_array($function, $arguments);
       }
     }
+
+    $form['controls_wrapper_close'] = array(
+      '#markup' => '</div>',
+    );
   }
   else {
     $form['enable_controls'] = array(

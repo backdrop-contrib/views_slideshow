@@ -128,7 +128,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
 
   // Need to wrap this so it indents correctly.
   $form['views_slideshow_cycle']['transition_advanced_wrapper'] = array(
-    '#markup' => '<div class="vs-dependent-lvl2">',
+    '#markup' => '<div class="vs-dependent">',
   );
 
   $form['views_slideshow_cycle']['timeout'] = array(
@@ -217,7 +217,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
 
   // Need to wrap this so it indents correctly.
   $form['views_slideshow_cycle']['action_advanced_wrapper'] = array(
-    '#markup' => '<div class="vs-dependent-lvl2">',
+    '#markup' => '<div class="vs-dependent">',
   );
 
   $form['views_slideshow_cycle']['start_paused'] = array(
@@ -247,6 +247,8 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('Length of Time to Remember Last Slide'),
     '#default_value' => $view->options['views_slideshow_cycle']['remember_slide_days'],
     '#description' => t('The number of days to have the site remember the last slide. Default is 1'),
+    '#prefix' => '<div class="vs-dependent">',
+    '#suffix' => '</div>',
     '#size' => 4,
     '#states' => array(
       'visible' => array(
@@ -277,6 +279,8 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     ),
     '#default_value' => $view->options['views_slideshow_cycle']['pause_when_hidden_type'],
     '#description' => t('Choose how to calculate how much of the slide has to be shown. Entire Slide: All the slide has to be shown. Vertical: Set amount of height that has to be shown. Horizontal: Set amount of width that has to be shown. Area: Set total area that has to be shown.'),
+    '#prefix' => '<div class="vs-dependent">',
+    '#suffix' => '</div>',
     '#states' => array(
       'visible' => array(
         ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
@@ -342,6 +346,8 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('Timeout'),
     '#default_value' => $view->options['views_slideshow_cycle']['wait_for_image_load_timeout'],
     '#description' => t('How long should it wait until it starts the slideshow anyway. Time is in milliseconds.'),
+    '#prefix' => '<div class="vs-dependent">',
+    '#suffix' => '</div>',
     '#states' => array(
       'visible' => array(
         ':input[name="style_options[views_slideshow_cycle][action_advanced]"]' => array('checked' => TRUE),
