@@ -168,6 +168,20 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
       '#markup' => '<div class="vs-dependent-lvl2">',
     );
 
+    // Add field to see if they would like to hide pager if there is only one
+    // slide.
+    $form['hide_on_single_slide'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Hide pager if there is only one slide'),
+      '#default_value' => $defaults['hide_on_single_slide'],
+      '#description' => t('Should the pager be hidden if there is only one slide.'),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="' . $dependency . '[enable]"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+
     // Create the widget type field.
     $form['type'] = array(
       '#type' => 'select',
@@ -276,21 +290,6 @@ function views_slideshow_pager_fields_views_slideshow_widget_pager_form_options(
     ),
   );
 
-  // Add field to see if they would like to activate hide pager if there is
-  // only one slide
-  $form['views_slideshow_pager_fields_hide_on_single_slide'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Hide pager if there is only one slide'),
-    '#default_value' => $defaults['views_slideshow_pager_fields_hide_on_single_slide'],
-    '#description' => t('Should the pager be hidden if there is only one slide.'),
-    '#states' => array(
-      'visible' => array(
-        ':input[name="' . $dependency . '[enable]"]' => array('checked' => TRUE),
-        ':input[name="' . $dependency . '[type]"]' => array('value' => 'views_slideshow_pager_fields'),
-      ),
-    ),
-  );
-
   $form['views_slideshow_pager_fields_wrapper_close'] = array(
     '#markup' => '</div>',
   );
@@ -314,6 +313,20 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
     // Need to wrap this so it indents correctly.
     $form['views_slideshow_controls_wrapper'] = array(
       '#markup' => '<div class="vs-dependent-lvl2">',
+    );
+    
+    // Add field to see if they would like to hide controls if there is only one
+    // slide
+    $form['hide_on_single_slide'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Hide controls if there is only one slide'),
+      '#default_value' => $defaults['hide_on_single_slide'],
+      '#description' => t('Should the controls be hidden if there is only one slide.'),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="' . $dependency . '[enable]"]' => array('checked' => TRUE),
+        ),
+      ),
     );
 
     // Create the widget type field.
@@ -402,6 +415,7 @@ function views_slideshow_views_slideshow_option_definition() {
 
   // Defaults for the pager widget.
   foreach ($locations as $location) {
+    $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['hide_on_single_slide'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['type'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_numbered_hover'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_numbered_click_to_page'] = array('default' => 0);
@@ -409,8 +423,8 @@ function views_slideshow_views_slideshow_option_definition() {
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_thumbnails_click_to_page'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_fields'] = array('default' => array());
     $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_hover'] = array('default' => 0);
-    $options['widgets']['contains'][$location]['contains']['views_slideshow_pager']['contains']['views_slideshow_pager_fields_hide_on_single_slide'] = array('default' => 0);
 
+    $options['widgets']['contains'][$location]['contains']['views_slideshow_controls']['contains']['hide_on_single_slide'] = array('default' => 0);
     $options['widgets']['contains'][$location]['contains']['views_slideshow_controls']['contains']['type'] = array('default' => 0);
   }
 
