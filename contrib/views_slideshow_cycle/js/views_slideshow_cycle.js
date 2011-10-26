@@ -258,6 +258,24 @@
                   eval(pagerClickValue);
                 }
                 break;
+
+              case "paused":
+                var pausedValue = advancedOptions[option];
+                pausedValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(pausedValue);
+                // undocumented callback when slideshow is paused:    function(cont, opts, byHover)
+                settings.opts[option] = function(cont, opts, byHover) {
+                  eval(pausedValue);
+                }
+                break;
+              
+              case "resumed":
+                var resumedValue = advancedOptions[option];
+                resumedValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(resumedValue);
+                // undocumented callback when slideshow is resumed:    function(cont, opts, byHover)
+                settings.opts[option] = function(cont, opts, byHover) {
+                  eval(resumedValue);
+                }
+                break;
   
               case "timeoutFn":
                 var timeoutFnValue = advancedOptions[option];
