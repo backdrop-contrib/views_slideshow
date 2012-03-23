@@ -195,7 +195,7 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
         ),
       ),
     );
-  
+
     // Add any additional form elements
     // Build our arguments to pass to
     // [pager-type]_views_slideshow_widget_pager_form_options
@@ -213,7 +213,7 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
         call_user_func_array($function, $arguments);
       }
     }
-    
+
     $form['views_slideshow_pager_wrapper_close'] = array(
       '#markup' => '</div>',
     );
@@ -314,7 +314,7 @@ function views_slideshow_controls_views_slideshow_widget_form_options(&$form, &$
     $form['views_slideshow_controls_wrapper'] = array(
       '#markup' => '<div class="vs-dependent">',
     );
-    
+
     // Add field to see if they would like to hide controls if there is only one
     // slide
     $form['hide_on_single_slide'] = array(
@@ -432,9 +432,9 @@ function views_slideshow_views_slideshow_option_definition() {
 }
 
 /**
- * Need to have preprocess functions here because drupal doesn't cache them 
+ * Need to have preprocess functions here because drupal doesn't cache them
  * correctly in the theme.inc file.
- * 
+ *
  * If you would like to override the preprocess functions make sure to look at
  * the associated function in theme.inc.
  */
