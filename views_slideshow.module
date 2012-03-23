@@ -13,51 +13,63 @@ function views_slideshow_theme($existing, $type, $theme, $path) {
     'views_slideshow_main_section' => array(
       'variables' => array('vss_id' => NULL, 'slides' => NULL, 'plugin' => NULL),
       'file' => 'theme/views_slideshow.theme.inc',
+      'pattern' => 'views_slideshow_main_section__',
     ),
     'views_slideshow_pager_widget_render' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'file' => 'theme/views_slideshow.theme.inc',
+      'pattern' => 'views_slideshow_pager_widget_render__',
     ),
     'views_slideshow_pager_fields' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'attributes' => array()),
       'template' => 'theme/views-slideshow-pager-fields',
+      'pattern' => 'views_slideshow_pager_fields__',
     ),
     'views_slideshow_pager_field_field' => array(
       'variables' => array('view' => NULL, 'field' => NULL, 'count' => NULL),
       'template' => 'theme/views-slideshow-pager-field-field',
       'file' => 'theme/views_slideshow.theme.inc',
+      'pattern' => 'views_slideshow_pager_field_field__',
     ),
     'views_slideshow_pager_field_item' => array(
       'variables' => array('vss_id' => NULL, 'item' => NULL, 'count' => NULL, 'location' => NULL),
       'template' => 'theme/views-slideshow-pager-field-item',
+      'pattern' => 'views_slideshow_pager_field_item__',
     ),
     'views_slideshow_controls_widget_render' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'file' => 'theme/views_slideshow.theme.inc',
+      'pattern' => 'views_slideshow_controls_widget_render__',
     ),
     'views_slideshow_controls_text' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'template' => 'theme/views-slideshow-controls-text',
+      'pattern' => 'views_slideshow_controls_text__',
     ),
     'views_slideshow_controls_text_previous' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array()),
       'template' => 'theme/views-slideshow-controls-text-previous',
+      'pattern' => 'views_slideshow_controls_text_previous__',
     ),
     'views_slideshow_controls_text_pause' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array()),
       'template' => 'theme/views-slideshow-controls-text-pause',
+      'pattern' => 'views_slideshow_controls_text_pause__',
     ),
     'views_slideshow_controls_text_next' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array()),
       'template' => 'theme/views-slideshow-controls-text-next',
+      'pattern' => 'views_slideshow_controls_text_next__',
     ),
     'views_slideshow_slide_counter_widget_render' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'file' => 'theme/views_slideshow.theme.inc',
+      'pattern' => 'views_slideshow_counter_widget_render__',
     ),
     'views_slideshow_slide_counter' => array(
       'variables' => array('vss_id' => NULL, 'view' => NULL, 'settings' => array(), 'location' => NULL, 'rows' => array()),
       'template' => 'theme/views-slideshow-slide-counter',
+      'pattern' => 'views_slideshow_slide_counter__',
     ),
   );
 }
