@@ -55,6 +55,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'start_paused' => array('default', 0),
       'remember_slide' => array('default' => 0),
       'remember_slide_days' => array('default' => 1),
+      'pause_in_middle' => array('default' => 0),
       'pause_when_hidden' => array('default' => 0),
       'pause_when_hidden_type' => array('default' => 'full'),
       'amount_allowed_visible' => array('default' => ''),
@@ -266,6 +267,21 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
       ),
     ),
   );
+
+  if (!$pause_path = _views_slideshow_cycle_pause_library_path()) {
+    $form['views_slideshow_cycle']['pause_in_middle'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Pause The Slideshow In The Middle of the Transition'),
+      '#default_value' => $view->options['views_slideshow_cycle']['pause_in_middle'],
+      '#description' => t('When pausing the slideshow allow it to pause in the middle of tranistioning and not finish the transition until unpaused.'),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+  }
+
   $form['views_slideshow_cycle']['pause_when_hidden'] = array(
     '#type' => 'checkbox',
     '#title' => t('Pause When the Slideshow is Not Visible'),

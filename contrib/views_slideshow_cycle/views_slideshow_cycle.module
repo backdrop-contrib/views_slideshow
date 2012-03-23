@@ -76,9 +76,39 @@ function _views_slideshow_cycle_library_path() {
 }
 
 /**
- * Need to have preprocess functions here because drupal doesn't cache them 
+ * Gets the path to the jQuery pause library.
+ *
+ * @return
+ *   The path to the pause library js file, or FALSE if not found.
+ */
+function _views_slideshow_cyle_pause_library_path() {
+  $pause_path = libraries_get_path('jquery.pause');
+
+  if (!empty($pause_path)) {
+    // Attempt to use minified version of jQuery pause plugin.
+    if (file_exists($pause_path . '/jquery.pause.min.js')) {
+      $pause_path .= '/jquery.pause.min.js';
+    }
+    // Otherwise use non-minified version if available.
+    elseif (file_exists($pause_path . '/jquery.pause.js')) {
+      $pause_path .= '/jquery.pause.js';
+    }
+    else {
+      $pause_path = FALSE;
+    }
+  }
+  else {
+    $pause_path = FALSE;
+  }
+
+  return $pause_path;
+}
+
+
+/**
+ * Need to have preprocess functions here because drupal doesn't cache them
  * correctly in the theme.inc file.
- * 
+ *
  * If you would like to override the preprocess functions make sure to look at
  * the associated function in theme.inc.
  */
