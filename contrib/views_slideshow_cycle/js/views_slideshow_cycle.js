@@ -66,7 +66,7 @@
           if (startSlide == null) {
             startSlide = 0;
           }
-          settings.opts.startingSlide =  startSlide;
+          settings.opts.startingSlide = parseInt(startSlide);
         }
 
         if (settings.effect == 'none') {
