@@ -264,11 +264,11 @@
             var mouseIn = function() {
               Drupal.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
               Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID });
-            }
+            };
 
             var mouseOut = function() {
               Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID });
-            }
+            };
 
             if (jQuery.fn.hoverIntent) {
               $(pagerItem).hoverIntent(mouseIn, mouseOut);
@@ -276,7 +276,6 @@
             else {
               $(pagerItem).hover(mouseIn, mouseOut);
             }
-
           });
         }
         else {
@@ -303,7 +302,6 @@
       // Add active class to active pager.
       $('#views_slideshow_pager_field_item_'+ pagerLocation + '_' + options.slideshowID + '_' + options.slideNum).addClass('active');
     }
-
   };
 
   /**
@@ -390,7 +388,7 @@
     var status = {
       'value': true,
       'text': ''
-    }
+    };
 
     // If an action isn't specified return false.
     if (typeof options.action == 'undefined' || options.action == '') {
