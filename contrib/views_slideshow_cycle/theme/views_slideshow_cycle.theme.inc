@@ -85,6 +85,11 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
     // Load our cycle js
     $module_path = drupal_get_path('module', 'views_slideshow_cycle');
     drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
+
+    // Load the pause library
+    if (!empty($settings['pause_in_middle']) && $pause_path = _views_slideshow_cycle_pause_library_path()) {
+      drupal_add_js($pause_path);
+    }
   }
 
   // Load our cycle css
