@@ -85,7 +85,7 @@ function _views_slideshow_cycle_library_path() {
  * @return
  *   The path to the pause library js file, or FALSE if not found.
  */
-function _views_slideshow_cyle_pause_library_path() {
+function _views_slideshow_cycle_pause_library_path() {
   $pause_path = libraries_get_path('jquery.pause');
 
   if (!empty($pause_path)) {
