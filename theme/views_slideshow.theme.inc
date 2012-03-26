@@ -255,9 +255,6 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
  */
 function _views_slideshow_preprocess_views_slideshow_pager_field_item(&$vars) {
   $vars['classes_array'][] = 'views_slideshow_pager_field_item';
-  if (!$vars['count']) {
-    $vars['classes_array'][] = 'views_slideshow_active_pager_field_item';
-  }
   $vars['classes_array'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
 }
 
