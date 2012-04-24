@@ -21,9 +21,8 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
   $new_settings = array();
   foreach ($settings as $key => $value) {
     if (is_string($value)) {
-      if (stristr($value, "\n")) {
-        $value = str_replace("\n", ' ', $value);
-      }
+      $value = str_replace("\n", ' ', $value);
+
       $value = trim($value);
 
       if (is_numeric($value)) {
