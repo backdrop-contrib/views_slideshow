@@ -269,7 +269,7 @@ function theme_views_slideshow_controls_widget_render($vars) {
     'viewsSlideshowControls' => array(
       $vars['vss_id'] => array(
         $vars['location'] => array(
-          'type' => preg_replace('/_(.?)/e',"strtoupper('$1')", $vars['settings']['type']),
+          'type' => preg_replace('/_(.?)/e', "strtoupper('$1')", $vars['settings']['type']),
         ),
       ),
     ),
