@@ -243,7 +243,7 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
           $rendered_fields .= theme(views_theme_functions('views_slideshow_pager_field_field', $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('view' => $vars['view'], 'field' => $field, 'count' => $count));
         }
       }
-      $vars['rendered_field_items'] .= theme(views_theme_functions('views_slideshow_pager_field_item', $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('vss_id' => $vars['vss_id'], 'item' => $rendered_fields, 'count' => $count, 'location' => $vars['location']));
+      $vars['rendered_field_items'] .= theme(views_theme_functions('views_slideshow_pager_field_item', $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('vss_id' => $vars['vss_id'], 'item' => $rendered_fields, 'count' => $count, 'location' => $vars['location'], 'length' => count($vars['view']->result)));
     }
   }
 }
@@ -256,6 +256,12 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
 function _views_slideshow_preprocess_views_slideshow_pager_field_item(&$vars) {
   $vars['classes_array'][] = 'views_slideshow_pager_field_item';
   $vars['classes_array'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
+  if ($vars['count'] == 0) {
+    $vars['classes_array'][] = 'views-row-first';
+  }
+  elseif ($vars['count'] == $vars['length'] - 1) {
+    $vars['classes_array'][] = 'views-row-last';
+  }
 }
 
 /**
