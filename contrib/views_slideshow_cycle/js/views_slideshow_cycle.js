@@ -14,7 +14,42 @@
         var fullId = '#' + $(this).attr('id');
         var settings = Drupal.settings.viewsSlideshowCycle[fullId];
         settings.targetId = '#' + $(fullId + " :first").attr('id');
+
         settings.slideshowId = settings.targetId.replace('#views_slideshow_cycle_teaser_section_', '');
+        // Pager after function.
+        var pager_after_fn = function(curr, next, opts) {
+          // Need to do some special handling on first load.
+          var slideNum = opts.currSlide;
+          if (typeof settings.processedAfter == 'undefined' || !settings.processedAfter) {
+            settings.processedAfter = 1;
+            slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
+          }
+          Drupal.viewsSlideshow.action({ "action": 'transitionEnd', "slideshowID": settings.slideshowId, "slideNum": slideNum });
+        }
+        // Pager before function.
+        var pager_before_fn = function(curr, next, opts) {
+          // Remember last slide.
+          if (settings.remember_slide) {
+            createCookie(settings.vss_id, opts.currSlide + 1, settings.remember_slide_days);
+          }
+
+          // Make variable height.
+          if (!settings.fixed_height) {
+            //get the height of the current slide
+            var $ht = $(next).height();
+            //set the container's height to that of the current slide
+            $(next).parent().animate({height: $ht});
+          }
+
+          // Need to do some special handling on first load.
+          var slideNum = opts.nextSlide;
+          if (typeof settings.processedBefore == 'undefined' || !settings.processedBefore) {
+            settings.processedBefore = 1;
+            slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
+          }
+
+          Drupal.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
+        }
         settings.loaded = false;
 
         settings.opts = {
@@ -24,38 +59,8 @@
           sync:settings.sync,
           random:settings.random,
           nowrap:settings.nowrap,
-          after:function(curr, next, opts) {
-            // Need to do some special handling on first load.
-            var slideNum = opts.currSlide;
-            if (typeof settings.processedAfter == 'undefined' || !settings.processedAfter) {
-              settings.processedAfter = 1;
-              slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
-            }
-            Drupal.viewsSlideshow.action({ "action": 'transitionEnd', "slideshowID": settings.slideshowId, "slideNum": slideNum });
-          },
-          before:function(curr, next, opts) {
-            // Remember last slide.
-            if (settings.remember_slide) {
-              createCookie(settings.vss_id, opts.currSlide + 1, settings.remember_slide_days);
-            }
-
-            // Make variable height.
-            if (!settings.fixed_height) {
-              //get the height of the current slide
-              var $ht = $(this).height();
-              //set the container's height to that of the current slide
-              $(this).parent().animate({height: $ht});
-            }
-
-            // Need to do some special handling on first load.
-            var slideNum = opts.nextSlide;
-            if (typeof settings.processedBefore == 'undefined' || !settings.processedBefore) {
-              settings.processedBefore = 1;
-              slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
-            }
-
-            Drupal.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
-          },
+          after:pager_after_fn,
+          before:pager_before_fn,
           cleartype:(settings.cleartype)? true : false,
           cleartypeNoBg:(settings.cleartypenobg)? true : false
         }
@@ -192,6 +197,7 @@
                 afterValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(afterValue);
                 // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+                  pager_after_fn(currSlideElement, nextSlideElement, options);
                   eval(afterValue);
                 }
                 break;
@@ -201,6 +207,7 @@
                 beforeValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(beforeValue);
                 // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
+                  pager_before_fn(currSlideElement, nextSlideElement, options);
                   eval(beforeValue);
                 }
                 break;
