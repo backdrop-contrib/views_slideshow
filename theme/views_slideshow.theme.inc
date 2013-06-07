@@ -86,6 +86,7 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
         )
       )
     );
+    drupal_add_library('views_slideshow', 'views_slideshow');
     drupal_add_js($js_settings, 'setting');
 
     /**
@@ -190,6 +191,7 @@ function theme_views_slideshow_pager_widget_render($vars) {
     ),
   );
 
+  drupal_add_library('views_slideshow', 'views_slideshow');
   drupal_add_js($js_vars, 'setting');
 
   // Create some attributes
@@ -214,6 +216,7 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
   );
 
   // Add the settings to the page.
+  drupal_add_library('views_slideshow', 'views_slideshow');
   drupal_add_js($js_vars, 'setting');
 
   // Add hover intent library
@@ -281,6 +284,7 @@ function theme_views_slideshow_controls_widget_render($vars) {
     ),
   );
 
+  drupal_add_library('views_slideshow', 'views_slideshow');
   drupal_add_js($js_vars, 'setting');
 
   $output = '';
