@@ -238,7 +238,7 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
   // Render all the fields unless there is only 1 slide and the user specified
   // to hide them when there is only one slide.
   $vars['rendered_field_items'] = '';
-  if (empty($vars['settings']['hide_on_single_slide']) || count($vars['view']->result) > 1) {
+  if (empty($vars['settings']['hide_on_single_slide']) || count($vars['view']->result) > $vars['view']->style_options['views_slideshow_cycle']['items_per_slide']) {
     foreach ($vars['view']->result as $count => $node) {
       $rendered_fields = '';
       foreach ($vars['settings']['views_slideshow_pager_fields_fields'] as $field => $use) {
@@ -288,7 +288,7 @@ function theme_views_slideshow_controls_widget_render($vars) {
   drupal_add_js($js_vars, 'setting');
 
   $output = '';
-  if (empty($vars['settings']['hide_on_single_slide']) || count($vars['rows']) > 1) {
+  if (empty($vars['settings']['hide_on_single_slide']) || count($vars['rows']) > $vars['view']->style_options['views_slideshow_cycle']['items_per_slide']) {
     $output = theme(views_theme_functions($vars['settings']['type'], $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'rows' => $vars['rows']));
   }
 
