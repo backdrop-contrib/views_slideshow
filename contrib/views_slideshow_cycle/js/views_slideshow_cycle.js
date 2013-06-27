@@ -28,9 +28,11 @@
         }
         // Pager before function.
         var pager_before_fn = function(curr, next, opts) {
+          var slideNum = opts.nextSlide;
+
           // Remember last slide.
           if (settings.remember_slide) {
-            createCookie(settings.vss_id, opts.currSlide + 1, settings.remember_slide_days);
+            createCookie(settings.vss_id, slideNum, settings.remember_slide_days);
           }
 
           // Make variable height.
@@ -42,10 +44,9 @@
           }
 
           // Need to do some special handling on first load.
-          var slideNum = opts.nextSlide;
           if (typeof settings.processedBefore == 'undefined' || !settings.processedBefore) {
             settings.processedBefore = 1;
-            slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
+            slideNum = (typeof opts.startingSlide == 'undefined') ? 0 : opts.startingSlide;
           }
 
           Drupal.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
