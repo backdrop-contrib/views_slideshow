@@ -412,11 +412,19 @@
   };
 
   Drupal.viewsSlideshowCycle.pause = function (options) {
-    if (options.pause_in_middle && $.fn.pause) {
-      $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).pause();
+    //Eat TypeError, cycle doesn't handle pause well if options isn't defined.
+    try{
+      if (options.pause_in_middle && $.fn.pause) {
+        $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).pause();
+      }
+      else {
+        $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('pause');
+      }
     }
-    else {
-      $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('pause');
+    catch(e){
+      if(!e instanceof TypeError){
+        throw e;
+      }
     }
   };
 
