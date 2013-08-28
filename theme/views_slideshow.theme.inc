@@ -1,4 +1,4 @@
-<?php
+  <?php
 
 /**
  * @file
@@ -70,24 +70,10 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
     foreach ($addons as $addon_id => $addon_info) {
       foreach ($addon_info['accepts'] as $imp_key => $imp_value) {
         if (is_array($imp_value)) {
-          // php5.x preg_replace_callback() method.
-          $methods[$imp_key][] = preg_replace_callback(
-            '/_(.?)/',
-            function ($m) {
-              return strtoupper($m[1]);
-            },
-            $addon_id
-          );
+          $methods[$imp_key][] = views_slideshow_format_addons_name($addon_id);
         }
         else {
-          // php5.x preg_replace_callback() method.
-          $methods[$imp_value][] = preg_replace_callback(
-            '/_(.?)/',
-            function ($m) {
-              return strtoupper($m[1]);
-            },
-            $addon_id
-          );
+          $methods[$imp_value][] = views_slideshow_format_addons_name($addon_id);
         }
       }
     }
@@ -199,14 +185,7 @@ function theme_views_slideshow_pager_widget_render($vars) {
     'viewsSlideshowPager' => array(
       $vars['vss_id'] => array(
         $vars['location'] => array(
-          // php5.x preg_replace_callback() method.
-          'type' => preg_replace_callback(
-            '/_(.?)/',
-            function ($m) {
-              return strtoupper($m[1]);
-            },
-            $vars['settings']['type']
-          ),
+          'type' => views_slideshow_format_addons_name($vars['settings']['type'])
         ),
       ),
     ),
@@ -299,14 +278,7 @@ function theme_views_slideshow_controls_widget_render($vars) {
     'viewsSlideshowControls' => array(
       $vars['vss_id'] => array(
         $vars['location'] => array(
-          // php5.x preg_replace_callback() method.
-          'type' => preg_replace_callback(
-            '/_(.?)/',
-            function ($m) {
-              return strtoupper($m[1]);
-            },
-            $vars['settings']['type']
-          ),
+          'type' => views_slideshow_format_addons_name($vars['settings']['type'])
         ),
       ),
     ),

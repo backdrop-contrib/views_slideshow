@@ -250,6 +250,23 @@ function views_slideshow_pager_views_slideshow_widget_form_options(&$form, &$for
 }
 
 /**
+ * preg_replace_callback callback().
+ * @see views_slideshow_format_addons_name().
+ */
+function _views_slideshow_get_preg_strtoupper_callback($matches) {
+  if (isset($matches[1])) {
+    return strtoupper($matches[1]);
+  }
+}
+
+/**
+ * php5.x preg_replace_callback() method.
+ */
+function views_slideshow_format_addons_name($subject) {
+  return preg_replace_callback('/_(.?)/', '_views_slideshow_get_preg_strtoupper_callback', $subject);
+}
+
+/**
  * Implementation of hook_views_slideshow_widget_pager_info
  */
 function views_slideshow_views_slideshow_widget_pager_info($view) {
