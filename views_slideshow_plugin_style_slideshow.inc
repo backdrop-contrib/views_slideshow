@@ -109,7 +109,7 @@ class views_slideshow_plugin_style_slideshow extends views_plugin_style {
     }
     else {
       $form['enable_module'] = array(
-        '#markup' => t('There is no Views Slideshow plugin enabled. Go to the !modules and enable a Views Slideshow plugin module. For example Views Slideshow Singleframe.', array('!modules' => l('Modules Page', 'admin/modules'))),
+        '#markup' => t('There is no Views Slideshow plugin enabled. Go to the !modules and enable a Views Slideshow plugin module. For example Views Slideshow: Cycle.', array('!modules' => l('Modules Page', 'admin/modules'))),
       );
     }
 
