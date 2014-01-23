@@ -481,7 +481,7 @@ function views_slideshow_views_slideshow_option_definition() {
  */
 
 // Trying to make sure the theme.inc get's loaded.
-include_once('theme/views_slideshow.theme.inc');
+module_load_include('inc', 'views_slideshow', 'theme/views_slideshow.theme');
 
 function template_preprocess_views_slideshow(&$vars) {
   _views_slideshow_preprocess_views_slideshow($vars);

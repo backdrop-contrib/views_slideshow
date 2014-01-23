@@ -118,7 +118,7 @@ function _views_slideshow_cycle_pause_library_path() {
  */
 
 // Trying to make sure the theme.inc get's loaded.
-include_once('theme/views_slideshow_cycle.theme.inc');
+module_load_include('inc', 'views_slideshow_cycle', 'theme/views_slideshow_cycle.theme');
 
 function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame($vars);
