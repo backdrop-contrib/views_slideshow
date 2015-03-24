@@ -53,7 +53,7 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
   // want to add is not already there. If it is already there then append -[num]
   // to the id to make it unique.
   $slideshow_count = 1;
-  $current_settings = drupal_add_js();
+  $current_settings = backdrop_add_js();
   foreach ($current_settings['settings']['data'] AS $current_setting) {
     if (isset($current_setting['viewsSlideshowCycle'])) {
       $current_keys = array_keys($current_setting['viewsSlideshowCycle']);
@@ -72,29 +72,29 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
   if (module_exists('libraries')) {
     // Load jQuery Cycle
     if ($cycle_path = _views_slideshow_cycle_library_path()) {
-      drupal_add_js($cycle_path);
+      backdrop_add_js($cycle_path);
     }
 
     // Load Json2
     $json_path = libraries_get_path('json2');
     if (!empty($json_path) && file_exists($json_path . '/json2.js')) {
-      drupal_add_js($json_path . '/json2.js');
+      backdrop_add_js($json_path . '/json2.js');
     }
 
     // Load our cycle js
-    $module_path = drupal_get_path('module', 'views_slideshow_cycle');
-    drupal_add_js($module_path . '/js/views_slideshow_cycle.js');
+    $module_path = backdrop_get_path('module', 'views_slideshow_cycle');
+    backdrop_add_js($module_path . '/js/views_slideshow_cycle.js');
 
     // Load the pause library
     if (!empty($settings['pause_in_middle']) && $pause_path = _views_slideshow_cycle_pause_library_path()) {
-      drupal_add_js($pause_path);
+      backdrop_add_js($pause_path);
     }
   }
 
   // Load our cycle css
-  drupal_add_css($module_path . '/views_slideshow_cycle.css', 'file');
+  backdrop_add_css($module_path . '/views_slideshow_cycle.css', 'file');
 
-  drupal_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
+  backdrop_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
 
   // Add hover intent library
   if ($settings['pause']) {
@@ -102,7 +102,7 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
       // Load jQuery hoverIntent
       $hoverIntent_path = libraries_get_path('jquery.hoverIntent');
       if (!empty($hoverIntent_path) && file_exists($hoverIntent_path . '/jquery.hoverIntent.js')) {
-        drupal_add_js($hoverIntent_path . '/jquery.hoverIntent.js');
+        backdrop_add_js($hoverIntent_path . '/jquery.hoverIntent.js');
       }
     }
   }

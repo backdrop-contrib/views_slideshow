@@ -28,12 +28,12 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
   // Make sure the main slideshow settings are defined before building the
   // slideshow.
   if (empty($main_frame_module)) {
-    drupal_set_message(t('No main frame module is enabled for views slideshow. '
+    backdrop_set_message(t('No main frame module is enabled for views slideshow. '
       . 'This is often because another module which Views Slideshow needs is not enabled. '
       . 'For example, 3.x needs a module like "Views Slideshow: Cycle" enabled.'), 'error');
   }
   elseif (empty($options[$main_frame_module])) {
-    drupal_set_message(t('The options for !module does not exists.', array('!module' => $main_frame_module)), 'error');
+    backdrop_set_message(t('The options for !module does not exists.', array('!module' => $main_frame_module)), 'error');
   }
   elseif (!empty($vars['rows'])) {
     $settings = $options[$main_frame_module];
@@ -88,8 +88,8 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
         )
       )
     );
-    drupal_add_library('views_slideshow', 'views_slideshow');
-    drupal_add_js($js_settings, 'setting');
+    backdrop_add_library('views_slideshow', 'views_slideshow');
+    backdrop_add_js($js_settings, 'setting');
 
     /**
      * Process Skins
@@ -111,7 +111,7 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
     $vars['skin'] = $skin_info['class'];
 
     // Enqueue any stylesheets set for the skin on this view are added.
-    $skin_path = drupal_get_path('module', $skin_info['module']);
+    $skin_path = backdrop_get_path('module', $skin_info['module']);
     if ($skin_info['path']) {
       $skin_path .= '/' . $skin_info['path'];
     }
@@ -119,7 +119,7 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
     // Add stylesheet.
     if (!empty($skin_info['stylesheets'])) {
       foreach ($skin_info['stylesheets'] as $stylesheet) {
-        drupal_add_css($skin_path . '/' . $stylesheet);
+        backdrop_add_css($skin_path . '/' . $stylesheet);
       }
     }
 
@@ -197,8 +197,8 @@ function theme_views_slideshow_pager_widget_render($vars) {
     ),
   );
 
-  drupal_add_library('views_slideshow', 'views_slideshow');
-  drupal_add_js($js_vars, 'setting');
+  backdrop_add_library('views_slideshow', 'views_slideshow');
+  backdrop_add_js($js_vars, 'setting');
 
   // Create some attributes
   $attributes['class'] = 'widget_pager widget_pager_' . $vars['location'];
@@ -222,8 +222,8 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
   );
 
   // Add the settings to the page.
-  drupal_add_library('views_slideshow', 'views_slideshow');
-  drupal_add_js($js_vars, 'setting');
+  backdrop_add_library('views_slideshow', 'views_slideshow');
+  backdrop_add_js($js_vars, 'setting');
 
   // Add hover intent library
   if ($vars['settings']['views_slideshow_pager_fields_hover']) {
@@ -231,7 +231,7 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
       // Load jQuery hoverIntent
       $hoverIntent_path = libraries_get_path('jquery.hoverIntent');
       if (!empty($hoverIntent_path) && file_exists($hoverIntent_path . '/jquery.hoverIntent.js')) {
-        drupal_add_js($hoverIntent_path . '/jquery.hoverIntent.js');
+        backdrop_add_js($hoverIntent_path . '/jquery.hoverIntent.js');
       }
     }
   }
@@ -290,8 +290,8 @@ function theme_views_slideshow_controls_widget_render($vars) {
     ),
   );
 
-  drupal_add_library('views_slideshow', 'views_slideshow');
-  drupal_add_js($js_vars, 'setting');
+  backdrop_add_library('views_slideshow', 'views_slideshow');
+  backdrop_add_js($js_vars, 'setting');
 
   $output = '';
   if (empty($vars['settings']['hide_on_single_slide']) || count($vars['rows']) > $vars['view']->style_options['views_slideshow_cycle']['items_per_slide']) {
@@ -307,8 +307,8 @@ function theme_views_slideshow_controls_widget_render($vars) {
  * @ingroup themeable
  */
 function _views_slideshow_preprocess_views_slideshow_controls_text(&$vars) {
-  $module_path = drupal_get_path('module', 'views_slideshow');
-  drupal_add_css($module_path . '/views_slideshow_controls_text.css', array('type' => 'file'));
+  $module_path = backdrop_get_path('module', 'views_slideshow');
+  backdrop_add_css($module_path . '/views_slideshow_controls_text.css', array('type' => 'file'));
 
   $vars['classes_array'][] = 'views_slideshow_controls_text';
 

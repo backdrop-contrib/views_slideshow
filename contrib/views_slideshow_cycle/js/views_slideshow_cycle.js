@@ -8,11 +8,11 @@
  * This will set our initial behavior, by starting up each individual slideshow.
  */
 (function ($) {
-  Drupal.behaviors.viewsSlideshowCycle = {
+  Backdrop.behaviors.viewsSlideshowCycle = {
     attach: function (context) {
       $('.views_slideshow_cycle_main:not(.viewsSlideshowCycle-processed)', context).addClass('viewsSlideshowCycle-processed').each(function() {
         var fullId = '#' + $(this).attr('id');
-        var settings = Drupal.settings.viewsSlideshowCycle[fullId];
+        var settings = Backdrop.settings.viewsSlideshowCycle[fullId];
         settings.targetId = '#' + $(fullId + " :first").attr('id');
 
         settings.slideshowId = settings.targetId.replace('#views_slideshow_cycle_teaser_section_', '');
@@ -24,7 +24,7 @@
             settings.processedAfter = 1;
             slideNum = (typeof settings.opts.startingSlide == 'undefined') ? 0 : settings.opts.startingSlide;
           }
-          Drupal.viewsSlideshow.action({ "action": 'transitionEnd', "slideshowID": settings.slideshowId, "slideNum": slideNum });
+          Backdrop.viewsSlideshow.action({ "action": 'transitionEnd', "slideshowID": settings.slideshowId, "slideNum": slideNum });
         }
         // Pager before function.
         var pager_before_fn = function(curr, next, opts) {
@@ -49,7 +49,7 @@
             slideNum = (typeof opts.startingSlide == 'undefined') ? 0 : opts.startingSlide;
           }
 
-          Drupal.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
+          Backdrop.viewsSlideshow.action({ "action": 'transitionBegin', "slideshowID": settings.slideshowId, "slideNum": slideNum });
         }
         settings.loaded = false;
 
@@ -106,11 +106,11 @@
         // Pause on hover.
         if (settings.pause) {
           var mouseIn = function() {
-            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
+            Backdrop.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           }
 
           var mouseOut = function() {
-            Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
+            Backdrop.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
           }
 
           if (jQuery.fn.hoverIntent) {
@@ -124,7 +124,7 @@
         // Pause on clicking of the slide.
         if (settings.pause_on_click) {
           $('#views_slideshow_cycle_teaser_section_' + settings.vss_id).click(function() {
-            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
+            Backdrop.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
           });
         }
 
@@ -177,7 +177,7 @@
               case "timeout":
               case "width":
                 var optionValue = advancedOptions[option];
-                optionValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(optionValue);
+                optionValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(optionValue);
                 settings.opts[option] = optionValue;
                 break;
 
@@ -188,14 +188,14 @@
               case "cssAfter":
               case "shuffle":
                 var cssValue = advancedOptions[option];
-                cssValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(cssValue);
+                cssValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(cssValue);
                 settings.opts[option] = eval('(' + cssValue + ')');
                 break;
 
               // These options have their own functions.
               case "after":
                 var afterValue = advancedOptions[option];
-                afterValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(afterValue);
+                afterValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(afterValue);
                 // transition callback (scope set to element that was shown): function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
                   pager_after_fn(currSlideElement, nextSlideElement, options);
@@ -205,7 +205,7 @@
 
               case "before":
                 var beforeValue = advancedOptions[option];
-                beforeValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(beforeValue);
+                beforeValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(beforeValue);
                 // transition callback (scope set to element to be shown):     function(currSlideElement, nextSlideElement, options, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
                   pager_before_fn(currSlideElement, nextSlideElement, options);
@@ -215,7 +215,7 @@
 
               case "end":
                 var endValue = advancedOptions[option];
-                endValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(endValue);
+                endValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(endValue);
                 // callback invoked when the slideshow terminates (use with autostop or nowrap options): function(options)
                 settings.opts[option] = function(options) {
                   eval(endValue);
@@ -224,7 +224,7 @@
 
               case "fxFn":
                 var fxFnValue = advancedOptions[option];
-                fxFnValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(fxFnValue);
+                fxFnValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(fxFnValue);
                 // function used to control the transition: function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag)
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, afterCalback, forwardFlag) {
                   eval(fxFnValue);
@@ -233,7 +233,7 @@
 
               case "onPagerEvent":
                 var onPagerEventValue = advancedOptions[option];
-                onPagerEventValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(onPagerEventValue);
+                onPagerEventValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(onPagerEventValue);
                 settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
                   eval(onPagerEventValue);
                 }
@@ -241,7 +241,7 @@
 
               case "onPrevNextEvent":
                 var onPrevNextEventValue = advancedOptions[option];
-                onPrevNextEventValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(onPrevNextEventValue);
+                onPrevNextEventValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(onPrevNextEventValue);
                 settings.opts[option] = function(isNext, zeroBasedSlideIndex, slideElement) {
                   eval(onPrevNextEventValue);
                 }
@@ -249,7 +249,7 @@
 
               case "pagerAnchorBuilder":
                 var pagerAnchorBuilderValue = advancedOptions[option];
-                pagerAnchorBuilderValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(pagerAnchorBuilderValue);
+                pagerAnchorBuilderValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(pagerAnchorBuilderValue);
                 // callback fn for building anchor links:  function(index, DOMelement)
                 settings.opts[option] = function(index, DOMelement) {
                   var returnVal = '';
@@ -260,7 +260,7 @@
 
               case "pagerClick":
                 var pagerClickValue = advancedOptions[option];
-                pagerClickValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(pagerClickValue);
+                pagerClickValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(pagerClickValue);
                 // callback fn for pager clicks:    function(zeroBasedSlideIndex, slideElement)
                 settings.opts[option] = function(zeroBasedSlideIndex, slideElement) {
                   eval(pagerClickValue);
@@ -269,7 +269,7 @@
 
               case "paused":
                 var pausedValue = advancedOptions[option];
-                pausedValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(pausedValue);
+                pausedValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(pausedValue);
                 // undocumented callback when slideshow is paused:    function(cont, opts, byHover)
                 settings.opts[option] = function(cont, opts, byHover) {
                   eval(pausedValue);
@@ -278,7 +278,7 @@
 
               case "resumed":
                 var resumedValue = advancedOptions[option];
-                resumedValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(resumedValue);
+                resumedValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(resumedValue);
                 // undocumented callback when slideshow is resumed:    function(cont, opts, byHover)
                 settings.opts[option] = function(cont, opts, byHover) {
                   eval(resumedValue);
@@ -287,7 +287,7 @@
 
               case "timeoutFn":
                 var timeoutFnValue = advancedOptions[option];
-                timeoutFnValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(timeoutFnValue);
+                timeoutFnValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(timeoutFnValue);
                 settings.opts[option] = function(currSlideElement, nextSlideElement, options, forwardFlag) {
                   eval(timeoutFnValue);
                 }
@@ -295,7 +295,7 @@
 
               case "updateActivePagerLink":
                 var updateActivePagerLinkValue = advancedOptions[option];
-                updateActivePagerLinkValue = Drupal.viewsSlideshowCycle.advancedOptionCleanup(updateActivePagerLinkValue);
+                updateActivePagerLinkValue = Backdrop.viewsSlideshowCycle.advancedOptionCleanup(updateActivePagerLinkValue);
                 // callback fn invoked to update the active pager link (adds/removes activePagerClass style)
                 settings.opts[option] = function(pager, currSlideIndex) {
                   eval(updateActivePagerLinkValue);
@@ -318,7 +318,7 @@
             $(settings.targetId + ' img').each(function() {
               var $imageElement = $(this);
               $imageElement.bind('load', function () {
-                Drupal.viewsSlideshowCycle.imageWait(fullId);
+                Backdrop.viewsSlideshowCycle.imageWait(fullId);
               });
 
               // Removing the source and adding it again will fire the load event.
@@ -329,23 +329,23 @@
 
             // We need to set a timeout so that the slideshow doesn't wait
             // indefinitely for all images to load.
-            setTimeout("Drupal.viewsSlideshowCycle.load('" + fullId + "')", settings.wait_for_image_load_timeout);
+            setTimeout("Backdrop.viewsSlideshowCycle.load('" + fullId + "')", settings.wait_for_image_load_timeout);
           }
           else {
-            Drupal.viewsSlideshowCycle.load(fullId);
+            Backdrop.viewsSlideshowCycle.load(fullId);
           }
         }
         else {
-          Drupal.viewsSlideshowCycle.load(fullId);
+          Backdrop.viewsSlideshowCycle.load(fullId);
         }
       });
     }
   };
 
-  Drupal.viewsSlideshowCycle = Drupal.viewsSlideshowCycle || {};
+  Backdrop.viewsSlideshowCycle = Backdrop.viewsSlideshowCycle || {};
 
   // Cleanup the values of advanced options.
-  Drupal.viewsSlideshowCycle.advancedOptionCleanup = function(value) {
+  Backdrop.viewsSlideshowCycle.advancedOptionCleanup = function(value) {
     value = $.trim(value);
     value = value.replace(/\n/g, '');
     if (!isNaN(parseInt(value))) {
@@ -363,15 +363,15 @@
 
   // This checks to see if all the images have been loaded.
   // If they have then it starts the slideshow.
-  Drupal.viewsSlideshowCycle.imageWait = function(fullId) {
-    if (++Drupal.settings.viewsSlideshowCycle[fullId].loadedImages == Drupal.settings.viewsSlideshowCycle[fullId].totalImages) {
-      Drupal.viewsSlideshowCycle.load(fullId);
+  Backdrop.viewsSlideshowCycle.imageWait = function(fullId) {
+    if (++Backdrop.settings.viewsSlideshowCycle[fullId].loadedImages == Backdrop.settings.viewsSlideshowCycle[fullId].totalImages) {
+      Backdrop.viewsSlideshowCycle.load(fullId);
     }
   };
 
   // Start the slideshow.
-  Drupal.viewsSlideshowCycle.load = function (fullId) {
-    var settings = Drupal.settings.viewsSlideshowCycle[fullId];
+  Backdrop.viewsSlideshowCycle.load = function (fullId) {
+    var settings = Backdrop.settings.viewsSlideshowCycle[fullId];
 
     // Make sure the slideshow isn't already loaded.
     if (!settings.loaded) {
@@ -380,7 +380,7 @@
 
       // Start Paused
       if (settings.start_paused) {
-        Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
+        Backdrop.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId, "force": true });
       }
 
       // Pause if hidden.
@@ -391,10 +391,10 @@
           // pause it.
           var visible = viewsSlideshowCycleIsVisible(settings.targetId, settings.pause_when_hidden_type, settings.amount_allowed_visible);
           if (visible) {
-            Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
+            Backdrop.viewsSlideshow.action({ "action": 'play', "slideshowID": settings.slideshowId });
           }
           else {
-            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
+            Backdrop.viewsSlideshow.action({ "action": 'pause', "slideshowID": settings.slideshowId });
           }
         }
 
@@ -411,7 +411,7 @@
     }
   };
 
-  Drupal.viewsSlideshowCycle.pause = function (options) {
+  Backdrop.viewsSlideshowCycle.pause = function (options) {
     //Eat TypeError, cycle doesn't handle pause well if options isn't defined.
     try{
       if (options.pause_in_middle && $.fn.pause) {
@@ -428,8 +428,8 @@
     }
   };
 
-  Drupal.viewsSlideshowCycle.play = function (options) {
-    Drupal.settings.viewsSlideshowCycle['#views_slideshow_cycle_main_' + options.slideshowID].paused = false;
+  Backdrop.viewsSlideshowCycle.play = function (options) {
+    Backdrop.settings.viewsSlideshowCycle['#views_slideshow_cycle_main_' + options.slideshowID].paused = false;
     if (options.pause_in_middle && $.fn.resume) {
       $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).resume();
     }
@@ -438,15 +438,15 @@
     }
   };
 
-  Drupal.viewsSlideshowCycle.previousSlide = function (options) {
+  Backdrop.viewsSlideshowCycle.previousSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('prev');
   };
 
-  Drupal.viewsSlideshowCycle.nextSlide = function (options) {
+  Backdrop.viewsSlideshowCycle.nextSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle('next');
   };
 
-  Drupal.viewsSlideshowCycle.goToSlide = function (options) {
+  Backdrop.viewsSlideshowCycle.goToSlide = function (options) {
     $('#views_slideshow_cycle_teaser_section_' + options.slideshowID).cycle(options.slideNum);
   };
 

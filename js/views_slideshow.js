@@ -1,21 +1,21 @@
 (function ($) {
-  Drupal.viewsSlideshow = Drupal.viewsSlideshow || {};
+  Backdrop.viewsSlideshow = Backdrop.viewsSlideshow || {};
 
   /**
    * Views Slideshow Controls
    */
-  Drupal.viewsSlideshowControls = Drupal.viewsSlideshowControls || {};
+  Backdrop.viewsSlideshowControls = Backdrop.viewsSlideshowControls || {};
 
   /**
    * Implement the play hook for controls.
    */
-  Drupal.viewsSlideshowControls.play = function (options) {
+  Backdrop.viewsSlideshowControls.play = function (options) {
     // Route the control call to the correct control type.
     // Need to use try catch so we don't have to check to make sure every part
     // of the object is defined.
     try {
-      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].play == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].play(options);
+      if (typeof Backdrop.settings.viewsSlideshowControls[options.slideshowID].top.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].top.type].play == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].top.type].play(options);
       }
     }
     catch(err) {
@@ -23,8 +23,8 @@
     }
 
     try {
-      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].play == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].play(options);
+      if (typeof Backdrop.settings.viewsSlideshowControls[options.slideshowID].bottom.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].bottom.type].play == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].bottom.type].play(options);
       }
     }
     catch(err) {
@@ -35,13 +35,13 @@
   /**
    * Implement the pause hook for controls.
    */
-  Drupal.viewsSlideshowControls.pause = function (options) {
+  Backdrop.viewsSlideshowControls.pause = function (options) {
     // Route the control call to the correct control type.
     // Need to use try catch so we don't have to check to make sure every part
     // of the object is defined.
     try {
-      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].pause == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].top.type].pause(options);
+      if (typeof Backdrop.settings.viewsSlideshowControls[options.slideshowID].top.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].top.type].pause == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].top.type].pause(options);
       }
     }
     catch(err) {
@@ -49,8 +49,8 @@
     }
 
     try {
-      if (typeof Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].pause == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowControls[options.slideshowID].bottom.type].pause(options);
+      if (typeof Backdrop.settings.viewsSlideshowControls[options.slideshowID].bottom.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].bottom.type].pause == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowControls[options.slideshowID].bottom.type].pause(options);
       }
     }
     catch(err) {
@@ -64,14 +64,14 @@
    */
 
   // Add views slieshow api calls for views slideshow text controls.
-  Drupal.behaviors.viewsSlideshowControlsText = {
+  Backdrop.behaviors.viewsSlideshowControlsText = {
     attach: function (context) {
 
       // Process previous link
       $('.views_slideshow_controls_text_previous:not(.views-slideshow-controls-text-previous-processed)', context).addClass('views-slideshow-controls-text-previous-processed').each(function() {
         var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_previous_', '');
         $(this).click(function() {
-          Drupal.viewsSlideshow.action({ "action": 'previousSlide', "slideshowID": uniqueID });
+          Backdrop.viewsSlideshow.action({ "action": 'previousSlide', "slideshowID": uniqueID });
           return false;
         });
       });
@@ -80,7 +80,7 @@
       $('.views_slideshow_controls_text_next:not(.views-slideshow-controls-text-next-processed)', context).addClass('views-slideshow-controls-text-next-processed').each(function() {
         var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_next_', '');
         $(this).click(function() {
-          Drupal.viewsSlideshow.action({ "action": 'nextSlide', "slideshowID": uniqueID });
+          Backdrop.viewsSlideshow.action({ "action": 'nextSlide', "slideshowID": uniqueID });
           return false;
         });
       });
@@ -89,11 +89,11 @@
       $('.views_slideshow_controls_text_pause:not(.views-slideshow-controls-text-pause-processed)', context).addClass('views-slideshow-controls-text-pause-processed').each(function() {
         var uniqueID = $(this).attr('id').replace('views_slideshow_controls_text_pause_', '');
         $(this).click(function() {
-          if (Drupal.settings.viewsSlideshow[uniqueID].paused) {
-            Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID, "force": true });
+          if (Backdrop.settings.viewsSlideshow[uniqueID].paused) {
+            Backdrop.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID, "force": true });
           }
           else {
-            Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID, "force": true });
+            Backdrop.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID, "force": true });
           }
           return false;
         });
@@ -101,13 +101,13 @@
     }
   };
 
-  Drupal.viewsSlideshowControlsText = Drupal.viewsSlideshowControlsText || {};
+  Backdrop.viewsSlideshowControlsText = Backdrop.viewsSlideshowControlsText || {};
 
   /**
    * Implement the pause hook for text controls.
    */
-  Drupal.viewsSlideshowControlsText.pause = function (options) {
-    var pauseText = Drupal.theme.prototype['viewsSlideshowControlsPause'] ? Drupal.theme('viewsSlideshowControlsPause') : '';
+  Backdrop.viewsSlideshowControlsText.pause = function (options) {
+    var pauseText = Backdrop.theme.prototype['viewsSlideshowControlsPause'] ? Backdrop.theme('viewsSlideshowControlsPause') : '';
     $('#views_slideshow_controls_text_pause_' + options.slideshowID + ' a').text(pauseText);
     $('#views_slideshow_controls_text_pause_' + options.slideshowID).removeClass('views-slideshow-controls-text-status-play');
     $('#views_slideshow_controls_text_pause_' + options.slideshowID).addClass('views-slideshow-controls-text-status-pause');
@@ -116,38 +116,38 @@
   /**
    * Implement the play hook for text controls.
    */
-  Drupal.viewsSlideshowControlsText.play = function (options) {
-    var playText = Drupal.theme.prototype['viewsSlideshowControlsPlay'] ? Drupal.theme('viewsSlideshowControlsPlay') : '';
+  Backdrop.viewsSlideshowControlsText.play = function (options) {
+    var playText = Backdrop.theme.prototype['viewsSlideshowControlsPlay'] ? Backdrop.theme('viewsSlideshowControlsPlay') : '';
     $('#views_slideshow_controls_text_pause_' + options.slideshowID + ' a').text(playText);
     $('#views_slideshow_controls_text_pause_' + options.slideshowID).removeClass('views-slideshow-controls-text-status-pause');
     $('#views_slideshow_controls_text_pause_' + options.slideshowID).addClass('views-slideshow-controls-text-status-play');
   };
 
   // Theme the resume control.
-  Drupal.theme.prototype.viewsSlideshowControlsPause = function () {
-    return Drupal.t('Resume');
+  Backdrop.theme.prototype.viewsSlideshowControlsPause = function () {
+    return Backdrop.t('Resume');
   };
 
   // Theme the pause control.
-  Drupal.theme.prototype.viewsSlideshowControlsPlay = function () {
-    return Drupal.t('Pause');
+  Backdrop.theme.prototype.viewsSlideshowControlsPlay = function () {
+    return Backdrop.t('Pause');
   };
 
   /**
    * Views Slideshow Pager
    */
-  Drupal.viewsSlideshowPager = Drupal.viewsSlideshowPager || {};
+  Backdrop.viewsSlideshowPager = Backdrop.viewsSlideshowPager || {};
 
   /**
    * Implement the transitionBegin hook for pagers.
    */
-  Drupal.viewsSlideshowPager.transitionBegin = function (options) {
+  Backdrop.viewsSlideshowPager.transitionBegin = function (options) {
     // Route the pager call to the correct pager type.
     // Need to use try catch so we don't have to check to make sure every part
     // of the object is defined.
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager != "undefined" && typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].transitionBegin == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].transitionBegin(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager != "undefined" && typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].transitionBegin == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].transitionBegin(options);
       }
     }
     catch(err) {
@@ -155,8 +155,8 @@
     }
 
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager != "undefined" && typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].transitionBegin == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].transitionBegin(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager != "undefined" && typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].transitionBegin == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].transitionBegin(options);
       }
     }
     catch(err) {
@@ -167,13 +167,13 @@
   /**
    * Implement the goToSlide hook for pagers.
    */
-  Drupal.viewsSlideshowPager.goToSlide = function (options) {
+  Backdrop.viewsSlideshowPager.goToSlide = function (options) {
     // Route the pager call to the correct pager type.
     // Need to use try catch so we don't have to check to make sure every part
     // of the object is defined.
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].goToSlide == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].goToSlide(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].goToSlide == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].goToSlide(options);
       }
     }
     catch(err) {
@@ -181,8 +181,8 @@
     }
 
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].goToSlide == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].goToSlide(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].goToSlide == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].goToSlide(options);
       }
     }
     catch(err) {
@@ -193,13 +193,13 @@
   /**
    * Implement the previousSlide hook for pagers.
    */
-  Drupal.viewsSlideshowPager.previousSlide = function (options) {
+  Backdrop.viewsSlideshowPager.previousSlide = function (options) {
     // Route the pager call to the correct pager type.
     // Need to use try catch so we don't have to check to make sure every part
     // of the object is defined.
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].previousSlide == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].previousSlide(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].previousSlide == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].previousSlide(options);
       }
     }
     catch(err) {
@@ -207,8 +207,8 @@
     }
 
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].previousSlide == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].previousSlide(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].previousSlide == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].previousSlide(options);
       }
     }
     catch(err) {
@@ -219,13 +219,13 @@
   /**
    * Implement the nextSlide hook for pagers.
    */
-  Drupal.viewsSlideshowPager.nextSlide = function (options) {
+  Backdrop.viewsSlideshowPager.nextSlide = function (options) {
     // Route the pager call to the correct pager type.
     // Need to use try catch so we don't have to check to make sure every part
     // of the object is defined.
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].nextSlide == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].top.type].nextSlide(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].nextSlide == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].top.type].nextSlide(options);
       }
     }
     catch(err) {
@@ -233,8 +233,8 @@
     }
 
     try {
-      if (typeof Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].nextSlide == 'function') {
-        Drupal[Drupal.settings.viewsSlideshowPager[options.slideshowID].bottom.type].nextSlide(options);
+      if (typeof Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type != "undefined" && typeof Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].nextSlide == 'function') {
+        Backdrop[Backdrop.settings.viewsSlideshowPager[options.slideshowID].bottom.type].nextSlide(options);
       }
     }
     catch(err) {
@@ -248,7 +248,7 @@
    */
 
   // Add views slieshow api calls for views slideshow pager fields.
-  Drupal.behaviors.viewsSlideshowPagerFields = {
+  Backdrop.behaviors.viewsSlideshowPagerFields = {
     attach: function (context) {
       // Process pause on hover.
       $('.views_slideshow_pager_field:not(.views-slideshow-pager-field-processed)', context).addClass('views-slideshow-pager-field-processed').each(function() {
@@ -259,15 +259,15 @@
         var uniqueID = pagerInfo.join('_');
 
         // Add the activate and pause on pager hover event to each pager item.
-        if (Drupal.settings.viewsSlideshowPagerFields[uniqueID][location].activatePauseOnHover) {
+        if (Backdrop.settings.viewsSlideshowPagerFields[uniqueID][location].activatePauseOnHover) {
           $(this).children().each(function(index, pagerItem) {
             var mouseIn = function() {
-              Drupal.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
-              Drupal.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID });
+              Backdrop.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
+              Backdrop.viewsSlideshow.action({ "action": 'pause', "slideshowID": uniqueID });
             };
 
             var mouseOut = function() {
-              Drupal.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID });
+              Backdrop.viewsSlideshow.action({ "action": 'play', "slideshowID": uniqueID });
             };
 
             if (jQuery.fn.hoverIntent) {
@@ -281,7 +281,7 @@
         else {
           $(this).children().each(function(index, pagerItem) {
             $(pagerItem).click(function() {
-              Drupal.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
+              Backdrop.viewsSlideshow.action({ "action": 'goToSlide', "slideshowID": uniqueID, "slideNum": index });
             });
           });
         }
@@ -289,13 +289,13 @@
     }
   };
 
-  Drupal.viewsSlideshowPagerFields = Drupal.viewsSlideshowPagerFields || {};
+  Backdrop.viewsSlideshowPagerFields = Backdrop.viewsSlideshowPagerFields || {};
 
   /**
    * Implement the transitionBegin hook for pager fields pager.
    */
-  Drupal.viewsSlideshowPagerFields.transitionBegin = function (options) {
-    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+  Backdrop.viewsSlideshowPagerFields.transitionBegin = function (options) {
+    for (pagerLocation in Backdrop.settings.viewsSlideshowPager[options.slideshowID]) {
       // Remove active class from pagers
       $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').removeClass('active');
 
@@ -307,8 +307,8 @@
   /**
    * Implement the goToSlide hook for pager fields pager.
    */
-  Drupal.viewsSlideshowPagerFields.goToSlide = function (options) {
-    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+  Backdrop.viewsSlideshowPagerFields.goToSlide = function (options) {
+    for (pagerLocation in Backdrop.settings.viewsSlideshowPager[options.slideshowID]) {
       // Remove active class from pagers
       $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').removeClass('active');
 
@@ -320,8 +320,8 @@
   /**
    * Implement the previousSlide hook for pager fields pager.
    */
-  Drupal.viewsSlideshowPagerFields.previousSlide = function (options) {
-    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+  Backdrop.viewsSlideshowPagerFields.previousSlide = function (options) {
+    for (pagerLocation in Backdrop.settings.viewsSlideshowPager[options.slideshowID]) {
       // Get the current active pager.
       var pagerNum = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_', '');
 
@@ -345,8 +345,8 @@
   /**
    * Implement the nextSlide hook for pager fields pager.
    */
-  Drupal.viewsSlideshowPagerFields.nextSlide = function (options) {
-    for (pagerLocation in Drupal.settings.viewsSlideshowPager[options.slideshowID]) {
+  Backdrop.viewsSlideshowPagerFields.nextSlide = function (options) {
+    for (pagerLocation in Backdrop.settings.viewsSlideshowPager[options.slideshowID]) {
       // Get the current active pager.
       var pagerNum = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"].active').attr('id').replace('views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '_', '');
       var totalPagers = $('[id^="views_slideshow_pager_field_item_' + pagerLocation + '_' + options.slideshowID + '"]').length();
@@ -371,19 +371,19 @@
    * Views Slideshow Slide Counter
    */
 
-  Drupal.viewsSlideshowSlideCounter = Drupal.viewsSlideshowSlideCounter || {};
+  Backdrop.viewsSlideshowSlideCounter = Backdrop.viewsSlideshowSlideCounter || {};
 
   /**
    * Implement the transitionBegin for the slide counter.
    */
-  Drupal.viewsSlideshowSlideCounter.transitionBegin = function (options) {
+  Backdrop.viewsSlideshowSlideCounter.transitionBegin = function (options) {
     $('#views_slideshow_slide_counter_' + options.slideshowID + ' .num').text(options.slideNum + 1);
   };
 
   /**
    * This is used as a router to process actions for the slideshow.
    */
-  Drupal.viewsSlideshow.action = function (options) {
+  Backdrop.viewsSlideshow.action = function (options) {
     // Set default values for our return status.
     var status = {
       'value': true,
@@ -393,29 +393,29 @@
     // If an action isn't specified return false.
     if (typeof options.action == 'undefined' || options.action == '') {
       status.value = false;
-      status.text =  Drupal.t('There was no action specified.');
+      status.text =  Backdrop.t('There was no action specified.');
       return error;
     }
 
     // If we are using pause or play switch paused state accordingly.
     if (options.action == 'pause') {
-      Drupal.settings.viewsSlideshow[options.slideshowID].paused = 1;
+      Backdrop.settings.viewsSlideshow[options.slideshowID].paused = 1;
       // If the calling method is forcing a pause then mark it as such.
       if (options.force) {
-        Drupal.settings.viewsSlideshow[options.slideshowID].pausedForce = 1;
+        Backdrop.settings.viewsSlideshow[options.slideshowID].pausedForce = 1;
       }
     }
     else if (options.action == 'play') {
       // If the slideshow isn't forced pause or we are forcing a play then play
       // the slideshow.
       // Otherwise return telling the calling method that it was forced paused.
-      if (!Drupal.settings.viewsSlideshow[options.slideshowID].pausedForce || options.force) {
-        Drupal.settings.viewsSlideshow[options.slideshowID].paused = 0;
-        Drupal.settings.viewsSlideshow[options.slideshowID].pausedForce = 0;
+      if (!Backdrop.settings.viewsSlideshow[options.slideshowID].pausedForce || options.force) {
+        Backdrop.settings.viewsSlideshow[options.slideshowID].paused = 0;
+        Backdrop.settings.viewsSlideshow[options.slideshowID].pausedForce = 0;
       }
       else {
         status.value = false;
-        status.text += ' ' + Drupal.t('This slideshow is forced paused.');
+        status.text += ' ' + Backdrop.t('This slideshow is forced paused.');
         return status;
       }
     }
@@ -430,14 +430,14 @@
         // defined and it is a number that is an integer.
         if (typeof options.slideNum == 'undefined' || typeof options.slideNum !== 'number' || parseInt(options.slideNum) != (options.slideNum - 0)) {
           status.value = false;
-          status.text = Drupal.t('An invalid integer was specified for slideNum.');
+          status.text = Backdrop.t('An invalid integer was specified for slideNum.');
         }
       case "pause":
       case "play":
       case "nextSlide":
       case "previousSlide":
         // Grab our list of methods.
-        var methods = Drupal.settings.viewsSlideshow[options.slideshowID]['methods'];
+        var methods = Backdrop.settings.viewsSlideshow[options.slideshowID]['methods'];
 
         // if the calling method specified methods that shouldn't be called then
         // exclude calling them.
@@ -452,8 +452,8 @@
 
         // Call every registered method and don't call excluded ones.
         for (i = 0; i < methods[options.action].length; i++) {
-          if (Drupal[methods[options.action][i]] != undefined && typeof Drupal[methods[options.action][i]][options.action] == 'function' && !(methods[options.action][i] in excludeMethodsObj)) {
-            Drupal[methods[options.action][i]][options.action](options);
+          if (Backdrop[methods[options.action][i]] != undefined && typeof Backdrop[methods[options.action][i]][options.action] == 'function' && !(methods[options.action][i] in excludeMethodsObj)) {
+            Backdrop[methods[options.action][i]][options.action](options);
           }
         }
         break;
@@ -461,7 +461,7 @@
       // If it gets here it's because it's an invalid action.
       default:
         status.value = false;
-        status.text = Drupal.t('An invalid action "!action" was specified.', { "!action": options.action });
+        status.text = Backdrop.t('An invalid action "!action" was specified.', { "!action": options.action });
     }
     return status;
   };

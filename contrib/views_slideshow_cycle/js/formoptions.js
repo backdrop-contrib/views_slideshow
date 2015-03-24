@@ -11,7 +11,7 @@
   
   // Since Drupal 7 doesn't support having a field based on one of 3 values of
   // a select box we need to add our own javascript handling.
-  Drupal.behaviors.viewsSlideshowCycleAmountAllowedVisible = {
+  Backdrop.behaviors.viewsSlideshowCycleAmountAllowedVisible = {
     attach: function (context) {
       
       // If necessary at start hide the amount allowed visible box.
@@ -61,18 +61,18 @@
   }
   
   // Manage advanced options 
-  Drupal.behaviors.viewsSlideshowCycleOptions = {
+  Backdrop.behaviors.viewsSlideshowCycleOptions = {
     attach: function (context) {
       if ($(":input[name='style_options[views_slideshow_cycle][advanced_options]']").length) {
         $(":input[name='style_options[views_slideshow_cycle][advanced_options]']").parent().hide();
         
         $(":input[name='style_options[views_slideshow_cycle][advanced_options_entry]']").parent().after(
           '<div style="margin-left: 10px; padding: 10px 0;">' + 
-            '<a id="edit-style-options-views-slideshow-cycle-advanced-options-update-link" href="#">' + Drupal.t('Update Advanced Option') + '</a>' +
+            '<a id="edit-style-options-views-slideshow-cycle-advanced-options-update-link" href="#">' + Backdrop.t('Update Advanced Option') + '</a>' +
           '</div>'
         );
         
-        $("#edit-style-options-views-slideshow-cycle-advanced-options-table").append('<tr><th colspan="2">' + Drupal.t('Applied Options') + '</th><tr>')
+        $("#edit-style-options-views-slideshow-cycle-advanced-options-table").append('<tr><th colspan="2">' + Backdrop.t('Applied Options') + '</th><tr>')
         
         var initialValue = $(":input[name='style_options[views_slideshow_cycle][advanced_options]']").val();
         var advancedOptions = JSON.parse(initialValue);

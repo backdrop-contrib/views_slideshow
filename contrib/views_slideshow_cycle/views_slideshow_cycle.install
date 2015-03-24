@@ -8,7 +8,7 @@ function views_slideshow_cycle_requirements($phase) {
   // Ensure translations do not break at install time
   $t = get_t();
   if ($phase == 'install' || $phase == 'runtime') {
-    if (!drupal_get_path('module', 'libraries')) {
+    if (!backdrop_get_path('module', 'libraries')) {
       $requirements['views_slideshow_cycle'] = array(
         'title' => t('Libraries module missing'),
         'severity' => REQUIREMENT_ERROR,
@@ -18,7 +18,7 @@ function views_slideshow_cycle_requirements($phase) {
     }
     else {
       if ($phase == 'install') {
-        $views_slideshow = drupal_get_path('module', 'views_slideshow_cycle');
+        $views_slideshow = backdrop_get_path('module', 'views_slideshow_cycle');
         require_once($views_slideshow . '/views_slideshow_cycle.module');
       }
       // Libraries module may not be installed,
@@ -26,7 +26,7 @@ function views_slideshow_cycle_requirements($phase) {
       // For example, during installation from an installation profile
       // Libraries will *not* be installed when hook_requirements get called
       if (!function_exists('libraries_get_path')) {
-        include_once drupal_get_path('module', 'libraries') . '/libraries.module';
+        include_once backdrop_get_path('module', 'libraries') . '/libraries.module';
       }
       if (!$cycle_path = _views_slideshow_cycle_library_path()) {
         $requirements['jquery.cycle'] = array(
