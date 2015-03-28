@@ -5,6 +5,7 @@
  * Provides Slideshow style options for Views.
  */
 
+
 /**
  * Implement hook_theme().
  */
@@ -94,9 +95,9 @@ function views_slideshow_help($path, $arg) {
 }
 
 /**
- * Implements hook_library().
+ * Implements hook_library_info().
  */
-function views_slideshow_library() {
+function views_slideshow_library_info() {
   $libraries = array();
 
   $libraries['views_slideshow'] = array(
@@ -481,7 +482,14 @@ function views_slideshow_views_slideshow_option_definition() {
  */
 
 // Trying to make sure the theme.inc get's loaded.
+ 
+module_load_include('inc','views','includes/base');
+module_load_include('inc','views','includes/plugin');
+module_load_include('inc','views','plugins/views_plugin_style');
+
 module_load_include('inc', 'views_slideshow', 'theme/views_slideshow.theme');
+module_load_include('inc', 'views_slideshow', 'views_slideshow.views');
+module_load_include('inc', 'views_slideshow', 'views_slideshow_plugin_style_slideshow');
 
 function template_preprocess_views_slideshow(&$vars) {
   _views_slideshow_preprocess_views_slideshow($vars);
@@ -512,7 +520,7 @@ function template_preprocess_views_slideshow_controls_text_next(&$vars) {
 }
 
 function template_preprocess_views_slideshow_slide_counter(&$vars) {
-  _views_slideshow_preprocess_views_slideshow_slide_counter($vars);
+ _views_slideshow_preprocess_views_slideshow_slide_counter($vars);
 }
 
 /**
@@ -520,6 +528,10 @@ function template_preprocess_views_slideshow_slide_counter(&$vars) {
  */
 function views_slideshow_autoload_info(){
  return array(
+   //'views_object' => '../../core/modules/views/includes/base.inc',
+   //'views_plugin' => '../../core/modules/views/includes/plugin.inc',
+   //'views_plugin_style' => '../../core/modules/views/plugins/views_plugin_style.inc',
    'views_slideshow_plugin_style_slideshow' => 'views_slideshow_plugin_style_slideshow.inc',
+   'views_slideshow_views_plugins' => 'views_slideshow.views.inc',
  );
 }

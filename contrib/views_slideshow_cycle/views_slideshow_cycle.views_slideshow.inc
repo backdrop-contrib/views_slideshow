@@ -199,7 +199,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
 
   $form['views_slideshow_cycle']['transition_advanced_wrapper_close'] = array(
     '#markup' => '</div>',
-  );
+  ); //end of Transition Advanced Options
 
   // Action
   $form['views_slideshow_cycle']['action'] = array(
@@ -224,13 +224,13 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('View Action Advanced Options'),
     '#default_value' => $view->options['views_slideshow_cycle']['action_advanced'],
   );
-
+  
   // Need to wrap this so it indents correctly.
   $form['views_slideshow_cycle']['action_advanced_wrapper'] = array(
     '#markup' => '<div class="vs-dependent">',
-  );
-
-  $form['views_slideshow_cycle']['start_paused'] = array(
+  );    
+	
+	$form['views_slideshow_cycle']['start_paused'] = array(
     '#type' => 'checkbox',
     '#title' => t('Start Slideshow Paused'),
     '#default_value' => $view->options['views_slideshow_cycle']['start_paused'],
@@ -511,7 +511,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
 }
 
 function views_slideshow_cycle_form_options_js($element, &$form_state, &$form) {
-  ctools_add_js('formoptions', 'views_slideshow_cycle');
+  backdrop_add_js('formoptions', 'views_slideshow_cycle');
   return $element;
 }
 

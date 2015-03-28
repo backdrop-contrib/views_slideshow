@@ -4,7 +4,3 @@ dependencies[] = views_slideshow
 dependencies[] = libraries
 package = Views
 backdrop = 1.x
-
-files[] = views_slideshow_cycle.module
-files[] = views_slideshow_cycle.views_slideshow.inc
-files[] = theme/views_slideshow_cycle.theme.inc

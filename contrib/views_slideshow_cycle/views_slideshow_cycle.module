@@ -119,6 +119,7 @@ function _views_slideshow_cycle_pause_library_path() {
 
 // Trying to make sure the theme.inc get's loaded.
 module_load_include('inc', 'views_slideshow_cycle', 'theme/views_slideshow_cycle.theme');
+module_load_include('inc', 'views_slideshow_cycle', 'views_slideshow_cycle.views_slideshow');
 
 function template_preprocess_views_slideshow_cycle_main_frame(&$vars) {
   _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame($vars);
