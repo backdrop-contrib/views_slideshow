@@ -108,7 +108,7 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
   }
 
   // Add the slideshow elements.
-  $vars['classes_array'][] = 'views_slideshow_cycle_teaser_section';
+  $vars['classes'][] = 'views_slideshow_cycle_teaser_section';
 
   $styles = '';
   if (isset($view->display_handler->display->display_options['style_options']['views_slideshow_cycle'])) {
@@ -155,13 +155,13 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
  */
 function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame_row(&$vars) {
   $current = $vars['count'] + 1;
-  $vars['classes_array'][] = 'views_slideshow_cycle_slide';
-  $vars['classes_array'][] = 'views_slideshow_slide views-row-' . $current;
+  $vars['classes'][] = 'views_slideshow_cycle_slide';
+  $vars['classes'][] = 'views_slideshow_slide views-row-' . $current;
 
   if ($vars['count']) {
-    $vars['classes_array'][] =  'views_slideshow_cycle_hidden';
+    $vars['classes'][] =  'views_slideshow_cycle_hidden';
   }
-  $vars['classes_array'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
+  $vars['classes'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
 
   $vars['rendered_items'] = '';
   foreach ($vars['items'] as $item_count => $item) {
@@ -170,20 +170,20 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame_row(
 }
 
 function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame_row_item(&$vars) {
-  $vars['classes_array'][] = 'views-row views-row-' . $vars['count'];
-  $vars['classes_array'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
+  $vars['classes'][] = 'views-row views-row-' . $vars['count'];
+  $vars['classes'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
   if ($vars['count'] == 0) {
-    $vars['classes_array'][] = 'views-row-first';
+    $vars['classes'][] = 'views-row-first';
   }
   elseif ($vars['count'] == $vars['length'] - 1) {
-    $vars['classes_array'][] = 'views-row-last';
+    $vars['classes'][] = 'views-row-last';
   }
 
   /**
    * Support custom row classes.
    */
   if ($row_class = $vars['view']->style_plugin->get_row_class($vars['count'])) {
-    $vars['classes_array'][] = $row_class;
+    $vars['classes'][] = $row_class;
   }
 }
 

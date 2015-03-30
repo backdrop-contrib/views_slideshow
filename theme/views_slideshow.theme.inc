@@ -236,10 +236,10 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
     }
   }
 
-  $vars['classes_array'][] = $vars['attributes']['class'];
+  $vars['classes'][] = $vars['attributes']['class'];
   $vars['widget_id'] = $vars['attributes']['id'];
   // Add our class to the wrapper.
-  $vars['classes_array'][] = 'views_slideshow_pager_field';
+  $vars['classes'][] = 'views_slideshow_pager_field';
 
   // Render all the fields unless there is only 1 slide and the user specified
   // to hide them when there is only one slide.
@@ -263,13 +263,13 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
  * @ingroup themeable
  */
 function _views_slideshow_preprocess_views_slideshow_pager_field_item(&$vars) {
-  $vars['classes_array'][] = 'views_slideshow_pager_field_item';
-  $vars['classes_array'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
+  $vars['classes'][] = 'views_slideshow_pager_field_item';
+  $vars['classes'][] = ($vars['count'] % 2) ? 'views-row-even' : 'views-row-odd';
   if ($vars['count'] == 0) {
-    $vars['classes_array'][] = 'views-row-first';
+    $vars['classes'][] = 'views-row-first';
   }
   elseif ($vars['count'] == $vars['length'] - 1) {
-    $vars['classes_array'][] = 'views-row-last';
+    $vars['classes'][] = 'views-row-last';
   }
 }
 
@@ -310,7 +310,7 @@ function _views_slideshow_preprocess_views_slideshow_controls_text(&$vars) {
   $module_path = backdrop_get_path('module', 'views_slideshow');
   backdrop_add_css($module_path . '/views_slideshow_controls_text.css', array('type' => 'file'));
 
-  $vars['classes_array'][] = 'views_slideshow_controls_text';
+  $vars['classes'][] = 'views_slideshow_controls_text';
 
   $vars['rendered_control_previous'] = theme(views_theme_functions('views_slideshow_controls_text_previous', $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings']));
 
@@ -325,7 +325,7 @@ function _views_slideshow_preprocess_views_slideshow_controls_text(&$vars) {
  * @ingroup themeable
  */
 function _views_slideshow_preprocess_views_slideshow_controls_text_previous(&$vars) {
-  $vars['classes_array'][] = 'views_slideshow_controls_text_previous';
+  $vars['classes'][] = 'views_slideshow_controls_text_previous';
 }
 
 /**
@@ -334,7 +334,7 @@ function _views_slideshow_preprocess_views_slideshow_controls_text_previous(&$va
  * @ingroup themeable
  */
 function _views_slideshow_preprocess_views_slideshow_controls_text_pause(&$vars) {
-  $vars['classes_array'][]  = 'views_slideshow_controls_text_pause  views-slideshow-controls-text-status-play';
+  $vars['classes'][]  = 'views_slideshow_controls_text_pause  views-slideshow-controls-text-status-play';
   $vars['start_text'] = t('Pause');
 }
 
@@ -344,7 +344,7 @@ function _views_slideshow_preprocess_views_slideshow_controls_text_pause(&$vars)
  * @ingroup themeable
  */
 function _views_slideshow_preprocess_views_slideshow_controls_text_next(&$vars) {
-  $vars['classes_array'][] = 'views_slideshow_controls_text_next';
+  $vars['classes'][] = 'views_slideshow_controls_text_next';
 }
 
 /**
@@ -360,6 +360,6 @@ function theme_views_slideshow_slide_counter_widget_render($vars) {
  * Views Slideshow: slide counter.
  */
 function _views_slideshow_preprocess_views_slideshow_slide_counter(&$vars) {
-  $vars['classes_array'][] = 'views_slideshow_slide_counter';
+  $vars['classes'][] = 'views_slideshow_slide_counter';
   $vars['slide_count'] = count($vars['rows']);
 }
