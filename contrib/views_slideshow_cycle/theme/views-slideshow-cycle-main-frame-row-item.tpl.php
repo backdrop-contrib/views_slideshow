@@ -1,3 +1,3 @@
-<div class="<?php print $classes[0]; ?>">
+<div class="<?php print implode(' ',$classes); ?>">
   <?php print $item; ?>
 </div>

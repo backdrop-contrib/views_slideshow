@@ -1,11 +1,3 @@
-<?php
-
-/**
- * @file
- * Views Slideshow: Single Frame template file.
- */
-?>
-
 <div class="skin-<?php print $settings['views_slideshow_cycle']['skin']; ?>">
   <?php if (isset($top_widget_rendered)): ?>
     <div class="views-slideshow-controls-top clearfix">

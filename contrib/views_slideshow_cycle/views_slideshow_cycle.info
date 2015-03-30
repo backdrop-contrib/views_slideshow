@@ -4,3 +4,5 @@ dependencies[] = views_slideshow
 dependencies[] = libraries
 package = Views
 backdrop = 1.x
+scripts[] = js/formoptions.js
+scripts[] = js/views_slideshow_cycle.js
