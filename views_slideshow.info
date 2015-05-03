@@ -3,4 +3,6 @@ description = Provides a View style that displays rows as a jQuery slideshow.  T
 dependencies[] = views
 package = Views
 backdrop = 1.x
+version = 1.x-3.1
+type = module
 scripts[] = js/views_slideshow.js
