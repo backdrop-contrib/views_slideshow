@@ -8,9 +8,11 @@
 
 /* Pager Settings */
 
-.views_slideshow_cycle_pager div a img {
+.views_slideshow_pager_field img {
   width: 75px;
   height: 75px;
+  margin-right: 5px;
+  float: left;
 }
 
 .views_slideshow_pager_numbered div, .views_slideshow_pager_thumbnails div {
