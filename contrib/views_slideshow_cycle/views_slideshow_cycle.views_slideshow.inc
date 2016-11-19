@@ -82,7 +82,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
 function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$form_state, &$view) {
   if (!$cycle_path = _views_slideshow_cycle_library_path()) {
     $form['views_slideshow_cycle']['no_cycle_js'] = array(
-      '#markup' => '<div style="color: red">' . t('You need to install the jQuery cycle plugin. Create a directory in sites/all/libraries called jquery.cycle, and then copy jquery.cycle.all.min.js or jquery.cycle.all.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
+      '#markup' => '<div style="color: red">' . t('You need to install the jQuery cycle plugin. Create a directory in the libraries directory called jquery.cycle, and then copy jquery.cycle.all.min.js or jquery.cycle.all.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );
   }
 
@@ -414,7 +414,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
   $json2_path = libraries_get_path('json2');
   if (empty($json2_path) || !file_exists($json2_path . '/json2.js')) {
     $form['views_slideshow_cycle']['no_json_js'] = array(
-      '#markup' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to sites/all/libraries/json2', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
+      '#markup' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to libraries/json2', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
     );
   }
   else {

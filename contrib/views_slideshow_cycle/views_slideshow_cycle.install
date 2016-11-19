@@ -33,7 +33,7 @@ function views_slideshow_cycle_requirements($phase) {
           'title' => t('jQuery Cycle Library'),
           'severity' => REQUIREMENT_ERROR,
           'value' => t('Library required for Views Slideshow Cycle'),
-          'description' => t('You need to install the jQuery cycle plugin. Create a directory in sites/all/libraries called jquery.cycle, and then copy jquery.cycle.all.min.js or jquery.cycle.all.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))),
+          'description' => t('You need to install the jQuery cycle plugin. Create a directory in the libraries directory called jquery.cycle, and then copy jquery.cycle.all.min.js or jquery.cycle.all.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))),
         );
       }
       else {
