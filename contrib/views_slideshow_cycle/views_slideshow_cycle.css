@@ -9,7 +9,7 @@
 /* Pager Settings */
 
 .views_slideshow_pager_field img {
-  width: 75px;
+  width: auto;
   height: 75px;
   margin-right: 5px;
   float: left;
