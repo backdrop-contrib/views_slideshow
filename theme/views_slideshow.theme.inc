@@ -201,9 +201,9 @@ function theme_views_slideshow_pager_widget_render($vars) {
   backdrop_add_js($js_vars, 'setting');
 
   // Create some attributes
-  $attributes['class'] = 'widget_pager widget_pager_' . $vars['location'];
-  $attributes['id'] = 'widget_pager_' . $vars['location'] . '_' . $vars['vss_id'];
-  return theme(views_theme_functions($vars['settings']['type'], $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'attributes' => $attributes));
+  $vss_attributes['class'] = 'widget_pager widget_pager_' . $vars['location'];
+  $vss_attributes['id'] = 'widget_pager_' . $vars['location'] . '_' . $vars['vss_id'];
+  return theme(views_theme_functions($vars['settings']['type'], $vars['view'], $vars['view']->display[$vars['view']->current_display]), array('vss_id' => $vars['vss_id'], 'view' => $vars['view'], 'settings' => $vars['settings'], 'location' => $vars['location'], 'vss_attributes' => $vss_attributes));
 }
 
 /**
@@ -236,8 +236,8 @@ function _views_slideshow_preprocess_views_slideshow_pager_fields(&$vars) {
     }
   }
 
-  $vars['classes'][] = $vars['attributes']['class'];
-  $vars['widget_id'] = $vars['attributes']['id'];
+  $vars['classes'][] = $vars['vss_attributes']['class'];
+  $vars['widget_id'] = $vars['vss_attributes']['id'];
   // Add our class to the wrapper.
   $vars['classes'][] = 'views_slideshow_pager_field';
 
