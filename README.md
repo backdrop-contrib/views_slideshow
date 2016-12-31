@@ -17,13 +17,18 @@ the json2.js library, see http://javascript.crockford.com/jsmin.html
 ## Status
 This port is working with the jQuery cycle library. It has not been
 tested with the json2 library. 
-In release 1.x-3.1.1 an issue with the pager widget has been corrected 
-and classes have been added to provide responsive images.
+In release 1.x-3.2.1 some changes committed to the Drupal version 7.x-3.2
+have been incorporated.
 
 ## Installation
 
 Install as usual, then add the required javascript libraries to their own directories 
 jquery.cycle and (optionally) json2 within the site's libraries folder.
+
+## Related Modules
+
++ Views Slideshow: Galleria
++ Views Slideshow: Cycle2 (provisional release)
 
 ## License
 

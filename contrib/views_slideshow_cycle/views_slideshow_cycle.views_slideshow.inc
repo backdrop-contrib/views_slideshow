@@ -52,7 +52,7 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
       'pause' => array('default' => 1),
       'pause_on_click' => array('default' => 0),
       'action_advanced' => array('default' => 0),
-      'start_paused' => array('default', 0),
+      'start_paused' => array('default' => 0),
       'remember_slide' => array('default' => 0),
       'remember_slide_days' => array('default' => 1),
       'pause_in_middle' => array('default' => 0),
@@ -100,6 +100,7 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     'curtainX' => 'curtainX',
     'curtainY' => 'curtainY',
     'fade' => 'fade',
+    'fadeout' => 'fadeout',
     'fadeZoom' => 'fadeZoom',
     'growX' => 'growX',
     'growY' => 'growY',
@@ -224,13 +225,13 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#title' => t('View Action Advanced Options'),
     '#default_value' => $view->options['views_slideshow_cycle']['action_advanced'],
   );
-  
+
   // Need to wrap this so it indents correctly.
   $form['views_slideshow_cycle']['action_advanced_wrapper'] = array(
     '#markup' => '<div class="vs-dependent">',
-  );    
-	
-	$form['views_slideshow_cycle']['start_paused'] = array(
+  );
+
+  $form['views_slideshow_cycle']['start_paused'] = array(
     '#type' => 'checkbox',
     '#title' => t('Start Slideshow Paused'),
     '#default_value' => $view->options['views_slideshow_cycle']['start_paused'],
@@ -520,12 +521,12 @@ function views_slideshow_cycle_form_options_js($element, &$form_state, &$form) {
  */
 function views_slideshow_cycle_views_slideshow_options_form_validate(&$form, &$form_state, &$view) {
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['speed'])) {
-    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!', array('Speed')));
+    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!', array('!setting' => 'Speed')));
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['timeout'])) {
-    form_error($form['views_slideshow_cycle']['speed'], t('!setting must be numeric!', array('timeout')));
+    form_error($form['views_slideshow_cycle']['timeout'], t('!setting must be numeric!', array('!setting' => 'Timeout')));
   }
   if (!is_numeric($form_state['values']['style_options']['views_slideshow_cycle']['remember_slide_days'])) {
-    form_error($form['views_slideshow_cycle']['remember_slide_days'], t('!setting must be numeric!', array('Slide days')));
+    form_error($form['views_slideshow_cycle']['remember_slide_days'], t('!setting must be numeric!', array('!setting' => 'Slide days')));
   }
 }

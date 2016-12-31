@@ -68,7 +68,7 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
     $settings['vss_id'] = $vss_id;
   }
 
-  // Don't load javascript unless libraries module is present.
+  // Don't load JavaScript unless libraries module is present.
   if (module_exists('libraries')) {
     // Load jQuery Cycle
     if ($cycle_path = _views_slideshow_cycle_library_path()) {
