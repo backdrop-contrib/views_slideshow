@@ -3,7 +3,13 @@
 .views_slideshow_cycle_hidden,
 .views_slideshow_cycle_controls,
 .views_slideshow_cycle_image_count {
-  display: none;
+  display: block;
+}
+
+.views-slideshow-cycle-main-frame,
+.views-slideshow-cycle-main-frame div,
+.views-slideshow-cycle-main-frame img {
+  max-width: 100%;
 }
 
 /* Pager Settings */

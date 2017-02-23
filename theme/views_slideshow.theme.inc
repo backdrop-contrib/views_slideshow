@@ -162,7 +162,7 @@ function _views_slideshow_preprocess_views_slideshow(&$vars) {
     /**
      * Process Slideshow
      */
-    $slides = theme(views_theme_functions($main_frame_module . '_main_frame', $view, $view->display[$view->current_display]), array('vss_id' => $vss_id, 'view' => $view, 'settings' => $settings, 'rows' => $rows));
+    $slides = theme(views_theme_functions($main_frame_module . '_main_frame', $view, $view->display[$view->current_display]), array('vss_id' => $vss_id, 'view' => $view, 'settings' => $settings, 'rows' => $rows, 'options' => $options,));
     $vars['slideshow'] = theme(views_theme_functions('views_slideshow_main_section', $view, $view->display[$view->current_display]), array('vss_id' => $vss_id, 'slides' => $slides, 'plugin' => $main_frame_module));
   }
 }

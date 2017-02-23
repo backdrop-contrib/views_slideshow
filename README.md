@@ -17,7 +17,7 @@ the json2.js library, see http://javascript.crockford.com/jsmin.html
 ## Status
 This port is working with the jQuery cycle library. It has not been
 tested with the json2 library. 
-In release 1.x-3.2.1 some changes committed to the Drupal version 7.x-3.2
+In release 1.x-3.2.2 some changes committed to the Drupal version up to 7.x-3.6
 have been incorporated.
 
 ## Installation
@@ -38,8 +38,8 @@ This project is GPL v2 software. See the LICENSE.txt file in this directory for 
 ## Current Maintainers
 
 ### For Drupal:
-+ zhou xiukun (xiukun.zhou)
-+ wangqizhong
++ Nick Wilde (NickWilde)
++ Vincent Bouchet (vbouchet)
 + Adam Moore (redndahead)
 + Richard Burford (psynaptic)
 
