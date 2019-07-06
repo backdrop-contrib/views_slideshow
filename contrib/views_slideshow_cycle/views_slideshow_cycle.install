@@ -8,9 +8,9 @@ function views_slideshow_cycle_requirements($phase) {
   // Ensure translations do not break at install time
   $t = get_t();
   if ($phase == 'install' || $phase == 'runtime') {
-    if (!backdrop_get_path('module', 'libraries')) {
+    if (!backdrop_get_path('module', 'views_slideshow_cycle')) {
       $requirements['views_slideshow_cycle'] = array(
-        'title' => t('Libraries module missing'),
+        'title' => t('Module missing'),
         'severity' => REQUIREMENT_ERROR,
         'value' => t('Libraries module required for Views Slideshow Cycle'),
         'description' => $t('Views Slideshow Cycle module requires the <a href="@url">Libraries module</a> to be installed.', array('@url' => 'http://drupal.org/project/libraries')),

@@ -80,11 +80,6 @@ function views_slideshow_cycle_views_slideshow_option_definition() {
  * Implements hook_views_slideshow_slideshow_slideshow_type_form().
  */
 function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$form_state, &$view) {
-  if (!$cycle_path = _views_slideshow_cycle_library_path()) {
-    $form['views_slideshow_cycle']['no_cycle_js'] = array(
-      '#markup' => '<div style="color: red">' . t('You need to install the jQuery cycle plugin. Create a directory in the libraries directory called jquery.cycle, and then copy jquery.cycle.all.min.js or jquery.cycle.all.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))) . '</div>',
-    );
-  }
 
   // Transition
   $form['views_slideshow_cycle']['transition'] = array(
@@ -269,19 +264,6 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     ),
   );
 
-  if (!$pause_path = _views_slideshow_cycle_pause_library_path()) {
-    $form['views_slideshow_cycle']['pause_in_middle'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Pause The Slideshow In The Middle of the Transition'),
-      '#default_value' => $view->options['views_slideshow_cycle']['pause_in_middle'],
-      '#description' => t('When pausing the slideshow allow it to pause in the middle of tranistioning and not finish the transition until unpaused.'),
-      '#states' => array(
-        'visible' => array(
-          ':input[name="style_options[views_slideshow_cycle][transition_advanced]"]' => array('checked' => TRUE),
-        ),
-      ),
-    );
-  }
 
   $form['views_slideshow_cycle']['pause_when_hidden'] = array(
     '#type' => 'checkbox',
@@ -412,15 +394,8 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     '#markup' => '<h2>' . t('jQuery Cycle Custom Options') . '</h2>',
   );
 
-  $json2_path = libraries_get_path('json2');
-  if (empty($json2_path) || !file_exists($json2_path . '/json2.js')) {
-    $form['views_slideshow_cycle']['no_json_js'] = array(
-      '#markup' => '<div>' . t('To use the advanced options you need to download json2.js. You can do this by clicking the download button at !url and extract json2.js to libraries/json2', array('!url' => l('https://github.com/douglascrockford/JSON-js', 'https://github.com/douglascrockford/JSON-js', array('attributes' => array('target' => '_blank'))))) . '</div>',
-    );
-  }
-  else {
-    $form['views_slideshow_cycle']['advanced_options_info'] = array(
-      '#markup' => '<p>' . t('You can find a list of all the available options at !url.  If one of the options you add uses a function, example fxFn, then you need to only enter what goes inside the function call. The variables that are in the documentation on the jquery cycle site will be available to you.', array('!url' => l('http://malsup.com/jquery/cycle/options.html', 'http://malsup.com/jquery/cycle/options.html'))) . '</p>',
+  $form['views_slideshow_cycle']['advanced_options_info'] = array(
+    '#markup' => '<p>' . t('You can find a list of all the available options at !url.  If one of the options you add uses a function, example fxFn, then you need to only enter what goes inside the function call. The variables that are in the documentation on the jquery cycle site will be available to you.', array('!url' => l('http://malsup.com/jquery/cycle/options.html', 'http://malsup.com/jquery/cycle/options.html'))) . '</p>',
     );
 
     // All the jquery cycle options according to
@@ -508,7 +483,6 @@ function views_slideshow_cycle_views_slideshow_slideshow_type_form(&$form, &$for
     $form['views_slideshow_cycle']['advanced_options_table'] = array(
       '#markup' => '<table style="width: 400px; margin-left: 10px;" id="edit-style-options-views-slideshow-cycle-advanced-options-table"></table>'
     );
-  }
 }
 
 function views_slideshow_cycle_form_options_js($element, &$form_state, &$form) {
