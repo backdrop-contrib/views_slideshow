@@ -3,47 +3,32 @@
 /*
  * Implements hook_requirements().
  */
-function views_slideshow_cycle_requirements($phase) {
+function views_slideshow_cycle_requirements($phase)
+{
   $requirements = array();
   // Ensure translations do not break at install time
   $t = get_t();
-  if ($phase == 'install' || $phase == 'runtime') {
-    if (!backdrop_get_path('module', 'views_slideshow_cycle')) {
-      $requirements['views_slideshow_cycle'] = array(
-        'title' => t('Module missing'),
+  $cycle_path = '';
+  $libraries = backdrop_get_library('views_slideshow_cycle');
+  if (($phase == 'runtime') && !empty($libraries)) {
+    $library_name = $libraries['cycle']['name'];
+    $library_version = $libraries['cycle']['version'];
+    if ($library_name == 'jQuery Cycle Plugin') {
+      $requirements['jquery.cycle'] = array(
+        'title' => t('jQuery Cycle Library'),
+        'value' => t('Version ') . $library_version . t(' is installed'),
+        'severity' => REQUIREMENT_OK,
+      );
+    } else {
+      $requirements['jquery.cycle'] = array(
+        'title' => t('jQuery Cycle Library'),
         'severity' => REQUIREMENT_ERROR,
-        'value' => t('Libraries module required for Views Slideshow Cycle'),
-        'description' => $t('Views Slideshow Cycle module requires the <a href="@url">Libraries module</a> to be installed.', array('@url' => 'http://drupal.org/project/libraries')),
+        'value' => t('Library required for Views Slideshow Cycle'),
+        'description' => t('Problem - the jQuery Cycle library is not installed.'),
       );
     }
-    else {
-      if ($phase == 'install') {
-        $views_slideshow = backdrop_get_path('module', 'views_slideshow_cycle');
-        require_once($views_slideshow . '/views_slideshow_cycle.module');
-      }
-      // Libraries module may not be installed,
-      // even if it is listed as dependency in .info file.
-      // For example, during installation from an installation profile
-      // Libraries will *not* be installed when hook_requirements get called
-      if (!function_exists('libraries_get_path')) {
-        include_once backdrop_get_path('module', 'libraries') . '/libraries.module';
-      }
-      if (!$cycle_path = _views_slideshow_cycle_library_path()) {
-        $requirements['jquery.cycle'] = array(
-          'title' => t('jQuery Cycle Library'),
-          'severity' => REQUIREMENT_ERROR,
-          'value' => t('Library required for Views Slideshow Cycle'),
-          'description' => t('You need to install the jQuery cycle plugin. Create a directory in the libraries directory called jquery.cycle, and then copy jquery.cycle.all.min.js or jquery.cycle.all.js into it. You can find the plugin at !url.', array('!url' => l('http://malsup.com/jquery/cycle', 'http://malsup.com/jquery/cycle', array('attributes' => array('target' => '_blank'))))),
-        );
-      }
-      else {
-        $requirements['jquery.cycle'] = array(
-          'value' => t('Installed'),
-          'severity' => REQUIREMENT_OK,
-        );
-      }
-    }
-    $requirements['jquery.cycle']['title'] = t('jQuery Cycle Library');
   }
+
   return $requirements;
 }
+
