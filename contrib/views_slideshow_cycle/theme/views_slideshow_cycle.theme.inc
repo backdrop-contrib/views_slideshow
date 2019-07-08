@@ -68,10 +68,8 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
     $settings['vss_id'] = $vss_id;
   }
 
-  // Load jQuery Cycle
-  $module_path = backdrop_get_path('module', 'views_slideshow_cycle');
-  $cycle_path = $module_path . '/libraries/jquery.cycle/jquery.cycle.all.js';
-  backdrop_add_js($cycle_path);
+  // Load jQuery Cycle library
+  backdrop_add_library('views_slideshow_cycle','cycle');
 
   // Load our cycle js
   $module_path = backdrop_get_path('module', 'views_slideshow_cycle');

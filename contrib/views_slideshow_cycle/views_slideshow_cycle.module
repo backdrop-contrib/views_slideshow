@@ -38,14 +38,13 @@ function views_slideshow_cycle_theme($existing, $type, $theme, $path) {
  * Implements hook_library_info().
  */
  function views_slideshow_cycle_library_info(){
-   dpm('hook library info');
    $libraries['cycle'] = array(
      'name' => 'jQuery Cycle Plugin',
      'website' => 'http://jquery.malsup.com/cycle/',
      'download url' => 'http://jquery.malsup.com/cycle/download.html',
      'version' => '3.0.3',
      'js' => array(
-       backdrop_get_path('module', 'views_slideshow_cycle') . '/libraries/cycle/jquery.cycle.all.js' => array(),
+       backdrop_get_path('module', 'views_slideshow_cycle') . '/libraries/jquery.cycle/jquery.cycle.all.js' => array(),
      ),
    );
    return $libraries;
