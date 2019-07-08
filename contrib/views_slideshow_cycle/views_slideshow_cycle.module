@@ -35,78 +35,20 @@ function views_slideshow_cycle_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_help().
+ * Implements hook_library_info().
  */
-function views_slideshow_cycle_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#views_slideshow_cycle':
-      if (module_exists('advanced_help')) {
-        $output = '<p>' . l('Click here to view the documentation for Views Slideshow Cycle.',  'admin/advanced_help/views_slideshow_cycle') . '</p>';
-      }
-      else {
-        $output = '<p>' . t('Views Slideshow Cycle help can be found by installing and enabling the !advanced_help',  array('!advanced_help' => l('Advanced Help module', 'http://drupal.org/project/advanced_help'))) . '</p>';
-      }
-      return $output;
-  }
-}
-
-/**
- * Gets the path to the jQuery cycle library.
- *
- * @return
- *   The path to the cycle library js file, or FALSE if not found.
- */
-function _views_slideshow_cycle_library_path() {
-  $cycle_path = libraries_get_path('jquery.cycle');
-
-  if (!empty($cycle_path)) {
-    // Attempt to use minified version of jQuery cycle plugin.
-    if (file_exists($cycle_path . '/jquery.cycle.all.min.js')) {
-      $cycle_path .= '/jquery.cycle.all.min.js';
-    }
-    // Otherwise use non-minified version if available.
-    elseif (file_exists($cycle_path . '/jquery.cycle.all.js')) {
-      $cycle_path .= '/jquery.cycle.all.js';
-    }
-    else {
-      $cycle_path = FALSE;
-    }
-  }
-  else {
-    $cycle_path = FALSE;
-  }
-
-  return $cycle_path;
-}
-
-/**
- * Gets the path to the jQuery pause library.
- *
- * @return
- *   The path to the pause library js file, or FALSE if not found.
- */
-function _views_slideshow_cycle_pause_library_path() {
-  $pause_path = libraries_get_path('jquery.pause');
-
-  if (!empty($pause_path)) {
-    // Attempt to use minified version of jQuery pause plugin.
-    if (file_exists($pause_path . '/jquery.pause.min.js')) {
-      $pause_path .= '/jquery.pause.min.js';
-    }
-    // Otherwise use non-minified version if available.
-    elseif (file_exists($pause_path . '/jquery.pause.js')) {
-      $pause_path .= '/jquery.pause.js';
-    }
-    else {
-      $pause_path = FALSE;
-    }
-  }
-  else {
-    $pause_path = FALSE;
-  }
-
-  return $pause_path;
-}
+ function views_slideshow_cycle_library_info(){
+   $libraries['cycle'] = array(
+     'name' => 'jQuery Cycle Plugin',
+     'website' => 'http://jquery.malsup.com/cycle/',
+     'download url' => 'http://jquery.malsup.com/cycle/download.html',
+     'version' => '3.0.3',
+     'js' => array(
+       backdrop_get_path('module', 'views_slideshow_cycle') . '/libraries/jquery.cycle/jquery.cycle.all.js' => array(),
+     ),
+   );
+   return $libraries;
+ }
 
 
 /**

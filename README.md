@@ -1,34 +1,39 @@
 # Views Slideshow
 
-This is a port to Backdrop of the Drupal contributed module 'Views Slideshow'. 
+This is a port to Backdrop of the Drupal contributed module 'Views Slideshow' v7.x-3.x
 
-Views Slideshow can be used to create a slideshow of any content (not just images)
+It provides an API module Views Slideshow and one implementation of
+that API in a submodule Views Slideshow Cycle.
+
+Views Slideshow Cycle can be used to create a slideshow of any content (not just images)
 that can appear in a View. Powered by jQuery, it is heavily customizable: 
 you may choose slideshow settings for each View you create.
 
-This module contains an api module "Views Slideshow" and one implementation of
-that api in "Views Slideshow Cycle".
+For example, using the Views UI when extended by this module, a slideshow can be
+created either from a set of images uploaded to a single node, or from a set of nodes
+each having one image for inclusion in the slideshow.
 
-It requires the Libraries API module to be installed, together with the
-jQuery cycle library. http://malsup.com/jquery/cycle; also for advanced features
-the json2.js library, see http://javascript.crockford.com/jsmin.html
+The submodule now includes the jQuery Cycle library from http://malsup.com/jquery/cycle.
 
-
-## Status
-This port is working with the jQuery cycle library. It has not been
-tested with the json2 library. 
-In release 1.x-3.2.2 some changes committed to the Drupal version up to 7.x-3.6
-have been incorporated.
+Other modules that can be installed separately to use this API are
++ Views Slideshow: Galleria
++ Views Slideshow: Cycle2
 
 ## Installation
 
-Install as usual, then add the required javascript libraries to their own directories 
-jquery.cycle and (optionally) json2 within the site's libraries folder.
+- Install this module using the official Backdrop CMS instructions at
+  https://backdropcms.org/guide/modules.
 
-## Related Modules
+- If upgrading from a previous release, the Libraries module is no longer required
+by this module, nor is the separate copy of the jQuery Cycle library.
 
-+ Views Slideshow: Galleria
-+ Views Slideshow: Cycle2 (provisional release)
+## Configuration
+
+The module adds settings to the Views UI, providing a 'slideshow' view style that displays 
+rows as a jQuery slideshow. 
+
+The included submodule Views Slideshow Cycle provides an option 'Cycle' for the slideshow 
+with various settings. Other slideshow options can be added by other contributed modules.
 
 ## License
 

@@ -1,14 +1,14 @@
 
-Views Slideshow: Cycle
-============================
+# Views Slideshow Cycle
 
-The original default slideshow mode for Views Slideshow.
+A submodule of Views Slideshow.
+
+This is the original default slideshow mode for Views Slideshow.
 
 
-Description
-===========
+## Description
 
-The Views Slideshow: Cycle module adds a Views display for showing rows as items
+The Views Slideshow Cycle module adds a Views display for showing rows as items
 in a jQuery slideshow. Rows could be single images, full nodes, fields, or
 whatever else that Views can display.
 

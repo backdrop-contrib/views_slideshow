@@ -68,44 +68,19 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
     $settings['vss_id'] = $vss_id;
   }
 
-  // Don't load JavaScript unless libraries module is present.
-  if (module_exists('libraries')) {
-    // Load jQuery Cycle
-    if ($cycle_path = _views_slideshow_cycle_library_path()) {
-      backdrop_add_js($cycle_path);
-    }
+  // Load jQuery Cycle library
+  backdrop_add_library('views_slideshow_cycle','cycle');
 
-    // Load Json2
-    $json_path = libraries_get_path('json2');
-    if (!empty($json_path) && file_exists($json_path . '/json2.js')) {
-      backdrop_add_js($json_path . '/json2.js');
-    }
+  // Load our cycle js
+  $module_path = backdrop_get_path('module', 'views_slideshow_cycle');
+  backdrop_add_js($module_path . '/js/views_slideshow_cycle.js');
 
-    // Load our cycle js
-    $module_path = backdrop_get_path('module', 'views_slideshow_cycle');
-    backdrop_add_js($module_path . '/js/views_slideshow_cycle.js');
-
-    // Load the pause library
-    if (!empty($settings['pause_in_middle']) && $pause_path = _views_slideshow_cycle_pause_library_path()) {
-      backdrop_add_js($pause_path);
-    }
-  }
 
   // Load our cycle css
   backdrop_add_css($module_path . '/views_slideshow_cycle.css', 'file');
 
   backdrop_add_js(array('viewsSlideshowCycle' => array('#views_slideshow_cycle_main_' . $vss_id => $settings)), 'setting');
 
-  // Add hover intent library
-  if ($settings['pause']) {
-    if (module_exists('libraries')) {
-      // Load jQuery hoverIntent
-      $hoverIntent_path = libraries_get_path('jquery.hoverIntent');
-      if (!empty($hoverIntent_path) && file_exists($hoverIntent_path . '/jquery.hoverIntent.js')) {
-        backdrop_add_js($hoverIntent_path . '/jquery.hoverIntent.js');
-      }
-    }
-  }
 
   // Add the slideshow elements.
   $vars['classes'][] = 'views_slideshow_cycle_teaser_section';
