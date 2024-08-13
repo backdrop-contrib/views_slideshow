@@ -111,10 +111,10 @@ function _views_slideshow_cycle_preprocess_views_slideshow_cycle_main_frame(&$va
   //backdrop_set_message(var_export($vars['options']['widgets'],TRUE));
   $widgets = $vars['options']['widgets'];
   if (isset($options['top']['views_slideshow_pager']['enabled']) && $options['top']['views_slideshow_pager']['enabled']) {
-    $aria = "aria-labelledby='views_slideshow_pager_field_item_top_${vss_id}_";
+    $aria = "aria-labelledby='views_slideshow_pager_field_item_top_{$vss_id}_";
   }
   else {
-    $aria = "aria-labelledby='views_slideshow_pager_field_item_bottom_${vss_id}_";
+    $aria = "aria-labelledby='views_slideshow_pager_field_item_bottom_{$vss_id}_";
   }
 
   $items = array();
